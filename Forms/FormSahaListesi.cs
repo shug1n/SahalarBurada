@@ -17,26 +17,29 @@ namespace SahalarBurada.Forms
         {
             _sahalar = sahalar; _tarih = tarih; _saat = saat;
             InitializeComponent();
-            YukleKartlar();
+            SetupUI();
         }
 
-        private void YukleKartlar()
+        private void SetupUI()
         {
-            // Header güncelle
-            pnlSahaListesiHeader.Controls.Clear();
-            var h = UIHelper.HeaderPanelOlustur(
+            UIHelper.FormAyarla(this, "Uygun Sahalar", 880, 690);
+            this.Controls.Add(UIHelper.HeaderPanelOlustur(
                 $"📋  Uygun Sahalar — {_tarih:dd.MM.yyyy}  {_saat}",
-                $"{_sahalar.Count} müsait saha bulundu");
-            pnlSahaListesiHeader.Dock = DockStyle.None;
-            foreach (Control c in h.Controls) pnlSahaListesiHeader.Controls.Add(c);
-            pnlSahaListesiHeader.BackColor = h.BackColor;
-            pnlSahaListesiHeader.Height    = h.Height;
-            pnlSahaListesiHeader.Paint    += (s, e) => h.Invalidate();
+                $"{_sahalar.Count} müsait saha bulundu"));
 
-            // Kartları oluştur
-            flowSahalar.Controls.Clear();
-            foreach (var s in _sahalar)
-                flowSahalar.Controls.Add(BuildSahaKartı(s));
+            var scroll = new Panel { Dock = DockStyle.Fill, BackColor = UIHelper.CArkaplan, AutoScroll = true };
+            var flow   = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.TopDown, WrapContents = false, Padding = new Padding(20, 12, 20, 12), BackColor = Color.Transparent };
+            foreach (var s in _sahalar) flow.Controls.Add(BuildSahaKartı(s));
+            scroll.Controls.Add(flow);
+
+            var altBar  = new Panel { Dock = DockStyle.Bottom, Height = 52, BackColor = Color.White };
+            altBar.Paint += (s, e) => e.Graphics.DrawLine(new Pen(UIHelper.CBolme), 0, 0, ((Panel)s).Width, 0);
+            var btnGeri = UIHelper.BtnSecondary("← Geri", 20, 7, 130, 38);
+            btnGeri.Click += (s, e) => this.Close();
+            altBar.Controls.Add(btnGeri);
+
+            this.Controls.Add(scroll);
+            this.Controls.Add(altBar);
         }
 
         private Panel BuildSahaKartı(HaliSaha saha)
@@ -48,9 +51,9 @@ namespace SahalarBurada.Forms
                 e.Graphics.DrawRectangle(new Pen(UIHelper.CBolme, 1), 0, 0, p.Width - 1, p.Height - 1);
                 e.Graphics.FillRectangle(new SolidBrush(UIHelper.CVurgu), 0, 0, 6, p.Height);
             };
-            kart.Controls.Add(new Label { Text = "⚽  " + saha.Ad, Font = UIHelper.FAltBaslik, ForeColor = UIHelper.CAna, AutoSize = true, Location = new Point(22, 15) });
-            kart.Controls.Add(new Label { Text = "📍  " + saha.Adres, Font = UIHelper.FNormal, ForeColor = UIHelper.CMetinAcik, AutoSize = true, Location = new Point(22, 52) });
-            kart.Controls.Add(new Label { Text = $"👥  {saha.Kapasite} kişi", Font = UIHelper.FNormal, ForeColor = UIHelper.CMetin, AutoSize = true, Location = new Point(22, 82) });
+            kart.Controls.Add(new Label { Text = "⚽  " + saha.Ad,         Font = UIHelper.FAltBaslik,  ForeColor = UIHelper.CAna,       AutoSize = true, Location = new Point(22, 15) });
+            kart.Controls.Add(new Label { Text = "📍  " + saha.Adres,      Font = UIHelper.FNormal,     ForeColor = UIHelper.CMetinAcik, AutoSize = true, Location = new Point(22, 52) });
+            kart.Controls.Add(new Label { Text = $"👥  {saha.Kapasite} kişi", Font = UIHelper.FNormal, ForeColor = UIHelper.CMetin,     AutoSize = true, Location = new Point(22, 82) });
             kart.Controls.Add(new Label { Text = $"💰  {saha.FiyatSaat:N0} ₺ / saat", Font = new Font("Segoe UI", 11, FontStyle.Bold), ForeColor = UIHelper.CAna, AutoSize = true, Location = new Point(210, 82) });
             if (!string.IsNullOrWhiteSpace(saha.Aciklama))
             {
