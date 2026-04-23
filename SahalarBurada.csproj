@@ -64,15 +64,60 @@
     <Compile Include="Services\KullaniciServisi.cs" />
     <Compile Include="Services\SahaServisi.cs" />
     <!-- Forms -->
-    <Compile Include="Forms\FormAnaEkran.cs" />
-    <Compile Include="Forms\FormKiracıGiris.cs" />
-    <Compile Include="Forms\FormOrganizatorGiris.cs" />
-    <Compile Include="Forms\FormSahaAra.cs" />
-    <Compile Include="Forms\FormSahaListesi.cs" />
-    <Compile Include="Forms\FormRezervasyonOnay.cs" />
-    <Compile Include="Forms\FormOrganizatorPanel.cs" />
-    <Compile Include="Forms\FormSahaEkle.cs" />
-    <Compile Include="Forms\FormSahaOzet.cs" />
+    <Compile Include="Forms\FormAnaEkran.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormAnaEkran.Designer.cs">
+      <DependentUpon>FormAnaEkran.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormKiracıGiris.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormKiracıGiris.Designer.cs">
+      <DependentUpon>FormKiracıGiris.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormOrganizatorGiris.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormOrganizatorGiris.Designer.cs">
+      <DependentUpon>FormOrganizatorGiris.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormSahaAra.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormSahaAra.Designer.cs">
+      <DependentUpon>FormSahaAra.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormSahaListesi.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormSahaListesi.Designer.cs">
+      <DependentUpon>FormSahaListesi.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormRezervasyonOnay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormRezervasyonOnay.Designer.cs">
+      <DependentUpon>FormRezervasyonOnay.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormOrganizatorPanel.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormOrganizatorPanel.Designer.cs">
+      <DependentUpon>FormOrganizatorPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormSahaEkle.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormSahaEkle.Designer.cs">
+      <DependentUpon>FormSahaEkle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormSahaOzet.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormSahaOzet.Designer.cs">
+      <DependentUpon>FormSahaOzet.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
