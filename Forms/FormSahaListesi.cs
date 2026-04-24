@@ -17,30 +17,23 @@ namespace SahalarBurada.Forms
         {
             _sahalar = sahalar; _tarih = tarih; _saat = saat;
             InitializeComponent();
-            SetupUI();
+            SetupLogic();
         }
 
-        private void SetupUI()
+        private void SetupLogic()
         {
-            UIHelper.FormAyarla(this, "Uygun Sahalar", 880, 690);
-            this.Controls.Add(UIHelper.HeaderPanelOlustur(
-                $"📋  Uygun Sahalar — {_tarih:dd.MM.yyyy}  {_saat}",
-                $"{_sahalar.Count} müsait saha bulundu"));
+            lblHeaderBaslik.Text = $"📋  Uygun Sahalar — {_tarih:dd.MM.yyyy}  {_saat}";
+            lblHeaderAltBaslik.Text = $"{_sahalar.Count} müsait saha bulundu";
 
-            var scroll = new Panel { Dock = DockStyle.Fill, BackColor = UIHelper.CArkaplan, AutoScroll = true };
-            var flow   = new FlowLayoutPanel { AutoSize = true, FlowDirection = FlowDirection.TopDown, WrapContents = false, Padding = new Padding(20, 12, 20, 12), BackColor = Color.Transparent };
-            foreach (var s in _sahalar) flow.Controls.Add(BuildSahaKartı(s));
-            scroll.Controls.Add(flow);
-
-            var altBar  = new Panel { Dock = DockStyle.Bottom, Height = 52, BackColor = Color.White };
-            altBar.Paint += (s, e) => e.Graphics.DrawLine(new Pen(UIHelper.CBolme), 0, 0, ((Panel)s).Width, 0);
-            var btnGeri = UIHelper.BtnSecondary("← Geri", 20, 7, 130, 38);
-            btnGeri.Click += (s, e) => this.Close();
-            altBar.Controls.Add(btnGeri);
-
-            this.Controls.Add(scroll);
-            this.Controls.Add(altBar);
+            foreach (var s in _sahalar) flowPanel.Controls.Add(BuildSahaKartı(s));
         }
+
+        private void pnlAltBar_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.DrawLine(new Pen(UIHelper.CBolme), 0, 0, pnlAltBar.Width, 0);
+        }
+
+        private void BtnGeri_Click(object sender, EventArgs e) => this.Close();
 
         private Panel BuildSahaKartı(HaliSaha saha)
         {

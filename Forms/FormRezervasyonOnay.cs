@@ -12,74 +12,51 @@ namespace SahalarBurada.Forms
         private readonly HaliSaha _saha;
         private readonly DateTime _tarih;
         private readonly string _saat;
-        private TextBox txtMisafirAd, txtMisafirTelefon;
-        private Label lblHata;
 
         public FormRezervasyonOnay(HaliSaha saha, DateTime tarih, string saat)
         {
             _saha = saha; _tarih = tarih; _saat = saat;
             InitializeComponent();
-            SetupUI();
+            SetupLogic();
         }
 
-        private void SetupUI()
+        private void SetupLogic()
         {
-            UIHelper.FormAyarla(this, "Rezervasyon Onayı", 640, 600);
-            this.Controls.Add(UIHelper.HeaderPanelOlustur("✅  Rezervasyon Onayı", "Bilgileri kontrol edin ve onaylayın"));
-
-            var scroll = new Panel { Dock = DockStyle.Fill, BackColor = UIHelper.CArkaplan, AutoScroll = true };
-            int x = 35, y = 18;
-
-            // Detay kartı
             string saatSonu = (int.Parse(_saat.Split(':')[0]) + 1).ToString("D2") + ":00";
-            var detay = UIHelper.KartPanel(x, y, 568, 192);
-            detay.Controls.Add(new Label { Text = "📋 Rezervasyon Detayları", Font = UIHelper.FAltBaslik, ForeColor = UIHelper.CAna, AutoSize = true, Location = new Point(16, 12) });
-            int iy = 48;
-            void InfoRow(string lbl, string val) {
-                detay.Controls.Add(new Label { Text = lbl, Font = UIHelper.FNormalKalin, ForeColor = UIHelper.CMetin, Location = new Point(16, iy), Size = new Size(125, 22) });
-                detay.Controls.Add(new Label { Text = val, Font = UIHelper.FNormal, ForeColor = UIHelper.CMetinAcik, AutoSize = true, Location = new Point(145, iy) });
-                iy += 26;
-            }
-            InfoRow("⚽ Saha:",   _saha.Ad);
-            InfoRow("📍 Adres:",  _saha.Adres);
-            InfoRow("📅 Tarih:",  _tarih.ToString("dd MMMM yyyy, dddd"));
-            InfoRow("🕐 Saat:",   $"{_saat} – {saatSonu}  (1 saat)");
-            InfoRow("💰 Fiyat:",  $"{_saha.FiyatSaat:N0} ₺");
-            scroll.Controls.Add(detay);
-            y += 208;
+            lblSahaDeger.Text = _saha.Ad;
+            lblAdresDeger.Text = _saha.Adres;
+            lblTarihDeger.Text = _tarih.ToString("dd MMMM yyyy, dddd");
+            lblSaatDeger.Text = $"{_saat} – {saatSonu}  (1 saat)";
+            lblFiyatDeger.Text = $"{_saha.FiyatSaat:N0} ₺";
 
-            // Misafir bilgileri
+            int y = 226;
             if (!Oturum.GirisYapildi)
             {
-                var misKart = UIHelper.KartPanel(x, y, 568, 160);
-                misKart.Controls.Add(new Label { Text = "👤 İletişim Bilgileri", Font = UIHelper.FAltBaslik, ForeColor = UIHelper.CAna, AutoSize = true, Location = new Point(16, 12) });
-                misKart.Controls.Add(new Label { Text = "⚠  Organizatör sizinle iletişime geçebilmek için bu bilgilere ihtiyaç duyar.", Font = UIHelper.FKucukItalik, ForeColor = UIHelper.CUyari, AutoSize = false, Size = new Size(536, 18), Location = new Point(16, 42) });
-                misKart.Controls.Add(UIHelper.LblAlan("Ad Soyad:", 16, 70));
-                txtMisafirAd = UIHelper.TxtBox(130, 66, 420); misKart.Controls.Add(txtMisafirAd);
-                misKart.Controls.Add(UIHelper.LblAlan("Telefon:", 16, 110));
-                txtMisafirTelefon = UIHelper.TxtBox(130, 106, 420); misKart.Controls.Add(txtMisafirTelefon);
-                scroll.Controls.Add(misKart);
+                pnlMisafir.Visible = true;
+                pnlMisafir.Location = new Point(35, y);
                 y += 176;
             }
             else
             {
-                scroll.Controls.Add(new Label { Text = $"👤  {Oturum.AktifKullanici.Ad} {Oturum.AktifKullanici.Soyad} adına rezervasyon yapılacak.", Font = UIHelper.FNormal, ForeColor = UIHelper.CMetin, AutoSize = true, Location = new Point(x, y) });
+                lblAktifKullanici.Visible = true;
+                lblAktifKullanici.Text = $"👤  {Oturum.AktifKullanici.Ad} {Oturum.AktifKullanici.Soyad} adına rezervasyon yapılacak.";
+                lblAktifKullanici.Location = new Point(35, y);
                 y += 32;
             }
 
-            lblHata = new Label { Location = new Point(x, y), AutoSize = true, Font = UIHelper.FKucuk, ForeColor = UIHelper.CHata, Visible = false };
-            scroll.Controls.Add(lblHata);
+            lblHata.Location = new Point(35, y);
             y += 25;
-
-            var btnGeri   = UIHelper.BtnSecondary("← Geri Dön", x, y, 170, 46);
-            btnGeri.Click += (s, e) => this.Close();
-            var btnOnayla = UIHelper.BtnPrimary("✅  Onayla ve Kaydet", x + 190, y, 270, 46);
-            btnOnayla.Click += BtnOnayla_Click;
-            scroll.Controls.Add(btnGeri);
-            scroll.Controls.Add(btnOnayla);
-
-            this.Controls.Add(scroll);
+            btnGeri.Location = new Point(35, y);
+            btnOnayla.Location = new Point(225, y);
         }
+
+        private void Pnl_PaintBorder(object sender, PaintEventArgs e)
+        {
+            var pnl = (Panel)sender;
+            e.Graphics.DrawRectangle(new Pen(UIHelper.CBolme, 1), 0, 0, pnl.Width - 1, pnl.Height - 1);
+        }
+
+        private void BtnGeri_Click(object sender, EventArgs e) => this.Close();
 
         private void BtnOnayla_Click(object sender, EventArgs e)
         {

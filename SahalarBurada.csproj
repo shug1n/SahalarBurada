@@ -119,6 +119,12 @@
       <DependentUpon>FormSahaOzet.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\FormAnaEkran.resx">
+      <DependentUpon>FormAnaEkran.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormKiracıGiris.resx">
+      <DependentUpon>FormKiracıGiris.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

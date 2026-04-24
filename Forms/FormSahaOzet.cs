@@ -15,57 +15,28 @@ namespace SahalarBurada.Forms
         {
             _saha = saha;
             InitializeComponent();
-            SetupUI();
+            SetupLogic();
         }
 
-        private void SetupUI()
+        private void SetupLogic()
         {
-            UIHelper.FormAyarla(this, "Saha Özeti", 680, 660);
-            this.Controls.Add(UIHelper.HeaderPanelOlustur("📄  Saha Özeti", "Bilgileri kontrol edin; onaylayarak kaydedebilirsiniz"));
-
-            var scroll = new Panel { Dock = DockStyle.Fill, BackColor = UIHelper.CArkaplan, AutoScroll = true };
-            int x = 32, y = 18;
-
-            // Özet kartı
-            var kart = UIHelper.KartPanel(x, y, 614, 432);
-            kart.Paint += (s, e) =>
-            {
-                var p = (Panel)s;
-                e.Graphics.DrawRectangle(new Pen(UIHelper.CBolme, 1), 0, 0, p.Width - 1, p.Height - 1);
-                e.Graphics.FillRectangle(new SolidBrush(UIHelper.CVurgu), 0, 0, 6, p.Height);
-            };
-            kart.Controls.Add(new Label { Text = "📋 Saha Bilgileri Özeti", Font = UIHelper.FAltBaslik, ForeColor = UIHelper.CAna, AutoSize = true, Location = new Point(18, 14) });
-
-            int ky = 52;
-            void BilgiSatiri(string etiket, string deger, int h = 26)
-            {
-                kart.Controls.Add(new Label { Text = etiket, Font = UIHelper.FNormalKalin, ForeColor = UIHelper.CMetin, Location = new Point(20, ky), Size = new Size(145, h) });
-                kart.Controls.Add(new Label { Text = deger,  Font = UIHelper.FNormal, ForeColor = UIHelper.CMetinAcik, Location = new Point(170, ky), AutoSize = false, Size = new Size(430, h) });
-                ky += h + 6;
-            }
-            BilgiSatiri("Saha Adı:",       _saha.Ad);
-            BilgiSatiri("Adres:",           _saha.Adres);
-            BilgiSatiri("Kapasite:",        _saha.Kapasite + " kişi");
-            BilgiSatiri("Fiyat/Saat:",      _saha.FiyatSaat.ToString("N0") + " ₺");
-            BilgiSatiri("Müsait Günler:",   string.Join(", ", _saha.MüsaitGunler), 40);
-            BilgiSatiri("Müsait Saatler:",  $"{_saha.MüsaitSaatler.Count} dilim  ({_saha.MüsaitSaatler[0]} → {_saha.MüsaitSaatler[_saha.MüsaitSaatler.Count - 1]})");
-            BilgiSatiri("Açıklama:",        string.IsNullOrWhiteSpace(_saha.Aciklama) ? "—" : _saha.Aciklama, 48);
-
-            scroll.Controls.Add(kart);
-            y += 450;
-
-            scroll.Controls.Add(new Label { Text = "ℹ  Bilgiler doğru mu? Onayladıktan sonra sisteme kaydedilir.", Font = UIHelper.FKucukItalik, ForeColor = UIHelper.CMetinAcik, AutoSize = true, Location = new Point(x, y) });
-            y += 28;
-
-            var btnDuzenle = UIHelper.BtnSecondary("✏  Düzenle",         x,       y, 160, 46);
-            btnDuzenle.Click += (s, e) => this.Close();
-            var btnKaydet  = UIHelper.BtnPrimary("✅  Onayla ve Kaydet", x + 180, y, 250, 46);
-            btnKaydet.Click += BtnKaydet_Click;
-            scroll.Controls.Add(btnDuzenle);
-            scroll.Controls.Add(btnKaydet);
-
-            this.Controls.Add(scroll);
+            lblAdDeger.Text = _saha.Ad;
+            lblAdresDeger.Text = _saha.Adres;
+            lblKapasiteDeger.Text = _saha.Kapasite + " kişi";
+            lblFiyatDeger.Text = _saha.FiyatSaat.ToString("N0") + " ₺";
+            lblGunlerDeger.Text = string.Join(", ", _saha.MüsaitGunler);
+            lblSaatlerDeger.Text = $"{_saha.MüsaitSaatler.Count} dilim  ({_saha.MüsaitSaatler[0]} → {_saha.MüsaitSaatler[_saha.MüsaitSaatler.Count - 1]})";
+            lblAciklamaDeger.Text = string.IsNullOrWhiteSpace(_saha.Aciklama) ? "—" : _saha.Aciklama;
         }
+
+        private void pnlKart_Paint(object sender, PaintEventArgs e)
+        {
+            var p = (Panel)sender;
+            e.Graphics.DrawRectangle(new Pen(UIHelper.CBolme, 1), 0, 0, p.Width - 1, p.Height - 1);
+            e.Graphics.FillRectangle(new SolidBrush(UIHelper.CVurgu), 0, 0, 6, p.Height);
+        }
+
+        private void BtnDuzenle_Click(object sender, EventArgs e) => this.Close();
 
         private void BtnKaydet_Click(object sender, EventArgs e)
         {
