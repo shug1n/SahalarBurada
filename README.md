@@ -1,16 +1,16 @@
-# ⚽ SAHALAR KİRALA: "Sahayı Bağla, Maçı Başlat!" ⚽
+# ⚽ SAHALAR BURADA: "Sahayı Bağla, Maçı Başlat!" ⚽
 
 ![WinForms](https://img.shields.io/badge/UI-Windows%20Forms-blueviolet?style=for-the-badge&logo=windows)
 ![C#](https://img.shields.io/badge/Language-C%23-green?style=for-the-badge&logo=csharp)
 ![Platform](https://img.shields.io/badge/Platform-Windows-0078D4?style=for-the-badge&logo=windows)
 
-**Sahalar Kirala**, halı saha dünyasının o bitmek bilmeyen "Yer var mı?" çilesine son veren, modern ve hızlı bir masaüstü rezervasyon platformudur. Telefon trafiğini, yanlış alınan randevuları ve dolu sahaları tarihe gömüyoruz!
+**Sahalar Burada**, halı saha dünyasının o bitmek bilmeyen "Yer var mı?" çilesine son veren, modern ve hızlı bir masaüstü rezervasyon platformudur. Telefon trafiğini, yanlış alınan randevuları ve dolu sahaları tarihe gömüyoruz!
 
 ---
 
 ## 🔥 Neden Sahalar Kirala?
 
-Halı saha organizasyonu yapmak, son dakika penaltısı kullanmak kadar stresli olabilir. **Sahalar Kirala**, Windows Forms App'in gücüyle bu stresi ortadan kaldırıyor. 
+Halı saha organizasyonu yapmak, son dakika penaltısı kullanmak kadar stresli olabilir. **Sahalar Burada**, Windows Forms App'in gücüyle bu stresi ortadan kaldırıyor. 
 
 ### 🏢 Organizatör Paneli (Sahanın Patronu Olun)
 İşletmenizi dijital dünyaya taşıyın ve yönetimi kolaylaştırın:
