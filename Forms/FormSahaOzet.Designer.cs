@@ -15,8 +15,10 @@ namespace SahalarBurada.Forms
         private Label lblAdDeger;
         private Label lblAdresLabel;
         private Label lblAdresDeger;
-        private Label lblKapasiteLabel;
-        private Label lblKapasiteDeger;
+        private Label lblSehirLabel;
+        private Label lblSehirDeger;
+        private Label lblIlceLabel;
+        private Label lblIlceDeger;
         private Label lblFiyatLabel;
         private Label lblFiyatDeger;
         private Label lblGunlerLabel;
@@ -49,8 +51,10 @@ namespace SahalarBurada.Forms
             this.lblAdDeger = new System.Windows.Forms.Label();
             this.lblAdresLabel = new System.Windows.Forms.Label();
             this.lblAdresDeger = new System.Windows.Forms.Label();
-            this.lblKapasiteLabel = new System.Windows.Forms.Label();
-            this.lblKapasiteDeger = new System.Windows.Forms.Label();
+            this.lblSehirLabel = new System.Windows.Forms.Label();
+            this.lblSehirDeger = new System.Windows.Forms.Label();
+            this.lblIlceLabel = new System.Windows.Forms.Label();
+            this.lblIlceDeger = new System.Windows.Forms.Label();
             this.lblFiyatLabel = new System.Windows.Forms.Label();
             this.lblFiyatDeger = new System.Windows.Forms.Label();
             this.lblGunlerLabel = new System.Windows.Forms.Label();
@@ -124,8 +128,10 @@ namespace SahalarBurada.Forms
             this.pnlKart.Controls.Add(this.lblAdDeger);
             this.pnlKart.Controls.Add(this.lblAdresLabel);
             this.pnlKart.Controls.Add(this.lblAdresDeger);
-            this.pnlKart.Controls.Add(this.lblKapasiteLabel);
-            this.pnlKart.Controls.Add(this.lblKapasiteDeger);
+            this.pnlKart.Controls.Add(this.lblSehirLabel);
+            this.pnlKart.Controls.Add(this.lblSehirDeger);
+            this.pnlKart.Controls.Add(this.lblIlceLabel);
+            this.pnlKart.Controls.Add(this.lblIlceDeger);
             this.pnlKart.Controls.Add(this.lblFiyatLabel);
             this.pnlKart.Controls.Add(this.lblFiyatDeger);
             this.pnlKart.Controls.Add(this.lblGunlerLabel);
@@ -191,25 +197,45 @@ namespace SahalarBurada.Forms
             this.lblAdresDeger.TabIndex = 4;
             this.lblAdresDeger.Text = "-";
             // 
-            // lblKapasiteLabel
+            // lblSehirLabel
             // 
-            this.lblKapasiteLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblKapasiteLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.lblKapasiteLabel.Location = new System.Drawing.Point(20, 116);
-            this.lblKapasiteLabel.Name = "lblKapasiteLabel";
-            this.lblKapasiteLabel.Size = new System.Drawing.Size(145, 26);
-            this.lblKapasiteLabel.TabIndex = 5;
-            this.lblKapasiteLabel.Text = "Kapasite:";
+            this.lblSehirLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblSehirLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.lblSehirLabel.Location = new System.Drawing.Point(20, 116);
+            this.lblSehirLabel.Name = "lblSehirLabel";
+            this.lblSehirLabel.Size = new System.Drawing.Size(145, 26);
+            this.lblSehirLabel.TabIndex = 5;
+            this.lblSehirLabel.Text = "Şehir:";
             // 
-            // lblKapasiteDeger
+            // lblSehirDeger
             // 
-            this.lblKapasiteDeger.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblKapasiteDeger.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lblKapasiteDeger.Location = new System.Drawing.Point(170, 116);
-            this.lblKapasiteDeger.Name = "lblKapasiteDeger";
-            this.lblKapasiteDeger.Size = new System.Drawing.Size(430, 26);
-            this.lblKapasiteDeger.TabIndex = 6;
-            this.lblKapasiteDeger.Text = "-";
+            this.lblSehirDeger.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblSehirDeger.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.lblSehirDeger.Location = new System.Drawing.Point(170, 116);
+            this.lblSehirDeger.Name = "lblSehirDeger";
+            this.lblSehirDeger.Size = new System.Drawing.Size(200, 26);
+            this.lblSehirDeger.TabIndex = 6;
+            this.lblSehirDeger.Text = "-";
+            // 
+            // lblIlceLabel
+            // 
+            this.lblIlceLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblIlceLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.lblIlceLabel.Location = new System.Drawing.Point(380, 116);
+            this.lblIlceLabel.Name = "lblIlceLabel";
+            this.lblIlceLabel.Size = new System.Drawing.Size(60, 26);
+            this.lblIlceLabel.TabIndex = 15;
+            this.lblIlceLabel.Text = "İlçe:";
+            // 
+            // lblIlceDeger
+            // 
+            this.lblIlceDeger.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblIlceDeger.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.lblIlceDeger.Location = new System.Drawing.Point(445, 116);
+            this.lblIlceDeger.Name = "lblIlceDeger";
+            this.lblIlceDeger.Size = new System.Drawing.Size(155, 26);
+            this.lblIlceDeger.TabIndex = 16;
+            this.lblIlceDeger.Text = "-";
             // 
             // lblFiyatLabel
             // 

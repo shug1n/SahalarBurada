@@ -46,7 +46,11 @@ namespace SahalarBurada.Forms
             };
             kart.Controls.Add(new Label { Text = "⚽  " + saha.Ad,         Font = UIHelper.FAltBaslik,  ForeColor = UIHelper.CAna,       AutoSize = true, Location = new Point(22, 15) });
             kart.Controls.Add(new Label { Text = "📍  " + saha.Adres,      Font = UIHelper.FNormal,     ForeColor = UIHelper.CMetinAcik, AutoSize = true, Location = new Point(22, 52) });
-            kart.Controls.Add(new Label { Text = $"👥  {saha.Kapasite} kişi", Font = UIHelper.FNormal, ForeColor = UIHelper.CMetin,     AutoSize = true, Location = new Point(22, 82) });
+            string konum = (!string.IsNullOrWhiteSpace(saha.Sehir) || !string.IsNullOrWhiteSpace(saha.Ilce))
+                ? $"🏙  {saha.Sehir}  /  {saha.Ilce}".Trim()
+                : "";
+            if (!string.IsNullOrEmpty(konum))
+                kart.Controls.Add(new Label { Text = konum, Font = UIHelper.FNormal, ForeColor = UIHelper.CMetin, AutoSize = true, Location = new Point(22, 82) });
             kart.Controls.Add(new Label { Text = $"💰  {saha.FiyatSaat:N0} ₺ / saat", Font = new Font("Segoe UI", 11, FontStyle.Bold), ForeColor = UIHelper.CAna, AutoSize = true, Location = new Point(210, 82) });
             if (!string.IsNullOrWhiteSpace(saha.Aciklama))
             {

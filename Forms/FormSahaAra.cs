@@ -17,14 +17,36 @@ namespace SahalarBurada.Forms
 
         private void SetupLogic()
         {
-            this.Shown += (s, e) => lblKullanici.Text = Oturum.GirisYapildi
-                ? $"👤 Hoş geldiniz, {Oturum.AktifKullanici.Ad} {Oturum.AktifKullanici.Soyad}"
-                : "👤 Misafir olarak arama yapıyorsunuz";
+            this.Shown += (s, e) =>
+                lblKullanici.Text = Oturum.GirisYapildi
+                    ? $"👤 Hoş geldiniz, {Oturum.AktifKullanici.Ad} {Oturum.AktifKullanici.Soyad}"
+                    : "👤 Misafir olarak arama yapıyorsunuz";
 
             dtpTarih.MinDate = DateTime.Today;
 
             for (int i = 8; i <= 22; i++) cmbSaat.Items.Add(i.ToString("D2") + ":00");
             cmbSaat.SelectedIndex = 6;
+
+            // İl listesi (“Tümüllü” + alfabetik)
+            cmbSehir.Items.Add("— Tüm Şehirler —");
+            foreach (var il in TurkiyeVerisi.Iller())
+                cmbSehir.Items.Add(il);
+            cmbSehir.SelectedIndex = 0;
+
+            // İl değişince ilçe listesini güncelle
+            cmbSehir.SelectedIndexChanged += (s, e) =>
+            {
+                cmbIlce.Items.Clear();
+                cmbIlce.Items.Add("— Tüm İlçeler —");
+                if (cmbSehir.SelectedIndex > 0)
+                    foreach (var ilce in TurkiyeVerisi.Ilceler(cmbSehir.SelectedItem.ToString()))
+                        cmbIlce.Items.Add(ilce);
+                cmbIlce.SelectedIndex = 0;
+            };
+
+            // İlk yüklemede ilçe listesi
+            cmbIlce.Items.Add("— Tüm İlçeler —");
+            cmbIlce.SelectedIndex = 0;
 
             btnGeri.Click += (s, e) => this.Close();
         }
@@ -36,9 +58,12 @@ namespace SahalarBurada.Forms
             var saat  = cmbSaat.SelectedItem?.ToString();
             if (saat == null) { lblHata.Text = "Lütfen saat seçin."; lblHata.Visible = true; return; }
 
-            var sahalar = SahaServisi.UygunSahalariGetir(tarih, saat);
+            var sehir = cmbSehir.SelectedIndex > 0 ? cmbSehir.SelectedItem?.ToString() : null;
+            var ilce  = cmbIlce.SelectedIndex  > 0 ? cmbIlce.SelectedItem?.ToString()  : null;
+
+            var sahalar = SahaServisi.UygunSahalariGetir(tarih, saat, sehir, ilce);
             if (sahalar.Count == 0)
-            { lblHata.Text = "Seçilen tarih ve saatte müsait saha bulunmamaktadır."; lblHata.Visible = true; return; }
+            { lblHata.Text = "Seçilen kriterlere uygun müsait saha bulunmamaktadır."; lblHata.Visible = true; return; }
 
             var f = new FormSahaListesi(sahalar, tarih, saat);
             this.Hide();

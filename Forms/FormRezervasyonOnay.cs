@@ -23,32 +23,42 @@ namespace SahalarBurada.Forms
         private void SetupLogic()
         {
             string saatSonu = (int.Parse(_saat.Split(':')[0]) + 1).ToString("D2") + ":00";
-            lblSahaDeger.Text = _saha.Ad;
-            lblAdresDeger.Text = _saha.Adres;
-            lblTarihDeger.Text = _tarih.ToString("dd MMMM yyyy, dddd");
-            lblSaatDeger.Text = $"{_saat} – {saatSonu}  (1 saat)";
-            lblFiyatDeger.Text = $"{_saha.FiyatSaat:N0} ₺";
+            lblSahaDeger.Text   = _saha.Ad;
+            lblAdresDeger.Text  = _saha.Adres;
+            lblTarihDeger.Text  = _tarih.ToString("dd MMMM yyyy, dddd");
+            lblSaatDeger.Text   = $"{_saat} – {saatSonu}  (1 saat)";
+            lblFiyatDeger.Text  = $"{_saha.FiyatSaat:N0} ₺  (toplam saha ücreti)";
 
-            int y = 226;
+            // Kişi başı hesap için başlangıç
+            HesaplaKisiBasi();
+
             if (!Oturum.GirisYapildi)
             {
                 pnlMisafir.Visible = true;
-                pnlMisafir.Location = new Point(35, y);
-                y += 176;
+                pnlMisafir.Location = new System.Drawing.Point(35, 310);
             }
             else
             {
                 lblAktifKullanici.Visible = true;
                 lblAktifKullanici.Text = $"👤  {Oturum.AktifKullanici.Ad} {Oturum.AktifKullanici.Soyad} adına rezervasyon yapılacak.";
-                lblAktifKullanici.Location = new Point(35, y);
-                y += 32;
+                lblAktifKullanici.Location = new System.Drawing.Point(35, 310);
             }
 
-            lblHata.Location = new Point(35, y);
-            y += 25;
-            btnGeri.Location = new Point(35, y);
-            btnOnayla.Location = new Point(225, y);
+            lblHata.Location   = new System.Drawing.Point(35, 348);
+            btnGeri.Location   = new System.Drawing.Point(35, 374);
+            btnOnayla.Location = new System.Drawing.Point(225, 374);
         }
+
+        private void HesaplaKisiBasi()
+        {
+            int kisi = (int)nudKisiSayisi.Value;
+            double kisiBasi = _saha.FiyatSaat / kisi;
+            lblKisiBasiLabel.Text = kisi == 1
+                ? "→ Kişi başı: (tek kişi)"
+                : $"→ Kişi başı: {kisiBasi:N0} ₺";
+        }
+
+        private void NudKisiSayisi_ValueChanged(object sender, EventArgs e) => HesaplaKisiBasi();
 
         private void Pnl_PaintBorder(object sender, PaintEventArgs e)
         {
@@ -74,8 +84,23 @@ namespace SahalarBurada.Forms
                 kullaniciId = Oturum.AktifKullanici.Id;
                 misafirAd   = Oturum.AktifKullanici.Ad + " " + Oturum.AktifKullanici.Soyad;
             }
-            SahaServisi.RezervasyonEkle(new Rezervasyon { SahaId = _saha.Id, SahaAdi = _saha.Ad, KullaniciId = kullaniciId, MisafirAd = misafirAd, MisafirTelefon = misafirTelefon, Tarih = _tarih, Saat = _saat, ToplamFiyat = _saha.FiyatSaat });
-            MessageBox.Show($"Rezervasyonunuz başarıyla oluşturuldu!\n\n⚽ Saha:  {_saha.Ad}\n📅 Tarih: {_tarih:dd.MM.yyyy}  {_saat}\n💰 Fiyat: {_saha.FiyatSaat:N0} ₺\n\nİyi maçlar! ⚽", "Rezervasyon Başarılı", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            SahaServisi.RezervasyonEkle(new Rezervasyon
+            {
+                SahaId         = _saha.Id,
+                SahaAdi        = _saha.Ad,
+                KullaniciId    = kullaniciId,
+                MisafirAd      = misafirAd,
+                MisafirTelefon = misafirTelefon,
+                Tarih          = _tarih,
+                Saat           = _saat,
+                ToplamFiyat    = _saha.FiyatSaat
+            });
+            int kisi = (int)nudKisiSayisi.Value;
+            double kisiBasi = _saha.FiyatSaat / kisi;
+            string kisiMesaji = kisi > 1 ? $"  👥 Kişi sayısı: {kisi}  →  Kişi başı: {kisiBasi:N0} ₺\n" : "";
+            MessageBox.Show(
+                $"Rezervasyonunuz başarıyla oluşturuldu!\n\n⚽ Saha:  {_saha.Ad}\n📅 Tarih: {_tarih:dd.MM.yyyy}  {_saat}\n💰 Toplam: {_saha.FiyatSaat:N0} ₺\n{kisiMesaji}\nİyi maçlar! ⚽",
+                "Rezervasyon Başarılı", MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.Close();
         }

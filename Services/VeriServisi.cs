@@ -77,8 +77,8 @@ namespace SahalarBurada.Services
                     new HaliSaha
                     {
                         Id = "saha-001", OrganizatorId = "org-001",
-                        Ad = "Yeşil Çim Halı Saha 1", Adres = "Kadıköy, İstanbul",
-                        Kapasite = 14, FiyatSaat = 350.0,
+                        Ad = "Yeşil Çim Halı Saha 1", Sehir = "İstanbul", Ilce = "Kadıköy", Adres = "Kadıköy, İstanbul",
+                        FiyatSaat = 350.0,
                         MüsaitGunler = gunler, MüsaitSaatler = saatler,
                         Aciklama = "Profesyonel halı zemin, soyunma odası ve duş. Kadıköy merkeze 5 dk mesafede.",
                         EklenmeTarihi = DateTime.Now
@@ -86,8 +86,8 @@ namespace SahalarBurada.Services
                     new HaliSaha
                     {
                         Id = "saha-002", OrganizatorId = "org-001",
-                        Ad = "Spor Arena Kapalı Saha", Adres = "Beşiktaş, İstanbul",
-                        Kapasite = 12, FiyatSaat = 420.0,
+                        Ad = "Spor Arena Kapalı Saha", Sehir = "İstanbul", Ilce = "Beşiktaş", Adres = "Beşiktaş, İstanbul",
+                        FiyatSaat = 420.0,
                         MüsaitGunler = gunler, MüsaitSaatler = saatler,
                         Aciklama = "Kapalı alan, iklim kontrollü. Ücretsiz otopark. Modern soyunma odaları.",
                         EklenmeTarihi = DateTime.Now
@@ -95,8 +95,8 @@ namespace SahalarBurada.Services
                     new HaliSaha
                     {
                         Id = "saha-003", OrganizatorId = "org-001",
-                        Ad = "Meydan Spor Tesisi Açık Saha", Adres = "Üsküdar, İstanbul",
-                        Kapasite = 16, FiyatSaat = 300.0,
+                        Ad = "Meydan Spor Tesisi Açık Saha", Sehir = "İstanbul", Ilce = "Üsküdar", Adres = "Üsküdar, İstanbul",
+                        FiyatSaat = 300.0,
                         MüsaitGunler = gunler, MüsaitSaatler = saatler,
                         Aciklama = "Geniş açık saha, tribün alanı, kafeterya. Aile dostu ortam, otopark mevcut.",
                         EklenmeTarihi = DateTime.Now

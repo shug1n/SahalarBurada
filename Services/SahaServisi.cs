@@ -17,11 +17,13 @@ namespace SahalarBurada.Services
             => TumSahalariGetir().Where(s => s.OrganizatorId == orgId).ToList();
 
         /// <summary>
-        /// Belirtilen tarih ve saatte müsait sahaları getirir (çakışma kontrolü dahil).
+        /// Belirtilen tarih ve saatte müsait sahaları getirir (çakışma + şehir/ilçe filtresi dahil).
+        /// sehir veya ilce boş/null geçilirse o filtre uygulanmaz.
         /// </summary>
-        public static List<HaliSaha> UygunSahalariGetir(DateTime tarih, string saat)
+        public static List<HaliSaha> UygunSahalariGetir(DateTime tarih, string saat,
+            string sehir = null, string ilce = null)
         {
-            var tumSahalar   = TumSahalariGetir();
+            var tumSahalar    = TumSahalariGetir();
             var rezervasyonlar = VeriServisi.Yukle<Rezervasyon>(RDosya);
             var gunAdi = TurkceGunAdi(tarih.DayOfWeek);
 
@@ -31,7 +33,15 @@ namespace SahalarBurada.Services
                 if (!saha.MüsaitGunler.Contains(gunAdi))   continue;
                 if (!saha.MüsaitSaatler.Contains(saat))    continue;
 
-                // Çakışma kontrolü
+                // Şehir filtresi
+                if (!string.IsNullOrWhiteSpace(sehir) &&
+                    !string.Equals(saha.Sehir, sehir, StringComparison.OrdinalIgnoreCase)) continue;
+
+                // İlçe filtresi
+                if (!string.IsNullOrWhiteSpace(ilce) &&
+                    !string.Equals(saha.Ilce, ilce, StringComparison.OrdinalIgnoreCase)) continue;
+
+                // Çakışma kontrolü: aynı saha, aynı tarih, aynı saat → dolu
                 bool cakismaVar = rezervasyonlar.Any(r =>
                     r.SahaId == saha.Id &&
                     r.Tarih.Date == tarih.Date &&

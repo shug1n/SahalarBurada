@@ -13,8 +13,10 @@ namespace SahalarBurada.Forms
         private TextBox txtAd;
         private Label lblAdres;
         private TextBox txtAdres;
-        private Label lblKapasite;
-        private NumericUpDown nudKapasite;
+        private Label lblSehir;
+        private ComboBox cmbSehir;
+        private Label lblIlce;
+        private ComboBox cmbIlce;
         private Label lblFiyat;
         private NumericUpDown nudFiyat;
         private Label lblGunler;
@@ -45,8 +47,10 @@ namespace SahalarBurada.Forms
             this.txtAd = new System.Windows.Forms.TextBox();
             this.lblAdres = new System.Windows.Forms.Label();
             this.txtAdres = new System.Windows.Forms.TextBox();
-            this.lblKapasite = new System.Windows.Forms.Label();
-            this.nudKapasite = new System.Windows.Forms.NumericUpDown();
+            this.lblSehir = new System.Windows.Forms.Label();
+            this.cmbSehir = new System.Windows.Forms.ComboBox();
+            this.lblIlce = new System.Windows.Forms.Label();
+            this.cmbIlce = new System.Windows.Forms.ComboBox();
             this.lblFiyat = new System.Windows.Forms.Label();
             this.nudFiyat = new System.Windows.Forms.NumericUpDown();
             this.lblGunler = new System.Windows.Forms.Label();
@@ -60,7 +64,6 @@ namespace SahalarBurada.Forms
             this.btnOzet = new System.Windows.Forms.Button();
             this.pnlHeader.SuspendLayout();
             this.pnlScroll.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudKapasite)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudFiyat)).BeginInit();
             this.SuspendLayout();
             // 
@@ -107,8 +110,10 @@ namespace SahalarBurada.Forms
             this.pnlScroll.Controls.Add(this.txtAd);
             this.pnlScroll.Controls.Add(this.lblAdres);
             this.pnlScroll.Controls.Add(this.txtAdres);
-            this.pnlScroll.Controls.Add(this.lblKapasite);
-            this.pnlScroll.Controls.Add(this.nudKapasite);
+            this.pnlScroll.Controls.Add(this.lblSehir);
+            this.pnlScroll.Controls.Add(this.cmbSehir);
+            this.pnlScroll.Controls.Add(this.lblIlce);
+            this.pnlScroll.Controls.Add(this.cmbIlce);
             this.pnlScroll.Controls.Add(this.lblFiyat);
             this.pnlScroll.Controls.Add(this.nudFiyat);
             this.pnlScroll.Controls.Add(this.lblGunler);
@@ -170,49 +175,69 @@ namespace SahalarBurada.Forms
             this.txtAdres.Size = new System.Drawing.Size(636, 25);
             this.txtAdres.TabIndex = 3;
             // 
-            // lblKapasite
+            // lblSehir
             // 
-            this.lblKapasite.AutoSize = true;
-            this.lblKapasite.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblKapasite.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.lblKapasite.Location = new System.Drawing.Point(32, 162);
-            this.lblKapasite.Name = "lblKapasite";
-            this.lblKapasite.Size = new System.Drawing.Size(127, 19);
-            this.lblKapasite.TabIndex = 4;
-            this.lblKapasite.Text = "Kapasite (kişi): *";
+            this.lblSehir.AutoSize = true;
+            this.lblSehir.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblSehir.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.lblSehir.Location = new System.Drawing.Point(32, 162);
+            this.lblSehir.Name = "lblSehir";
+            this.lblSehir.Size = new System.Drawing.Size(80, 19);
+            this.lblSehir.TabIndex = 4;
+            this.lblSehir.Text = "Şehir: *";
             // 
-            // nudKapasite
+            // cmbSehir
             // 
-            this.nudKapasite.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.nudKapasite.Location = new System.Drawing.Point(32, 188);
-            this.nudKapasite.Maximum = new decimal(new int[] { 30, 0, 0, 0 });
-            this.nudKapasite.Minimum = new decimal(new int[] { 2, 0, 0, 0 });
-            this.nudKapasite.Name = "nudKapasite";
-            this.nudKapasite.Size = new System.Drawing.Size(295, 25);
-            this.nudKapasite.TabIndex = 5;
-            this.nudKapasite.Value = new decimal(new int[] { 14, 0, 0, 0 });
+            this.cmbSehir.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbSehir.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.cmbSehir.FormattingEnabled = true;
+            this.cmbSehir.Location = new System.Drawing.Point(32, 188);
+            this.cmbSehir.Name = "cmbSehir";
+            this.cmbSehir.Size = new System.Drawing.Size(295, 25);
+            this.cmbSehir.TabIndex = 5;
+            // 
+            // lblIlce
+            // 
+            this.lblIlce.AutoSize = true;
+            this.lblIlce.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblIlce.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.lblIlce.Location = new System.Drawing.Point(349, 162);
+            this.lblIlce.Name = "lblIlce";
+            this.lblIlce.Size = new System.Drawing.Size(67, 19);
+            this.lblIlce.TabIndex = 6;
+            this.lblIlce.Text = "İlçe: *";
+            // 
+            // cmbIlce
+            // 
+            this.cmbIlce.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbIlce.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.cmbIlce.FormattingEnabled = true;
+            this.cmbIlce.Location = new System.Drawing.Point(349, 188);
+            this.cmbIlce.Name = "cmbIlce";
+            this.cmbIlce.Size = new System.Drawing.Size(295, 25);
+            this.cmbIlce.TabIndex = 7;
             // 
             // lblFiyat
             // 
             this.lblFiyat.AutoSize = true;
             this.lblFiyat.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblFiyat.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.lblFiyat.Location = new System.Drawing.Point(349, 162);
+            this.lblFiyat.Location = new System.Drawing.Point(32, 230);
             this.lblFiyat.Name = "lblFiyat";
-            this.lblFiyat.Size = new System.Drawing.Size(124, 19);
-            this.lblFiyat.TabIndex = 6;
-            this.lblFiyat.Text = "Fiyat / Saat (₺): *";
+            this.lblFiyat.Size = new System.Drawing.Size(152, 19);
+            this.lblFiyat.TabIndex = 8;
+            this.lblFiyat.Text = "Saatlik Fiyat (₺): *";
             // 
             // nudFiyat
             // 
             this.nudFiyat.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.nudFiyat.Increment = new decimal(new int[] { 50, 0, 0, 0 });
-            this.nudFiyat.Location = new System.Drawing.Point(349, 188);
+            this.nudFiyat.Location = new System.Drawing.Point(32, 256);
             this.nudFiyat.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
             this.nudFiyat.Minimum = new decimal(new int[] { 50, 0, 0, 0 });
             this.nudFiyat.Name = "nudFiyat";
-            this.nudFiyat.Size = new System.Drawing.Size(295, 25);
-            this.nudFiyat.TabIndex = 7;
+            this.nudFiyat.Size = new System.Drawing.Size(612, 25);
+            this.nudFiyat.TabIndex = 9;
             this.nudFiyat.Value = new decimal(new int[] { 300, 0, 0, 0 });
             // 
             // lblGunler
@@ -220,10 +245,10 @@ namespace SahalarBurada.Forms
             this.lblGunler.AutoSize = true;
             this.lblGunler.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblGunler.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.lblGunler.Location = new System.Drawing.Point(32, 237);
+            this.lblGunler.Location = new System.Drawing.Point(32, 300);
             this.lblGunler.Name = "lblGunler";
             this.lblGunler.Size = new System.Drawing.Size(117, 19);
-            this.lblGunler.TabIndex = 8;
+            this.lblGunler.TabIndex = 10;
             this.lblGunler.Text = "Müsait Günler: *";
             // 
             // clbGunler
@@ -232,20 +257,20 @@ namespace SahalarBurada.Forms
             this.clbGunler.CheckOnClick = true;
             this.clbGunler.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.clbGunler.FormattingEnabled = true;
-            this.clbGunler.Location = new System.Drawing.Point(32, 263);
+            this.clbGunler.Location = new System.Drawing.Point(32, 326);
             this.clbGunler.Name = "clbGunler";
             this.clbGunler.Size = new System.Drawing.Size(295, 148);
-            this.clbGunler.TabIndex = 9;
+            this.clbGunler.TabIndex = 11;
             // 
             // lblSaatler
             // 
             this.lblSaatler.AutoSize = true;
             this.lblSaatler.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblSaatler.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.lblSaatler.Location = new System.Drawing.Point(349, 237);
+            this.lblSaatler.Location = new System.Drawing.Point(349, 300);
             this.lblSaatler.Name = "lblSaatler";
             this.lblSaatler.Size = new System.Drawing.Size(119, 19);
-            this.lblSaatler.TabIndex = 10;
+            this.lblSaatler.TabIndex = 12;
             this.lblSaatler.Text = "Müsait Saatler: *";
             // 
             // clbSaatler
@@ -254,20 +279,20 @@ namespace SahalarBurada.Forms
             this.clbSaatler.CheckOnClick = true;
             this.clbSaatler.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.clbSaatler.FormattingEnabled = true;
-            this.clbSaatler.Location = new System.Drawing.Point(349, 263);
+            this.clbSaatler.Location = new System.Drawing.Point(349, 326);
             this.clbSaatler.Name = "clbSaatler";
             this.clbSaatler.Size = new System.Drawing.Size(295, 148);
-            this.clbSaatler.TabIndex = 11;
+            this.clbSaatler.TabIndex = 13;
             // 
             // lblAciklama
             // 
             this.lblAciklama.AutoSize = true;
             this.lblAciklama.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblAciklama.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.lblAciklama.Location = new System.Drawing.Point(32, 432);
+            this.lblAciklama.Location = new System.Drawing.Point(32, 495);
             this.lblAciklama.Name = "lblAciklama";
             this.lblAciklama.Size = new System.Drawing.Size(75, 19);
-            this.lblAciklama.TabIndex = 12;
+            this.lblAciklama.TabIndex = 14;
             this.lblAciklama.Text = "Açıklama:";
             // 
             // txtAciklama
@@ -275,22 +300,22 @@ namespace SahalarBurada.Forms
             this.txtAciklama.BackColor = System.Drawing.Color.White;
             this.txtAciklama.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtAciklama.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtAciklama.Location = new System.Drawing.Point(32, 458);
+            this.txtAciklama.Location = new System.Drawing.Point(32, 521);
             this.txtAciklama.Multiline = true;
             this.txtAciklama.Name = "txtAciklama";
             this.txtAciklama.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtAciklama.Size = new System.Drawing.Size(636, 80);
-            this.txtAciklama.TabIndex = 13;
+            this.txtAciklama.TabIndex = 15;
             // 
             // lblHata
             // 
             this.lblHata.AutoSize = true;
             this.lblHata.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblHata.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(198)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.lblHata.Location = new System.Drawing.Point(32, 554);
+            this.lblHata.Location = new System.Drawing.Point(32, 615);
             this.lblHata.Name = "lblHata";
             this.lblHata.Size = new System.Drawing.Size(33, 15);
-            this.lblHata.TabIndex = 14;
+            this.lblHata.TabIndex = 16;
             this.lblHata.Text = "Hata";
             this.lblHata.Visible = false;
             // 
@@ -303,10 +328,10 @@ namespace SahalarBurada.Forms
             this.btnGeri.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGeri.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnGeri.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(94)))), ((int)(((byte)(32)))));
-            this.btnGeri.Location = new System.Drawing.Point(32, 580);
+            this.btnGeri.Location = new System.Drawing.Point(32, 641);
             this.btnGeri.Name = "btnGeri";
             this.btnGeri.Size = new System.Drawing.Size(145, 44);
-            this.btnGeri.TabIndex = 15;
+            this.btnGeri.TabIndex = 17;
             this.btnGeri.Text = "← Geri";
             this.btnGeri.UseVisualStyleBackColor = false;
             this.btnGeri.Click += new System.EventHandler(this.BtnGeri_Click);
@@ -320,10 +345,10 @@ namespace SahalarBurada.Forms
             this.btnOzet.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOzet.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnOzet.ForeColor = System.Drawing.Color.White;
-            this.btnOzet.Location = new System.Drawing.Point(192, 580);
+            this.btnOzet.Location = new System.Drawing.Point(192, 641);
             this.btnOzet.Name = "btnOzet";
             this.btnOzet.Size = new System.Drawing.Size(300, 44);
-            this.btnOzet.TabIndex = 16;
+            this.btnOzet.TabIndex = 18;
             this.btnOzet.Text = "📄  Form Özetini Görüntüle";
             this.btnOzet.UseVisualStyleBackColor = false;
             this.btnOzet.Click += new System.EventHandler(this.BtnOzet_Click);
@@ -344,7 +369,6 @@ namespace SahalarBurada.Forms
             this.pnlHeader.PerformLayout();
             this.pnlScroll.ResumeLayout(false);
             this.pnlScroll.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudKapasite)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudFiyat)).EndInit();
             this.ResumeLayout(false);
 

@@ -37,7 +37,7 @@ namespace SahalarBurada.Forms
             var sahalar = SahaServisi.OrganizatorSahalari(Oturum.AktifOrganizator.Id);
             dgvSahalar.Rows.Clear();
             foreach (var s in sahalar)
-                dgvSahalar.Rows.Add(s.Ad, s.Adres, s.Kapasite + " kişi", s.FiyatSaat.ToString("N0") + " ₺", s.EklenmeTarihi.ToString("dd.MM.yyyy"));
+                dgvSahalar.Rows.Add(s.Ad, s.Adres, (s.Sehir + " / " + s.Ilce).Trim(' ', '/'), s.FiyatSaat.ToString("N0") + " ₺", s.EklenmeTarihi.ToString("dd.MM.yyyy"));
             lblSahaCount.Text = sahalar.Count > 0
                 ? $"Toplam {sahalar.Count} saha kayıtlı"
                 : "Henüz saha eklenmemiş. 'Yeni Saha Ekle' butonu ile başlayın.";

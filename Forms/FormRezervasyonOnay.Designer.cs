@@ -35,6 +35,9 @@ namespace SahalarBurada.Forms
         private Label lblHata;
         private Button btnGeri;
         private Button btnOnayla;
+        private Label lblKisiSayisiLabel;
+        private NumericUpDown nudKisiSayisi;
+        private Label lblKisiBasiLabel;
 
         private System.ComponentModel.IContainer components = null;
 
@@ -73,6 +76,10 @@ namespace SahalarBurada.Forms
             this.lblHata = new System.Windows.Forms.Label();
             this.btnGeri = new System.Windows.Forms.Button();
             this.btnOnayla = new System.Windows.Forms.Button();
+            this.lblKisiSayisiLabel = new System.Windows.Forms.Label();
+            this.nudKisiSayisi = new System.Windows.Forms.NumericUpDown();
+            this.lblKisiBasiLabel = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.nudKisiSayisi)).BeginInit();
             this.pnlHeader.SuspendLayout();
             this.pnlScroll.SuspendLayout();
             this.pnlDetay.SuspendLayout();
@@ -119,6 +126,9 @@ namespace SahalarBurada.Forms
             this.pnlScroll.AutoScroll = true;
             this.pnlScroll.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(245)))), ((int)(((byte)(240)))));
             this.pnlScroll.Controls.Add(this.pnlDetay);
+            this.pnlScroll.Controls.Add(this.lblKisiSayisiLabel);
+            this.pnlScroll.Controls.Add(this.nudKisiSayisi);
+            this.pnlScroll.Controls.Add(this.lblKisiBasiLabel);
             this.pnlScroll.Controls.Add(this.pnlMisafir);
             this.pnlScroll.Controls.Add(this.lblAktifKullanici);
             this.pnlScroll.Controls.Add(this.lblHata);
@@ -275,7 +285,7 @@ namespace SahalarBurada.Forms
             this.pnlMisafir.Controls.Add(this.txtMisafirAd);
             this.pnlMisafir.Controls.Add(this.lblMisafirTelLabel);
             this.pnlMisafir.Controls.Add(this.txtMisafirTelefon);
-            this.pnlMisafir.Location = new System.Drawing.Point(35, 226);
+            this.pnlMisafir.Location = new System.Drawing.Point(35, 310);
             this.pnlMisafir.Name = "pnlMisafir";
             this.pnlMisafir.Size = new System.Drawing.Size(568, 160);
             this.pnlMisafir.TabIndex = 1;
@@ -348,19 +358,51 @@ namespace SahalarBurada.Forms
             this.lblAktifKullanici.AutoSize = true;
             this.lblAktifKullanici.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblAktifKullanici.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.lblAktifKullanici.Location = new System.Drawing.Point(35, 226);
+            this.lblAktifKullanici.Location = new System.Drawing.Point(35, 310);
             this.lblAktifKullanici.Name = "lblAktifKullanici";
             this.lblAktifKullanici.Size = new System.Drawing.Size(126, 19);
             this.lblAktifKullanici.TabIndex = 2;
             this.lblAktifKullanici.Text = "👤 Kullanıcı adına...";
             this.lblAktifKullanici.Visible = false;
             // 
+            // lblKisiSayisiLabel
+            // 
+            this.lblKisiSayisiLabel.AutoSize = true;
+            this.lblKisiSayisiLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblKisiSayisiLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.lblKisiSayisiLabel.Location = new System.Drawing.Point(35, 220);
+            this.lblKisiSayisiLabel.Name = "lblKisiSayisiLabel";
+            this.lblKisiSayisiLabel.TabIndex = 6;
+            this.lblKisiSayisiLabel.Text = "👥 Kaç kişi katılacak?";
+            // 
+            // nudKisiSayisi
+            // 
+            this.nudKisiSayisi.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.nudKisiSayisi.Location = new System.Drawing.Point(35, 246);
+            this.nudKisiSayisi.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
+            this.nudKisiSayisi.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
+            this.nudKisiSayisi.Name = "nudKisiSayisi";
+            this.nudKisiSayisi.Size = new System.Drawing.Size(120, 26);
+            this.nudKisiSayisi.TabIndex = 7;
+            this.nudKisiSayisi.Value = new decimal(new int[] { 1, 0, 0, 0 });
+            this.nudKisiSayisi.ValueChanged += new System.EventHandler(this.NudKisiSayisi_ValueChanged);
+            // 
+            // lblKisiBasiLabel
+            // 
+            this.lblKisiBasiLabel.AutoSize = true;
+            this.lblKisiBasiLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblKisiBasiLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(94)))), ((int)(((byte)(32)))));
+            this.lblKisiBasiLabel.Location = new System.Drawing.Point(170, 250);
+            this.lblKisiBasiLabel.Name = "lblKisiBasiLabel";
+            this.lblKisiBasiLabel.TabIndex = 8;
+            this.lblKisiBasiLabel.Text = "→ Kişi başı: — ₺";
+            // 
             // lblHata
             // 
             this.lblHata.AutoSize = true;
             this.lblHata.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblHata.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(198)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.lblHata.Location = new System.Drawing.Point(35, 260);
+            this.lblHata.Location = new System.Drawing.Point(35, 348);
             this.lblHata.Name = "lblHata";
             this.lblHata.Size = new System.Drawing.Size(33, 15);
             this.lblHata.TabIndex = 3;
@@ -376,7 +418,7 @@ namespace SahalarBurada.Forms
             this.btnGeri.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGeri.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnGeri.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(94)))), ((int)(((byte)(32)))));
-            this.btnGeri.Location = new System.Drawing.Point(35, 290);
+            this.btnGeri.Location = new System.Drawing.Point(35, 374);
             this.btnGeri.Name = "btnGeri";
             this.btnGeri.Size = new System.Drawing.Size(170, 46);
             this.btnGeri.TabIndex = 4;
@@ -393,7 +435,7 @@ namespace SahalarBurada.Forms
             this.btnOnayla.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOnayla.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnOnayla.ForeColor = System.Drawing.Color.White;
-            this.btnOnayla.Location = new System.Drawing.Point(225, 290);
+            this.btnOnayla.Location = new System.Drawing.Point(225, 374);
             this.btnOnayla.Name = "btnOnayla";
             this.btnOnayla.Size = new System.Drawing.Size(270, 46);
             this.btnOnayla.TabIndex = 5;
@@ -404,7 +446,7 @@ namespace SahalarBurada.Forms
             // FormRezervasyonOnay
             // 
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(245)))), ((int)(((byte)(240)))));
-            this.ClientSize = new System.Drawing.Size(640, 600);
+            this.ClientSize = new System.Drawing.Size(640, 690);
             this.Controls.Add(this.pnlScroll);
             this.Controls.Add(this.pnlHeader);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
@@ -421,6 +463,7 @@ namespace SahalarBurada.Forms
             this.pnlDetay.PerformLayout();
             this.pnlMisafir.ResumeLayout(false);
             this.pnlMisafir.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudKisiSayisi)).EndInit();
             this.ResumeLayout(false);
 
         }

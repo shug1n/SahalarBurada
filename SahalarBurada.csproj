@@ -59,6 +59,7 @@
     <Compile Include="Helpers\SifreHelper.cs" />
     <Compile Include="Helpers\UIHelper.cs" />
     <Compile Include="Helpers\Oturum.cs" />
+    <Compile Include="Helpers\TurkiyeVerisi.cs" />
     <!-- Services -->
     <Compile Include="Services\VeriServisi.cs" />
     <Compile Include="Services\KullaniciServisi.cs" />
