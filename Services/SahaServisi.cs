@@ -7,11 +7,8 @@ namespace SahalarBurada.Services
 {
     public static class SahaServisi
     {
-        private const string SDosya = "sahalar.json";
-        private const string RDosya = "rezervasyonlar.json";
-
         public static List<HaliSaha> TumSahalariGetir()
-            => VeriServisi.Yukle<HaliSaha>(SDosya);
+            => DatabaseServisi.GetAllFields();
 
         public static List<HaliSaha> OrganizatorSahalari(string orgId)
             => TumSahalariGetir().Where(s => s.OrganizatorId == orgId).ToList();
@@ -24,7 +21,7 @@ namespace SahalarBurada.Services
             string sehir = null, string ilce = null)
         {
             var tumSahalar    = TumSahalariGetir();
-            var rezervasyonlar = VeriServisi.Yukle<Rezervasyon>(RDosya);
+            var rezervasyonlar = DatabaseServisi.GetAllReservations();
             var gunAdi = TurkceGunAdi(tarih.DayOfWeek);
 
             var uygun = new List<HaliSaha>();
@@ -54,16 +51,14 @@ namespace SahalarBurada.Services
 
         public static void SahaEkle(HaliSaha saha)
         {
-            var liste = TumSahalariGetir();
             saha.Id = Guid.NewGuid().ToString();
             saha.EklenmeTarihi = DateTime.Now;
-            liste.Add(saha);
-            VeriServisi.Kaydet(SDosya, liste);
+            DatabaseServisi.InsertField(saha);
         }
 
         public static bool RezervasyonEkle(Rezervasyon r)
         {
-            var liste = VeriServisi.Yukle<Rezervasyon>(RDosya);
+            var liste = DatabaseServisi.GetAllReservations();
 
             // Çakışma kontrolü: aynı saha, aynı tarih, aynı saat → dolu
             bool cakismaVar = liste.Any(exist =>
@@ -78,13 +73,12 @@ namespace SahalarBurada.Services
 
             r.Id = Guid.NewGuid().ToString();
             r.OlusturmaTarihi = DateTime.Now;
-            liste.Add(r);
-            VeriServisi.Kaydet(RDosya, liste);
+            DatabaseServisi.InsertReservation(r);
             return true;
         }
 
         public static List<Rezervasyon> TumRezervasyonlar()
-            => VeriServisi.Yukle<Rezervasyon>(RDosya);
+            => DatabaseServisi.GetAllReservations();
 
         private static string TurkceGunAdi(DayOfWeek gun)
         {

@@ -11,6 +11,7 @@ namespace SahalarBurada
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             SahalarBurada.Helpers.TrayManager.Initialize();
+            SahalarBurada.Services.DatabaseServisi.InitializeDatabase();
             Application.Run(new Forms.FormAnaEkran());
         }
     }
