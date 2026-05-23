@@ -36,17 +36,19 @@ namespace SahalarBurada.Forms
             {
                 pnlMisafir.Visible = true;
                 pnlMisafir.Location = new System.Drawing.Point(35, 310);
+                lblHata.Location   = new System.Drawing.Point(35, 485);
+                btnGeri.Location   = new System.Drawing.Point(35, 510);
+                btnOnayla.Location = new System.Drawing.Point(225, 510);
             }
             else
             {
                 lblAktifKullanici.Visible = true;
                 lblAktifKullanici.Text = $"👤  {Oturum.AktifKullanici.Ad} {Oturum.AktifKullanici.Soyad} adına rezervasyon yapılacak.";
                 lblAktifKullanici.Location = new System.Drawing.Point(35, 310);
+                lblHata.Location   = new System.Drawing.Point(35, 348);
+                btnGeri.Location   = new System.Drawing.Point(35, 374);
+                btnOnayla.Location = new System.Drawing.Point(225, 374);
             }
-
-            lblHata.Location   = new System.Drawing.Point(35, 348);
-            btnGeri.Location   = new System.Drawing.Point(35, 374);
-            btnOnayla.Location = new System.Drawing.Point(225, 374);
         }
 
         private void HesaplaKisiBasi()
@@ -84,7 +86,7 @@ namespace SahalarBurada.Forms
                 kullaniciId = Oturum.AktifKullanici.Id;
                 misafirAd   = Oturum.AktifKullanici.Ad + " " + Oturum.AktifKullanici.Soyad;
             }
-            SahaServisi.RezervasyonEkle(new Rezervasyon
+            bool basarili = SahaServisi.RezervasyonEkle(new Rezervasyon
             {
                 SahaId         = _saha.Id,
                 SahaAdi        = _saha.Ad,
@@ -95,6 +97,13 @@ namespace SahalarBurada.Forms
                 Saat           = _saat,
                 ToplamFiyat    = _saha.FiyatSaat
             });
+
+            if (!basarili)
+            {
+                lblHata.Text = "Bu saha için seçilen tarih ve saatte başka bir rezervasyon yapılmıştır. Lütfen başka bir saat seçiniz.";
+                lblHata.Visible = true;
+                return;
+            }
             int kisi = (int)nudKisiSayisi.Value;
             double kisiBasi = _saha.FiyatSaat / kisi;
             string kisiMesaji = kisi > 1 ? $"  👥 Kişi sayısı: {kisi}  →  Kişi başı: {kisiBasi:N0} ₺\n" : "";

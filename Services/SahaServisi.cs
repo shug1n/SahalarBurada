@@ -44,7 +44,7 @@ namespace SahalarBurada.Services
                 // Çakışma kontrolü: aynı saha, aynı tarih, aynı saat → dolu
                 bool cakismaVar = rezervasyonlar.Any(r =>
                     r.SahaId == saha.Id &&
-                    r.Tarih.Date == tarih.Date &&
+                    r.Tarih.ToLocalTime().Date == tarih.ToLocalTime().Date &&
                     r.Saat == saat);
 
                 if (!cakismaVar) uygun.Add(saha);
@@ -61,13 +61,26 @@ namespace SahalarBurada.Services
             VeriServisi.Kaydet(SDosya, liste);
         }
 
-        public static void RezervasyonEkle(Rezervasyon r)
+        public static bool RezervasyonEkle(Rezervasyon r)
         {
             var liste = VeriServisi.Yukle<Rezervasyon>(RDosya);
+
+            // Çakışma kontrolü: aynı saha, aynı tarih, aynı saat → dolu
+            bool cakismaVar = liste.Any(exist =>
+                exist.SahaId == r.SahaId &&
+                exist.Tarih.ToLocalTime().Date == r.Tarih.ToLocalTime().Date &&
+                exist.Saat == r.Saat);
+
+            if (cakismaVar)
+            {
+                return false;
+            }
+
             r.Id = Guid.NewGuid().ToString();
             r.OlusturmaTarihi = DateTime.Now;
             liste.Add(r);
             VeriServisi.Kaydet(RDosya, liste);
+            return true;
         }
 
         public static List<Rezervasyon> TumRezervasyonlar()
