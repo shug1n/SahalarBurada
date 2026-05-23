@@ -6,7 +6,7 @@ using SahalarBurada.Services;
 
 namespace SahalarBurada.Forms
 {
-    public partial class FormOrganizatorGiris : Form
+    public partial class FormOrganizatorGiris : BaseChildForm
     {
 
         public FormOrganizatorGiris()
@@ -16,7 +16,7 @@ namespace SahalarBurada.Forms
 
         private void btnTabGiris_Click(object sender, EventArgs e) => TabGoster(true);
         private void btnTabKayit_Click(object sender, EventArgs e) => TabGoster(false);
-        private void BtnGeri_Click(object sender, EventArgs e) => this.Close();
+        private void BtnGeri_Click(object sender, EventArgs e) { IsBackButtonClicked = true; this.Close(); }
 
         private void pnlTabBar_Paint(object sender, PaintEventArgs e)
         {

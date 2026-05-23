@@ -6,7 +6,7 @@ using SahalarBurada.Services;
 
 namespace SahalarBurada.Forms
 {
-    public partial class FormSahaAra : Form
+    public partial class FormSahaAra : BaseChildForm
     {
 
         public FormSahaAra()
@@ -48,7 +48,7 @@ namespace SahalarBurada.Forms
             cmbIlce.Items.Add("— Tüm İlçeler —");
             cmbIlce.SelectedIndex = 0;
 
-            btnGeri.Click += (s, e) => this.Close();
+            btnGeri.Click += (s, e) => { IsBackButtonClicked = true; this.Close(); };
         }
 
         private void BtnListele_Click(object sender, EventArgs e)
@@ -70,7 +70,7 @@ namespace SahalarBurada.Forms
             f.FormClosed += (s2, e2) =>
             {
                 if (f.DialogResult == System.Windows.Forms.DialogResult.OK)
-                { this.DialogResult = System.Windows.Forms.DialogResult.OK; this.Close(); }
+                { this.DialogResult = System.Windows.Forms.DialogResult.OK; this.IsBackButtonClicked = true; this.Close(); }
                 else this.Show();
             };
             f.Show();

@@ -7,7 +7,7 @@ using SahalarBurada.Models;
 
 namespace SahalarBurada.Forms
 {
-    public partial class FormSahaEkle : Form
+    public partial class FormSahaEkle : BaseChildForm
     {
 
         public FormSahaEkle()
@@ -40,7 +40,7 @@ namespace SahalarBurada.Forms
             };
         }
 
-        private void BtnGeri_Click(object sender, EventArgs e) => this.Close();
+        private void BtnGeri_Click(object sender, EventArgs e) { IsBackButtonClicked = true; this.Close(); }
 
         private void BtnOzet_Click(object sender, EventArgs e)
         {

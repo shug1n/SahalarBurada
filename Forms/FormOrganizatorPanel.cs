@@ -6,7 +6,7 @@ using SahalarBurada.Services;
 
 namespace SahalarBurada.Forms
 {
-    public partial class FormOrganizatorPanel : Form
+    public partial class FormOrganizatorPanel : BaseChildForm
     {
 
         public FormOrganizatorPanel()
@@ -30,7 +30,7 @@ namespace SahalarBurada.Forms
         }
 
         private void BtnYenile_Click(object sender, EventArgs e) => SahalariYukle();
-        private void BtnCikis_Click(object sender, EventArgs e) { Oturum.CikisYap(); this.Close(); }
+        private void BtnCikis_Click(object sender, EventArgs e) { Oturum.CikisYap(); IsBackButtonClicked = true; this.Close(); }
 
         private void SahalariYukle()
         {

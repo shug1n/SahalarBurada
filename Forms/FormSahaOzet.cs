@@ -7,7 +7,7 @@ using SahalarBurada.Services;
 
 namespace SahalarBurada.Forms
 {
-    public partial class FormSahaOzet : Form
+    public partial class FormSahaOzet : BaseChildForm
     {
         private readonly HaliSaha _saha;
 
@@ -37,7 +37,7 @@ namespace SahalarBurada.Forms
             e.Graphics.FillRectangle(new SolidBrush(UIHelper.CVurgu), 0, 0, 6, p.Height);
         }
 
-        private void BtnDuzenle_Click(object sender, EventArgs e) => this.Close();
+        private void BtnDuzenle_Click(object sender, EventArgs e) { IsBackButtonClicked = true; this.Close(); }
 
         private void BtnKaydet_Click(object sender, EventArgs e)
         {

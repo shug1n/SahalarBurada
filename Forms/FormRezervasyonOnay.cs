@@ -7,7 +7,7 @@ using SahalarBurada.Services;
 
 namespace SahalarBurada.Forms
 {
-    public partial class FormRezervasyonOnay : Form
+    public partial class FormRezervasyonOnay : BaseChildForm
     {
         private readonly HaliSaha _saha;
         private readonly DateTime _tarih;
@@ -68,7 +68,7 @@ namespace SahalarBurada.Forms
             e.Graphics.DrawRectangle(new Pen(UIHelper.CBolme, 1), 0, 0, pnl.Width - 1, pnl.Height - 1);
         }
 
-        private void BtnGeri_Click(object sender, EventArgs e) => this.Close();
+        private void BtnGeri_Click(object sender, EventArgs e) { IsBackButtonClicked = true; this.Close(); }
 
         private void BtnOnayla_Click(object sender, EventArgs e)
         {
@@ -111,6 +111,7 @@ namespace SahalarBurada.Forms
                 $"Rezervasyonunuz başarıyla oluşturuldu!\n\n⚽ Saha:  {_saha.Ad}\n📅 Tarih: {_tarih:dd.MM.yyyy}  {_saat}\n💰 Toplam: {_saha.FiyatSaat:N0} ₺\n{kisiMesaji}\nİyi maçlar! ⚽",
                 "Rezervasyon Başarılı", MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.IsBackButtonClicked = true;
             this.Close();
         }
     }

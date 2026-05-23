@@ -10,6 +10,7 @@ namespace SahalarBurada
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            SahalarBurada.Helpers.TrayManager.Initialize();
             Application.Run(new Forms.FormAnaEkran());
         }
     }

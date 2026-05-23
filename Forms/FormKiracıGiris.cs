@@ -6,7 +6,7 @@ using SahalarBurada.Services;
 
 namespace SahalarBurada.Forms
 {
-    public partial class FormKiracıGiris : Form
+    public partial class FormKiracıGiris : BaseChildForm
     {
 
         public FormKiracıGiris()
@@ -16,7 +16,7 @@ namespace SahalarBurada.Forms
 
         private void btnTabGiris_Click(object sender, EventArgs e) => TabGoster(true);
         private void btnTabKayit_Click(object sender, EventArgs e) => TabGoster(false);
-        private void BtnGeri_Click(object sender, EventArgs e) => this.Close();
+        private void BtnGeri_Click(object sender, EventArgs e) { IsBackButtonClicked = true; this.Close(); }
 
         private void pnlTabBar_Paint(object sender, PaintEventArgs e)
         {
@@ -61,7 +61,7 @@ namespace SahalarBurada.Forms
         {
             var f = new FormSahaAra();
             this.Hide();
-            f.FormClosed += (s, e) => { if (f.DialogResult == System.Windows.Forms.DialogResult.OK) this.Close(); else this.Show(); };
+            f.FormClosed += (s, e) => { if (f.DialogResult == System.Windows.Forms.DialogResult.OK) { this.IsBackButtonClicked = true; this.Close(); } else this.Show(); };
             f.Show();
         }
     }

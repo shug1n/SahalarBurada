@@ -7,7 +7,7 @@ using SahalarBurada.Models;
 
 namespace SahalarBurada.Forms
 {
-    public partial class FormSahaListesi : Form
+    public partial class FormSahaListesi : BaseChildForm
     {
         private readonly List<HaliSaha> _sahalar;
         private readonly DateTime _tarih;
@@ -33,7 +33,7 @@ namespace SahalarBurada.Forms
             e.Graphics.DrawLine(new Pen(UIHelper.CBolme), 0, 0, pnlAltBar.Width, 0);
         }
 
-        private void BtnGeri_Click(object sender, EventArgs e) => this.Close();
+        private void BtnGeri_Click(object sender, EventArgs e) { IsBackButtonClicked = true; this.Close(); }
 
         private Panel BuildSahaKartı(HaliSaha saha)
         {
@@ -71,7 +71,7 @@ namespace SahalarBurada.Forms
             f.FormClosed += (s, e) =>
             {
                 if (f.DialogResult == System.Windows.Forms.DialogResult.OK)
-                { this.DialogResult = System.Windows.Forms.DialogResult.OK; this.Close(); }
+                { this.DialogResult = System.Windows.Forms.DialogResult.OK; this.IsBackButtonClicked = true; this.Close(); }
                 else this.Show();
             };
             f.Show();
