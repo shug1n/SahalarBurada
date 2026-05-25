@@ -8,16 +8,19 @@ namespace SahalarBurada.Helpers
     public static class UIHelper
     {
         // ─── Renkler ────────────────────────────────────────────────
-        public static readonly Color CAna        = Color.FromArgb(27,  94,  32);  // koyu yeşil
-        public static readonly Color CIkinci     = Color.FromArgb(56, 142,  60);  // orta yeşil
-        public static readonly Color CVurgu      = Color.FromArgb(76, 175,  80);  // açık yeşil
-        public static readonly Color CArkaplan   = Color.FromArgb(240, 245, 240); // çok açık yeşil-gri
-        public static readonly Color CKart       = Color.White;
-        public static readonly Color CMetin      = Color.FromArgb(30,  30,  30);
-        public static readonly Color CMetinAcik  = Color.FromArgb(100, 100, 100);
-        public static readonly Color CBolme      = Color.FromArgb(218, 224, 218);
-        public static readonly Color CHata       = Color.FromArgb(198,  40,  40);
-        public static readonly Color CUyari      = Color.FromArgb(230, 120,   0);
+        public static readonly Color CAna        = Color.FromArgb(25,  88,  30);   // derin yeşil
+        public static readonly Color CIkinci     = Color.FromArgb(46, 125,  50);   // orta yeşil
+        public static readonly Color CVurgu      = Color.FromArgb(67, 160,  71);   // açık yeşil
+        public static readonly Color CArkaplan   = Color.FromArgb(245, 248, 245);  // çok hafif yeşil-krem
+        public static readonly Color CKart       = Color.FromArgb(252, 254, 252);  // kırık beyaz kart
+        public static readonly Color CMetin      = Color.FromArgb(28,  36,  28);   // koyu yeşil-siyah
+        public static readonly Color CMetinAcik  = Color.FromArgb(95, 110,  95);   // yeşilimsi gri
+        public static readonly Color CBolme      = Color.FromArgb(210, 220, 210);  // hafif yeşilimsi ayraç
+        public static readonly Color CHata       = Color.FromArgb(185,  35,  35);  // kırmızı
+        public static readonly Color CUyari      = Color.FromArgb(215, 110,   0);  // turuncu
+        public static readonly Color CHeaderGradStart = Color.FromArgb(18,  68,  22);   // header başlangıç
+        public static readonly Color CHeaderGradEnd   = Color.FromArgb(46, 125,  50);   // header bitiş
+        public static readonly Color CGolge      = Color.FromArgb(20, 0, 30, 0);   // hafif gölge için
 
         // ─── Fontlar ────────────────────────────────────────────────
         public static readonly Font FBuyukBaslik = new Font("Segoe UI", 26, FontStyle.Bold);
@@ -58,12 +61,21 @@ namespace SahalarBurada.Helpers
             var card = new Panel
             {
                 Size = new Size(cardW, cardH),
-                BackColor = addCardBackground ? Color.White : Color.Transparent
+                BackColor = addCardBackground ? CKart : Color.Transparent
             };
 
             if (addCardBackground)
             {
-                card.Paint += (s, e) => e.Graphics.DrawRectangle(new Pen(CBolme), 0, 0, cardW - 1, cardH - 1);
+                card.Paint += (s, e) =>
+                {
+                    var g = e.Graphics;
+                    g.SmoothingMode = SmoothingMode.AntiAlias;
+                    using (var pen = new Pen(CBolme, 1))
+                        g.DrawRectangle(pen, 1, 1, cardW - 3, cardH - 3);
+                    // Sol vurgu çizgisi
+                    using (var br = new SolidBrush(CVurgu))
+                        g.FillRectangle(br, 0, 0, 4, cardH);
+                };
             }
 
             foreach (var c in contents)
@@ -73,7 +85,7 @@ namespace SahalarBurada.Helpers
                 
                 if (addCardBackground && c is Panel)
                 {
-                    c.BackColor = Color.White;
+                    c.BackColor = CKart;
                 }
                 
                 card.Controls.Add(c);
@@ -109,10 +121,15 @@ namespace SahalarBurada.Helpers
             var p = new Panel { Dock = DockStyle.Top, Height = h, BackColor = CAna };
             p.Paint += (s, e) =>
             {
+                var g = e.Graphics;
+                // Derin gradient
                 using (var br = new LinearGradientBrush(p.ClientRectangle,
-                    Color.FromArgb(21, 71, 25), Color.FromArgb(56, 142, 60),
+                    CHeaderGradStart, CHeaderGradEnd,
                     LinearGradientMode.Horizontal))
-                    e.Graphics.FillRectangle(br, p.ClientRectangle);
+                    g.FillRectangle(br, p.ClientRectangle);
+                // Alt ince aydınlık çizgi
+                using (var pen = new Pen(Color.FromArgb(60, 255, 255, 255), 1))
+                    g.DrawLine(pen, 0, p.Height - 1, p.Width, p.Height - 1);
             };
             p.Controls.Add(new Label
             {
@@ -124,8 +141,8 @@ namespace SahalarBurada.Helpers
                 p.Controls.Add(new Label
                 {
                     Text = altBaslik, Font = FKucuk,
-                    ForeColor = Color.FromArgb(200, 255, 255, 255),
-                    AutoSize = true, Location = new Point(27, 52),
+                    ForeColor = Color.FromArgb(180, 255, 255, 255),
+                    AutoSize = true, Location = new Point(27, 54),
                     BackColor = Color.Transparent
                 });
             return p;
@@ -150,12 +167,12 @@ namespace SahalarBurada.Helpers
             var btn = new Button
             {
                 Text = metin, Location = new Point(x, y), Size = new Size(w, h),
-                BackColor = Color.White, ForeColor = CAna,
+                BackColor = CKart, ForeColor = CAna,
                 FlatStyle = FlatStyle.Flat, Font = FNormalKalin, Cursor = Cursors.Hand
             };
-            btn.FlatAppearance.BorderColor = CAna;
+            btn.FlatAppearance.BorderColor = CIkinci;
             btn.FlatAppearance.BorderSize = 1;
-            btn.FlatAppearance.MouseOverBackColor = Color.FromArgb(240, 249, 240);
+            btn.FlatAppearance.MouseOverBackColor = Color.FromArgb(235, 245, 235);
             return btn;
         }
 
@@ -193,7 +210,7 @@ namespace SahalarBurada.Helpers
             {
                 Location = new Point(x, y), Width = w,
                 Font = FNormal, BorderStyle = BorderStyle.FixedSingle,
-                BackColor = Color.White, ForeColor = CMetin
+                BackColor = Color.FromArgb(250, 252, 250), ForeColor = CMetin
             };
             if (sifre) txt.PasswordChar = '●';
             return txt;
@@ -202,16 +219,22 @@ namespace SahalarBurada.Helpers
         // ─── Kart paneli ─────────────────────────────────────────────
         public static Panel KartPanel(int x, int y, int w, int h)
         {
-            var p = new Panel { Location = new Point(x, y), Size = new Size(w, h), BackColor = Color.White };
+            var p = new Panel { Location = new Point(x, y), Size = new Size(w, h), BackColor = CKart };
             p.Paint += (s, e) =>
-                e.Graphics.DrawRectangle(new Pen(CBolme, 1), 0, 0, p.Width - 1, p.Height - 1);
+            {
+                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+                using (var pen = new Pen(CBolme, 1))
+                    e.Graphics.DrawRectangle(pen, 1, 1, p.Width - 3, p.Height - 3);
+                using (var br = new SolidBrush(CVurgu))
+                    e.Graphics.FillRectangle(br, 0, 0, 4, p.Height);
+            };
             return p;
         }
 
         // ─── DataGridView ayarı ──────────────────────────────────────
         public static void DGVAyarla(DataGridView dgv)
         {
-            dgv.BackgroundColor = Color.White;
+            dgv.BackgroundColor = CKart;
             dgv.BorderStyle = BorderStyle.None;
             dgv.GridColor = CBolme;
             dgv.RowHeadersVisible = false;
@@ -221,17 +244,20 @@ namespace SahalarBurada.Helpers
             dgv.MultiSelect = false;
             dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgv.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dgv.ColumnHeadersHeight = 40;
-            dgv.RowTemplate.Height = 36;
+            dgv.ColumnHeadersHeight = 42;
+            dgv.RowTemplate.Height = 38;
             dgv.EnableHeadersVisualStyles = false;
             dgv.ColumnHeadersDefaultCellStyle.BackColor = CAna;
             dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
             dgv.ColumnHeadersDefaultCellStyle.Font = FNormalKalin;
             dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgv.ColumnHeadersDefaultCellStyle.Padding = new Padding(8, 0, 0, 0);
             dgv.DefaultCellStyle.Font = FNormal;
             dgv.DefaultCellStyle.ForeColor = CMetin;
-            dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(247, 250, 247);
-            dgv.DefaultCellStyle.SelectionBackColor = Color.FromArgb(200, 230, 201);
+            dgv.DefaultCellStyle.BackColor = CKart;
+            dgv.DefaultCellStyle.Padding = new Padding(6, 0, 0, 0);
+            dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(243, 248, 243);
+            dgv.DefaultCellStyle.SelectionBackColor = Color.FromArgb(195, 228, 195);
             dgv.DefaultCellStyle.SelectionForeColor = CMetin;
         }
 

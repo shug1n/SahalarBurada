@@ -9,8 +9,6 @@ namespace SahalarBurada.Forms
     public class FormKullaniciPanel : BaseChildForm
     {
         private Panel pnlHeader;
-        private Label lblBaslik;
-        private Label lblAltBaslik;
         private DataGridView dgvRezervasyonlar;
         private Button btnYeniArama;
         private Button btnCikis;
@@ -31,41 +29,69 @@ namespace SahalarBurada.Forms
 
         private void SetupUI()
         {
-            // Header
-            pnlHeader = new Panel { Dock = DockStyle.Top, Height = 90, BackColor = Color.White };
-            pnlHeader.Paint += (s, e) => e.Graphics.DrawLine(new Pen(UIHelper.CBolme), 0, 89, pnlHeader.Width, 89);
-            
-            lblBaslik = new Label { Text = "👤  Kullanıcı Paneli", Font = new Font("Segoe UI", 18, FontStyle.Bold), ForeColor = UIHelper.CAna, AutoSize = true, Location = new Point(35, 20) };
-            lblAltBaslik = new Label { Text = $"Hoş geldiniz, {Oturum.AktifKullanici.Ad} {Oturum.AktifKullanici.Soyad}", Font = new Font("Segoe UI", 10, FontStyle.Regular), ForeColor = UIHelper.CMetin, AutoSize = true, Location = new Point(38, 55) };
-            
-            btnYeniArama = new Button { Text = "Yeni Saha Ara", BackColor = UIHelper.CAna, ForeColor = Color.White, FlatStyle = FlatStyle.Flat, Size = new Size(160, 40), Location = new Point(this.Width - 300, 25), Font = new Font("Segoe UI", 10, FontStyle.Bold), Cursor = Cursors.Hand };
+            // ── Header (Gradient yeşil) ──────────────────────────────────
+            pnlHeader = UIHelper.HeaderPanelOlustur(
+                $"👤  Kullanıcı Paneli",
+                $"Hoş geldiniz, {Oturum.AktifKullanici.Ad} {Oturum.AktifKullanici.Soyad}  •  {Oturum.AktifKullanici.Eposta}"
+            );
+
+            btnYeniArama = new Button {
+                Text = "⚽  Yeni Saha Ara",
+                BackColor = UIHelper.CIkinci,
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Size = new Size(165, 38),
+                Location = new Point(this.Width - 310, 28),
+                Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                Cursor = Cursors.Hand
+            };
             btnYeniArama.FlatAppearance.BorderSize = 0;
+            btnYeniArama.FlatAppearance.MouseOverBackColor = UIHelper.CVurgu;
             btnYeniArama.Click += BtnYeniArama_Click;
 
-            btnCikis = new Button { Text = "Çıkış Yap", BackColor = Color.White, ForeColor = UIHelper.CMetin, FlatStyle = FlatStyle.Flat, Size = new Size(100, 40), Location = new Point(this.Width - 130, 25), Font = new Font("Segoe UI", 10, FontStyle.Bold), Cursor = Cursors.Hand };
-            btnCikis.FlatAppearance.BorderColor = UIHelper.CBolme;
+            btnCikis = new Button {
+                Text = "Çıkış Yap",
+                BackColor = Color.FromArgb(185, 35, 35),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Size = new Size(105, 38),
+                Location = new Point(this.Width - 135, 28),
+                Font = new Font("Segoe UI", 9, FontStyle.Bold),
+                Cursor = Cursors.Hand
+            };
+            btnCikis.FlatAppearance.BorderSize = 0;
+            btnCikis.FlatAppearance.MouseOverBackColor = Color.FromArgb(160, 20, 20);
             btnCikis.Click += BtnCikis_Click;
 
-            pnlHeader.Controls.Add(lblBaslik);
-            pnlHeader.Controls.Add(lblAltBaslik);
             pnlHeader.Controls.Add(btnYeniArama);
             pnlHeader.Controls.Add(btnCikis);
             this.Controls.Add(pnlHeader);
 
-            // Toolbar
-            pnlToolbar = new Panel { Dock = DockStyle.Top, Height = 60, BackColor = UIHelper.CArkaplan };
-            lblCount = new Label { Text = "Geçmiş ve Gelecek Rezervasyonlarınız", Font = new Font("Segoe UI", 11, FontStyle.Bold), ForeColor = UIHelper.CMetin, AutoSize = true, Location = new Point(35, 20) };
+            // ── Toolbar ──────────────────────────────────────────────────
+            pnlToolbar = new Panel { Dock = DockStyle.Top, Height = 52, BackColor = UIHelper.CArkaplan };
+            pnlToolbar.Paint += (s, e) =>
+            {
+                using (var pen = new Pen(UIHelper.CBolme, 1))
+                    e.Graphics.DrawLine(pen, 0, 51, pnlToolbar.Width, 51);
+            };
+            lblCount = new Label {
+                Text = "Rezervasyonlarınız",
+                Font = new Font("Segoe UI", 11, FontStyle.Bold),
+                ForeColor = UIHelper.CMetin,
+                AutoSize = true,
+                Location = new Point(35, 15)
+            };
             pnlToolbar.Controls.Add(lblCount);
             this.Controls.Add(pnlToolbar);
 
-            // DataGridView
+            // ── DataGridView ─────────────────────────────────────────────
             dgvRezervasyonlar = new DataGridView {
                 Dock = DockStyle.Fill,
-                BackgroundColor = UIHelper.CArkaplan,
+                BackgroundColor = UIHelper.CKart,
                 BorderStyle = BorderStyle.None,
                 AllowUserToAddRows = false,
                 AllowUserToDeleteRows = false,
-                ReadOnly = true,
+                ReadOnly = false,   // false olmalı: button column click çalışsın
                 SelectionMode = DataGridViewSelectionMode.FullRowSelect,
                 AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
                 RowHeadersVisible = false,
@@ -73,49 +99,49 @@ namespace SahalarBurada.Forms
                 GridColor = UIHelper.CBolme,
                 EnableHeadersVisualStyles = false
             };
-            
-            dgvRezervasyonlar.ColumnHeadersDefaultCellStyle.BackColor = Color.White;
-            dgvRezervasyonlar.ColumnHeadersDefaultCellStyle.ForeColor = UIHelper.CMetin;
-            dgvRezervasyonlar.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 11, FontStyle.Bold);
-            dgvRezervasyonlar.ColumnHeadersDefaultCellStyle.SelectionBackColor = Color.White;
-            dgvRezervasyonlar.ColumnHeadersHeight = 50;
 
-            dgvRezervasyonlar.DefaultCellStyle.BackColor = Color.White;
-            dgvRezervasyonlar.DefaultCellStyle.ForeColor = UIHelper.CMetin;
-            dgvRezervasyonlar.DefaultCellStyle.Font = new Font("Segoe UI", 11, FontStyle.Regular);
-            dgvRezervasyonlar.DefaultCellStyle.SelectionBackColor = Color.FromArgb(230, 245, 235);
-            dgvRezervasyonlar.DefaultCellStyle.SelectionForeColor = UIHelper.CMetin;
-            dgvRezervasyonlar.RowTemplate.Height = 50;
-
-            dgvRezervasyonlar.Columns.Add("Saha", "Saha Adı");
-            dgvRezervasyonlar.Columns.Add("Konum", "İl / İlçe");
-            dgvRezervasyonlar.Columns.Add("Adres", "Adres");
-            dgvRezervasyonlar.Columns.Add("Tarih", "Tarih");
-            dgvRezervasyonlar.Columns.Add("Saat", "Saat");
-            dgvRezervasyonlar.Columns.Add("Fiyat", "Fiyat");
+            dgvRezervasyonlar.Columns.Add(new DataGridViewTextBoxColumn { Name = "Saha",  HeaderText = "Saha Adı",  ReadOnly = true });
+            dgvRezervasyonlar.Columns.Add(new DataGridViewTextBoxColumn { Name = "Konum", HeaderText = "İl / İlçe", ReadOnly = true });
+            dgvRezervasyonlar.Columns.Add(new DataGridViewTextBoxColumn { Name = "Adres", HeaderText = "Adres",    ReadOnly = true });
+            dgvRezervasyonlar.Columns.Add(new DataGridViewTextBoxColumn { Name = "Tarih", HeaderText = "Tarih",    ReadOnly = true });
+            dgvRezervasyonlar.Columns.Add(new DataGridViewTextBoxColumn { Name = "Saat",  HeaderText = "Saat",     ReadOnly = true });
+            dgvRezervasyonlar.Columns.Add(new DataGridViewTextBoxColumn { Name = "Fiyat", HeaderText = "Fiyat",    ReadOnly = true });
 
             var btnIptal = new DataGridViewButtonColumn();
             btnIptal.Name = "btnIptal";
             btnIptal.HeaderText = "İşlem";
-            btnIptal.Text = "İptal Et";
+            btnIptal.Text = "✕  İptal Et";
             btnIptal.UseColumnTextForButtonValue = true;
             btnIptal.FlatStyle = FlatStyle.Flat;
+            btnIptal.DefaultCellStyle.BackColor = UIHelper.CKart;
+            btnIptal.DefaultCellStyle.ForeColor = Color.FromArgb(185, 35, 35);
+            btnIptal.DefaultCellStyle.SelectionBackColor = Color.FromArgb(255, 240, 240);
+            btnIptal.DefaultCellStyle.SelectionForeColor = Color.FromArgb(185, 35, 35);
+            btnIptal.DefaultCellStyle.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+            btnIptal.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            btnIptal.DefaultCellStyle.Padding = new Padding(6, 4, 6, 4);
             dgvRezervasyonlar.Columns.Add(btnIptal);
+
+            // Önce kolonları ekle, SONRA DGVAyarla çağır — header style sonra gelince geçerli olur
+            UIHelper.DGVAyarla(dgvRezervasyonlar);
             dgvRezervasyonlar.CellContentClick += DgvRezervasyonlar_CellContentClick;
 
-            var padding = new Padding(35, 10, 35, 35);
-            var pnlGridContainer = new Panel { Dock = DockStyle.Fill, Padding = padding };
+            var pnlGridContainer = new Panel {
+                Dock = DockStyle.Fill,
+                Padding = new Padding(30, 12, 30, 30),
+                BackColor = UIHelper.CArkaplan
+            };
             pnlGridContainer.Controls.Add(dgvRezervasyonlar);
-            
-            // Layout Order: Fill should be added first, then Toolbar, then Header so Header is at the very top.
+
+            // Fill önce, toolbar ve header sonra (WinForms z-order)
             this.Controls.Clear();
             this.Controls.Add(pnlGridContainer);
             this.Controls.Add(pnlToolbar);
             this.Controls.Add(pnlHeader);
 
             this.Resize += (s, e) => {
-                btnCikis.Location = new Point(this.Width - 140, 25);
-                btnYeniArama.Location = new Point(this.Width - 320, 25);
+                btnCikis.Location = new Point(this.Width - 145, 28);
+                btnYeniArama.Location = new Point(this.Width - 322, 28);
             };
         }
 

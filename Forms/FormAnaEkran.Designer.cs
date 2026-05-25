@@ -102,7 +102,7 @@ namespace SahalarBurada.Forms
             // 
             // tblCards
             // 
-            this.tblCards.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(245)))), ((int)(((byte)(240)))));
+            this.tblCards.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(248)))), ((int)(((byte)(245)))));
             this.tblCards.ColumnCount = 2;
             this.tblCards.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tblCards.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -119,7 +119,7 @@ namespace SahalarBurada.Forms
             // 
             // pnlKiraci
             // 
-            this.pnlKiraci.BackColor = System.Drawing.Color.White;
+            this.pnlKiraci.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(254)))), ((int)(((byte)(252)))));
             this.pnlKiraci.Controls.Add(this.label1);
             this.pnlKiraci.Controls.Add(this.lblKiraciIkon);
             this.pnlKiraci.Controls.Add(this.lblKiraciBaslik);
@@ -180,7 +180,7 @@ namespace SahalarBurada.Forms
             // 
             // btnMacAra
             // 
-            this.btnMacAra.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(94)))), ((int)(((byte)(32)))));
+            this.btnMacAra.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(88)))), ((int)(((byte)(30)))));
             this.btnMacAra.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnMacAra.FlatAppearance.BorderSize = 0;
             this.btnMacAra.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -196,9 +196,9 @@ namespace SahalarBurada.Forms
             // 
             // btnKiraciGiris
             // 
-            this.btnKiraciGiris.BackColor = System.Drawing.Color.White;
+            this.btnKiraciGiris.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(254)))), ((int)(((byte)(252)))));
             this.btnKiraciGiris.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnKiraciGiris.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(94)))), ((int)(((byte)(32)))));
+            this.btnKiraciGiris.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(125)))), ((int)(((byte)(50)))));
             this.btnKiraciGiris.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnKiraciGiris.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnKiraciGiris.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(94)))), ((int)(((byte)(32)))));
@@ -272,9 +272,9 @@ namespace SahalarBurada.Forms
             // 
             // btnOrgGiris
             // 
-            this.btnOrgGiris.BackColor = System.Drawing.Color.White;
+            this.btnOrgGiris.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(254)))), ((int)(((byte)(252)))));
             this.btnOrgGiris.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnOrgGiris.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(94)))), ((int)(((byte)(32)))));
+            this.btnOrgGiris.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(125)))), ((int)(((byte)(50)))));
             this.btnOrgGiris.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOrgGiris.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnOrgGiris.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(94)))), ((int)(((byte)(32)))));
