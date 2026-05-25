@@ -59,9 +59,9 @@ namespace SahalarBurada.Forms
 
         private void GirisBasarili()
         {
-            var f = new FormSahaAra();
+            var f = new FormKullaniciPanel();
             this.Hide();
-            f.FormClosed += (s, e) => { if (f.DialogResult == System.Windows.Forms.DialogResult.OK) { this.IsBackButtonClicked = true; this.Close(); } else this.Show(); };
+            f.FormClosed += (s, e) => { this.IsBackButtonClicked = true; this.Close(); };
             f.Show();
         }
     }

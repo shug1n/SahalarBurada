@@ -44,6 +44,7 @@ namespace SahalarBurada.Forms
             SahaServisi.SahaEkle(_saha);
             MessageBox.Show($"'{_saha.Ad}' sahası başarıyla sisteme eklendi!\n\nMüsait günler: {_saha.MüsaitGunler.Count} gün\nMüsait saatler: {_saha.MüsaitSaatler.Count} dilim", "Saha Eklendi ✅", MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.IsBackButtonClicked = true;
             this.Close();
         }
     }

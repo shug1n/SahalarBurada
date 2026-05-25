@@ -24,8 +24,8 @@ namespace SahalarBurada.Forms
 
             dtpTarih.MinDate = DateTime.Today;
 
-            for (int i = 8; i <= 22; i++) cmbSaat.Items.Add(i.ToString("D2") + ":00");
-            cmbSaat.SelectedIndex = 6;
+            dtpTarih.ValueChanged += (s, e) => SaatleriGuncelle();
+            SaatleriGuncelle();
 
             // İl listesi (“Tümüllü” + alfabetik)
             cmbSehir.Items.Add("— Tüm Şehirler —");
@@ -49,6 +49,36 @@ namespace SahalarBurada.Forms
             cmbIlce.SelectedIndex = 0;
 
             btnGeri.Click += (s, e) => { IsBackButtonClicked = true; this.Close(); };
+        }
+
+        private void SaatleriGuncelle()
+        {
+            var secili = cmbSaat.SelectedItem?.ToString();
+            cmbSaat.Items.Clear();
+            int baslangic = 8;
+            
+            if (dtpTarih.Value.Date == DateTime.Today)
+            {
+                int guncelSaat = DateTime.Now.Hour;
+                if (guncelSaat + 1 > baslangic) 
+                    baslangic = guncelSaat + 1;
+            }
+
+            for (int i = baslangic; i <= 22; i++)
+                cmbSaat.Items.Add(i.ToString("D2") + ":00");
+
+            if (cmbSaat.Items.Count > 0)
+            {
+                if (secili != null && cmbSaat.Items.Contains(secili))
+                    cmbSaat.SelectedItem = secili;
+                else
+                    cmbSaat.SelectedIndex = 0;
+            }
+            else
+            {
+                cmbSaat.Items.Add("Bugün için saat kalmadı");
+                cmbSaat.SelectedIndex = 0;
+            }
         }
 
         private void BtnListele_Click(object sender, EventArgs e)

@@ -55,6 +55,6 @@ namespace SahalarBurada.Forms
             Oturum.AktifOrganizator = org; AcOrgPanel();
         }
 
-        private void AcOrgPanel() { var f = new FormOrganizatorPanel(); this.Hide(); f.FormClosed += (s, e) => this.Close(); f.Show(); }
+        private void AcOrgPanel() { var f = new FormOrganizatorPanel(); this.Hide(); f.FormClosed += (s, e) => { this.IsBackButtonClicked = true; this.Close(); }; f.Show(); }
     }
 }

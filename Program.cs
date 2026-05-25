@@ -12,6 +12,7 @@ namespace SahalarBurada
             Application.SetCompatibleTextRenderingDefault(false);
             SahalarBurada.Helpers.TrayManager.Initialize();
             SahalarBurada.Services.DatabaseServisi.InitializeDatabase();
+            SahalarBurada.Services.DatabaseServisi.CleanOldReservations();
             Application.Run(new Forms.FormAnaEkran());
         }
     }

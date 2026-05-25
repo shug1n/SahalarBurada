@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using SahalarBurada.Helpers;
 using SahalarBurada.Models;
+using SahalarBurada.Services;
 
 namespace SahalarBurada.Forms
 {
@@ -48,6 +49,9 @@ namespace SahalarBurada.Forms
             if (string.IsNullOrWhiteSpace(txtAd.Text) || string.IsNullOrWhiteSpace(txtAdres.Text))
             { lblHata.Text = "Saha adı ve adres zorunludur."; lblHata.Visible = true; return; }
 
+            if (SahaServisi.SahaIsmiVarMi(Oturum.AktifOrganizator.Id, txtAd.Text.Trim()))
+            { lblHata.Text = "Bu isimde bir sahanız zaten mevcut."; lblHata.Visible = true; return; }
+
             if (cmbSehir.SelectedItem == null || cmbIlce.SelectedItem == null)
             { lblHata.Text = "Şehir ve ilçe seçimi zorunludur."; lblHata.Visible = true; return; }
 
@@ -72,7 +76,7 @@ namespace SahalarBurada.Forms
             };
             var f = new FormSahaOzet(saha);
             this.Hide();
-            f.FormClosed += (s, ev) => { if (f.DialogResult == System.Windows.Forms.DialogResult.OK) this.Close(); else this.Show(); };
+            f.FormClosed += (s, ev) => { if (f.DialogResult == System.Windows.Forms.DialogResult.OK) { this.IsBackButtonClicked = true; this.Close(); } else this.Show(); };
             f.Show();
         }
     }

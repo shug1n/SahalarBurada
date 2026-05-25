@@ -13,6 +13,11 @@ namespace SahalarBurada.Services
         public static List<HaliSaha> OrganizatorSahalari(string orgId)
             => TumSahalariGetir().Where(s => s.OrganizatorId == orgId).ToList();
 
+        public static bool SahaIsmiVarMi(string orgId, string ad)
+        {
+            return TumSahalariGetir().Any(s => s.OrganizatorId == orgId && s.Ad.Equals(ad, StringComparison.OrdinalIgnoreCase));
+        }
+
         /// <summary>
         /// Belirtilen tarih ve saatte müsait sahaları getirir (çakışma + şehir/ilçe filtresi dahil).
         /// sehir veya ilce boş/null geçilirse o filtre uygulanmaz.

@@ -257,7 +257,41 @@ namespace SahalarBurada.Services
             return list;
         }
 
+        public static void DeleteField(string id)
+        {
+            using (var conn = new SQLiteConnection(ConnectionString))
+            {
+                conn.Open();
+                var cmdField = new SQLiteCommand("DELETE FROM fields WHERE Id = @Id", conn);
+                cmdField.Parameters.AddWithValue("@Id", id);
+                cmdField.ExecuteNonQuery();
+
+                var cmdRes = new SQLiteCommand("DELETE FROM reservations WHERE SahaId = @Id", conn);
+                cmdRes.Parameters.AddWithValue("@Id", id);
+                cmdRes.ExecuteNonQuery();
+            }
+        }
+
         // --- Reservations (Rezervasyonlar) ---
+        public static void CleanOldReservations()
+        {
+            var list = GetAllReservations();
+            var today = DateTime.Today;
+            using (var conn = new SQLiteConnection(ConnectionString))
+            {
+                conn.Open();
+                foreach (var r in list)
+                {
+                    if (r.Tarih.ToLocalTime().Date < today)
+                    {
+                        var cmd = new SQLiteCommand("DELETE FROM reservations WHERE Id = @Id", conn);
+                        cmd.Parameters.AddWithValue("@Id", r.Id);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+        }
+
         public static void InsertReservation(Rezervasyon r)
         {
             using (var conn = new SQLiteConnection(ConnectionString))
