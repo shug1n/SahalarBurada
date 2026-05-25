@@ -22,6 +22,55 @@ namespace SahalarBurada.Forms
             lblHeaderBaslik.Text = $"🏢  {org.IsletmeAdi}";
             lblHeaderAltBaslik.Text = $"Hoş geldiniz, {org.Ad} {org.Soyad}  •  {org.Eposta}";
 
+            // Premium Header Gradient
+            pnlHeader.Paint += (s, e) =>
+            {
+                var g = e.Graphics;
+                using (var br = new System.Drawing.Drawing2D.LinearGradientBrush(pnlHeader.ClientRectangle,
+                    UIHelper.CHeaderGradStart, UIHelper.CHeaderGradEnd,
+                    System.Drawing.Drawing2D.LinearGradientMode.Horizontal))
+                    g.FillRectangle(br, pnlHeader.ClientRectangle);
+                using (var pen = new Pen(Color.FromArgb(60, 255, 255, 255), 1))
+                    g.DrawLine(pen, 0, pnlHeader.Height - 1, pnlHeader.Width, pnlHeader.Height - 1);
+            };
+
+            // ToolBar and button styling
+            pnlToolbar.BackColor = UIHelper.CArkaplan;
+            btnYeni.BackColor = UIHelper.CAna;
+            btnYeni.FlatAppearance.MouseOverBackColor = UIHelper.CIkinci;
+            
+            btnYenile.BackColor = UIHelper.CKart;
+            btnYenile.FlatAppearance.BorderColor = UIHelper.CBolme;
+            btnYenile.FlatAppearance.MouseOverBackColor = Color.FromArgb(235, 245, 235);
+            btnYenile.ForeColor = UIHelper.CAna;
+
+            btnCikis.BackColor = UIHelper.CHata;
+            btnCikis.FlatAppearance.MouseOverBackColor = Color.FromArgb(160, 20, 20);
+
+            // Dynamically Add Rezervasyon Raporu Button
+            if (pnlToolbar.Controls["btnRezervasyonlar"] == null)
+            {
+                var btnRezervasyonlar = new Button
+                {
+                    Name = "btnRezervasyonlar",
+                    Text = "📅  Rezervasyon Raporu",
+                    BackColor = UIHelper.CIkinci,
+                    ForeColor = Color.White,
+                    FlatStyle = FlatStyle.Flat,
+                    Size = new Size(200, 40),
+                    Location = new Point(338, 10),
+                    Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                    Cursor = Cursors.Hand
+                };
+                btnRezervasyonlar.FlatAppearance.BorderSize = 0;
+                btnRezervasyonlar.FlatAppearance.MouseOverBackColor = UIHelper.CVurgu;
+                btnRezervasyonlar.Click += BtnRezervasyonlar_Click;
+                pnlToolbar.Controls.Add(btnRezervasyonlar);
+            }
+
+            pnlContent.BackColor = UIHelper.CArkaplan;
+            dgvSahalar.BackgroundColor = UIHelper.CKart;
+
             if (!dgvSahalar.Columns.Contains("btnSil"))
             {
                 var btnSil = new DataGridViewButtonColumn();
@@ -30,8 +79,22 @@ namespace SahalarBurada.Forms
                 btnSil.Text = "Sil";
                 btnSil.UseColumnTextForButtonValue = true;
                 btnSil.FlatStyle = FlatStyle.Flat;
+                btnSil.DefaultCellStyle.BackColor = UIHelper.CKart;
+                btnSil.DefaultCellStyle.ForeColor = Color.FromArgb(185, 35, 35);
+                btnSil.DefaultCellStyle.SelectionBackColor = Color.FromArgb(255, 240, 240);
+                btnSil.DefaultCellStyle.SelectionForeColor = Color.FromArgb(185, 35, 35);
+                btnSil.DefaultCellStyle.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+                btnSil.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                btnSil.DefaultCellStyle.Padding = new Padding(6, 4, 6, 4);
                 dgvSahalar.Columns.Add(btnSil);
                 dgvSahalar.CellContentClick += DgvSahalar_CellContentClick;
+            }
+
+            UIHelper.DGVAyarla(dgvSahalar);
+            dgvSahalar.ReadOnly = false;
+            foreach (DataGridViewColumn col in dgvSahalar.Columns)
+            {
+                if (col.Name != "btnSil") col.ReadOnly = true;
             }
             
             SahalariYukle();
@@ -78,6 +141,14 @@ namespace SahalarBurada.Forms
             this.Hide();
             f.FormClosed += (s, ev) => { this.Show(); SahalariYukle(); };
             f.Show();
+        }
+
+        private void BtnRezervasyonlar_Click(object sender, EventArgs e)
+        {
+            var f = new FormOrganizatorRezervasyonlar();
+            this.Hide();
+            f.FormClosed += (s, ev) => this.Show();
+            f.ShowDialog();
         }
     }
 }

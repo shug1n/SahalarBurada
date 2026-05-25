@@ -118,6 +118,35 @@ namespace SahalarBurada.Services
             return null;
         }
 
+        public static Kullanici GetUserById(string id)
+        {
+            using (var conn = new SQLiteConnection(ConnectionString))
+            {
+                conn.Open();
+                string sql = "SELECT * FROM users WHERE Id = @Id";
+                using (var cmd = new SQLiteCommand(sql, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Id", id);
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return new Kullanici
+                            {
+                                Id = reader["Id"].ToString(),
+                                Ad = reader["Ad"].ToString(),
+                                Soyad = reader["Soyad"].ToString(),
+                                Eposta = reader["Eposta"].ToString(),
+                                SifreHash = reader["SifreHash"].ToString(),
+                                KayitTarihi = DateTime.Parse(reader["KayitTarihi"].ToString())
+                            };
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
         public static bool CheckUserExists(string eposta)
         {
             using (var conn = new SQLiteConnection(ConnectionString))

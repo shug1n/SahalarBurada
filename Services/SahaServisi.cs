@@ -85,9 +85,35 @@ namespace SahalarBurada.Services
         public static List<Rezervasyon> TumRezervasyonlar()
             => DatabaseServisi.GetAllReservations();
 
-        public static void RezervasyonIptal(string id)
+        public static (bool basarili, string mesaj) RezervasyonIptalEt(string id)
         {
+            var rezervasyonlar = DatabaseServisi.GetAllReservations();
+            var r = rezervasyonlar.FirstOrDefault(res => res.Id == id);
+            if (r == null)
+            {
+                return (false, "Rezervasyon bulunamadı.");
+            }
+
+            try
+            {
+                var parts = r.Saat.Split(':');
+                int hour = int.Parse(parts[0]);
+                int minute = int.Parse(parts[1]);
+                var rezervasyonZamani = r.Tarih.Date.AddHours(hour).AddMinutes(minute);
+                
+                var kalanSure = rezervasyonZamani - DateTime.Now;
+                if (kalanSure.TotalHours < 24)
+                {
+                    return (false, "⚠️ Son 24 saat içerisindeki rezervasyonlar iptal edilemez.");
+                }
+            }
+            catch (Exception)
+            {
+                // Parse hatası olursa güvenlik için yine de silsin
+            }
+
             DatabaseServisi.DeleteReservation(id);
+            return (true, "Rezervasyonunuz başarıyla iptal edilmiştir.");
         }
 
         private static string TurkceGunAdi(DayOfWeek gun)

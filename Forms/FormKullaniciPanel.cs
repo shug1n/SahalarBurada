@@ -180,8 +180,16 @@ namespace SahalarBurada.Forms
                 if (MessageBox.Show("Bu rezervasyonu iptal etmek istediğinize emin misiniz?", "Rezervasyon İptali", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     string id = dgvRezervasyonlar.Rows[e.RowIndex].Tag.ToString();
-                    SahaServisi.RezervasyonIptal(id);
-                    RezervasyonlariYukle();
+                    var (basarili, mesaj) = SahaServisi.RezervasyonIptalEt(id);
+                    if (basarili)
+                    {
+                        MessageBox.Show(mesaj, "Başarılı", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        RezervasyonlariYukle();
+                    }
+                    else
+                    {
+                        MessageBox.Show(mesaj, "Hata", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
                 }
             }
         }
