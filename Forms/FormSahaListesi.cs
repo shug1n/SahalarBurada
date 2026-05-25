@@ -17,7 +17,9 @@ namespace SahalarBurada.Forms
         {
             _sahalar = sahalar; _tarih = tarih; _saat = saat;
             InitializeComponent();
+            this.ClientSize = new Size(1000, 700);
             SetupLogic();
+            UIHelper.CenterControlsInCard(pnlScroll, new Control[] { flowPanel }, false);
         }
 
         private void SetupLogic()

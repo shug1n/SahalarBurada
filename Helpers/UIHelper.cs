@@ -1,3 +1,4 @@
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows.Forms;
@@ -28,7 +29,7 @@ namespace SahalarBurada.Helpers
         public static readonly Font FKucukItalik = new Font("Segoe UI",  9, FontStyle.Italic);
 
         // ─── Form ayarı ─────────────────────────────────────────────
-        public static void FormAyarla(Form f, string baslik, int w = 860, int h = 660)
+        public static void FormAyarla(Form f, string baslik, int w = 1000, int h = 700)
         {
             f.Text = "SahalarBurada — " + baslik;
             f.Size = new Size(w, h);
@@ -37,6 +38,68 @@ namespace SahalarBurada.Helpers
             f.MaximizeBox = false;
             f.BackColor = CArkaplan;
             f.Font = FNormal;
+        }
+
+        public static Panel CenterControlsInCard(Control container, Control[] contents, bool addCardBackground = true)
+        {
+            int minX = int.MaxValue, minY = int.MaxValue;
+            int maxX = 0, maxY = 0;
+            foreach (var c in contents)
+            {
+                if (c.Left < minX) minX = c.Left;
+                if (c.Top < minY) minY = c.Top;
+                if (c.Right > maxX) maxX = c.Right;
+                if (c.Bottom > maxY) maxY = c.Bottom;
+            }
+
+            int cardW = maxX - minX + (addCardBackground ? 60 : 0);
+            int cardH = maxY - minY + (addCardBackground ? 60 : 0);
+
+            var card = new Panel
+            {
+                Size = new Size(cardW, cardH),
+                BackColor = addCardBackground ? Color.White : Color.Transparent
+            };
+
+            if (addCardBackground)
+            {
+                card.Paint += (s, e) => e.Graphics.DrawRectangle(new Pen(CBolme), 0, 0, cardW - 1, cardH - 1);
+            }
+
+            foreach (var c in contents)
+            {
+                container.Controls.Remove(c);
+                c.Location = new Point(c.Left - minX + (addCardBackground ? 30 : 0), c.Top - minY + (addCardBackground ? 30 : 0));
+                
+                if (addCardBackground && c is Panel)
+                {
+                    c.BackColor = Color.White;
+                }
+                
+                card.Controls.Add(c);
+            }
+
+            container.Controls.Add(card);
+
+            Action centerCard = () =>
+            {
+                int topOffset = 0;
+                foreach (Control c in container.Controls)
+                    if (c != card && c.Dock == DockStyle.Top) topOffset += c.Height;
+
+                int availableH = container.ClientSize.Height - topOffset;
+                card.Location = new Point(
+                    (container.ClientSize.Width - cardW) / 2,
+                    Math.Max(topOffset, topOffset + (availableH - cardH) / 2)
+                );
+            };
+
+            centerCard();
+            container.Resize += (s, e) => centerCard();
+            
+            card.BringToFront(); // Ensure card doesn't hide behind anything else
+
+            return card;
         }
 
         // ─── Header panel ───────────────────────────────────────────
@@ -170,6 +233,17 @@ namespace SahalarBurada.Helpers
             dgv.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(247, 250, 247);
             dgv.DefaultCellStyle.SelectionBackColor = Color.FromArgb(200, 230, 201);
             dgv.DefaultCellStyle.SelectionForeColor = CMetin;
+        }
+
+
+        // ─── Placeholder (İpucu Metni) ───────────────────────────────
+        [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
+        private static extern Int32 SendMessage(IntPtr hWnd, int msg, int wParam, [System.Runtime.InteropServices.MarshalAs(System.Runtime.InteropServices.UnmanagedType.LPWStr)]string lParam);
+        private const int EM_SETCUEBANNER = 0x1501;
+
+        public static void SetPlaceholder(TextBox textBox, string placeholderText)
+        {
+            SendMessage(textBox.Handle, EM_SETCUEBANNER, 0, placeholderText);
         }
     }
 }

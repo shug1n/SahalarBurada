@@ -12,6 +12,10 @@ namespace SahalarBurada.Forms
         public FormKiracıGiris()
         {
             InitializeComponent();
+            this.ClientSize = new Size(1000, 700);
+            UIHelper.CenterControlsInCard(this, new Control[] { pnlTabBar, pnlGiris, pnlKayit });
+            this.Resize += (s, e) => btnGeri.Location = new Point(30, this.ClientSize.Height - 60);
+            btnGeri.Location = new Point(30, this.ClientSize.Height - 60);
         }
 
         private void btnTabGiris_Click(object sender, EventArgs e) => TabGoster(true);

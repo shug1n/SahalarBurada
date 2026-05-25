@@ -15,6 +15,12 @@ namespace SahalarBurada.Forms
         {
             _saha = saha;
             InitializeComponent();
+            this.ClientSize = new Size(1000, 700);
+
+            var allControls = new System.Collections.Generic.List<Control>();
+            foreach (Control c in pnlScroll.Controls) allControls.Add(c);
+            UIHelper.CenterControlsInCard(pnlScroll, allControls.ToArray(), false);
+
             SetupLogic();
         }
 

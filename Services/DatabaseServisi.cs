@@ -292,6 +292,17 @@ namespace SahalarBurada.Services
             }
         }
 
+        public static void DeleteReservation(string id)
+        {
+            using (var conn = new SQLiteConnection(ConnectionString))
+            {
+                conn.Open();
+                var cmd = new SQLiteCommand("DELETE FROM reservations WHERE Id = @Id", conn);
+                cmd.Parameters.AddWithValue("@Id", id);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         public static void InsertReservation(Rezervasyon r)
         {
             using (var conn = new SQLiteConnection(ConnectionString))

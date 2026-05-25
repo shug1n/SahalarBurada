@@ -14,6 +14,26 @@ namespace SahalarBurada.Forms
         public FormSahaEkle()
         {
             InitializeComponent();
+            this.ClientSize = new Size(1000, 700);
+
+            pnlScroll.Controls.Remove(btnGeri);
+            pnlScroll.Controls.Remove(btnOzet);
+            this.Controls.Add(btnGeri);
+            this.Controls.Add(btnOzet);
+            btnGeri.BringToFront();
+            btnOzet.BringToFront();
+
+            this.Resize += (s, e) => {
+                btnGeri.Location = new Point(30, this.ClientSize.Height - 60);
+                btnOzet.Location = new Point(190, this.ClientSize.Height - 60);
+            };
+            btnGeri.Location = new Point(30, this.ClientSize.Height - 60);
+            btnOzet.Location = new Point(190, this.ClientSize.Height - 60);
+
+            var allControls = new List<Control>();
+            foreach (Control c in pnlScroll.Controls) allControls.Add(c);
+            UIHelper.CenterControlsInCard(pnlScroll, allControls.ToArray());
+
             SetupLogic();
         }
 

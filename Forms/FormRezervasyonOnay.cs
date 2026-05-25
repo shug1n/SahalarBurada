@@ -17,7 +17,27 @@ namespace SahalarBurada.Forms
         {
             _saha = saha; _tarih = tarih; _saat = saat;
             InitializeComponent();
+            this.ClientSize = new Size(1000, 700);
+
             SetupLogic();
+
+            pnlScroll.Controls.Remove(btnGeri);
+            pnlScroll.Controls.Remove(btnOnayla);
+            this.Controls.Add(btnGeri);
+            this.Controls.Add(btnOnayla);
+            btnGeri.BringToFront();
+            btnOnayla.BringToFront();
+
+            this.Resize += (s, e) => {
+                btnGeri.Location = new Point(30, this.ClientSize.Height - 60);
+                btnOnayla.Location = new Point(220, this.ClientSize.Height - 60);
+            };
+            btnGeri.Location = new Point(30, this.ClientSize.Height - 60);
+            btnOnayla.Location = new Point(220, this.ClientSize.Height - 60);
+
+            var allControls = new System.Collections.Generic.List<Control>();
+            foreach (Control c in pnlScroll.Controls) allControls.Add(c);
+            UIHelper.CenterControlsInCard(pnlScroll, allControls.ToArray(), false);
         }
 
         private void SetupLogic()
@@ -29,7 +49,6 @@ namespace SahalarBurada.Forms
             lblSaatDeger.Text   = $"{_saat} – {saatSonu}  (1 saat)";
             lblFiyatDeger.Text  = $"{_saha.FiyatSaat:N0} ₺  (toplam saha ücreti)";
 
-            // Kişi başı hesap için başlangıç
             HesaplaKisiBasi();
 
             if (!Oturum.GirisYapildi)
@@ -37,8 +56,7 @@ namespace SahalarBurada.Forms
                 pnlMisafir.Visible = true;
                 pnlMisafir.Location = new System.Drawing.Point(35, 310);
                 lblHata.Location   = new System.Drawing.Point(35, 485);
-                btnGeri.Location   = new System.Drawing.Point(35, 510);
-                btnOnayla.Location = new System.Drawing.Point(225, 510);
+                UIHelper.SetPlaceholder(txtMisafirTelefon, "Örn: 0532 123 45 67");
             }
             else
             {
@@ -46,8 +64,6 @@ namespace SahalarBurada.Forms
                 lblAktifKullanici.Text = $"👤  {Oturum.AktifKullanici.Ad} {Oturum.AktifKullanici.Soyad} adına rezervasyon yapılacak.";
                 lblAktifKullanici.Location = new System.Drawing.Point(35, 310);
                 lblHata.Location   = new System.Drawing.Point(35, 348);
-                btnGeri.Location   = new System.Drawing.Point(35, 374);
-                btnOnayla.Location = new System.Drawing.Point(225, 374);
             }
         }
 
@@ -80,6 +96,15 @@ namespace SahalarBurada.Forms
                 misafirTelefon = txtMisafirTelefon?.Text.Trim();
                 if (string.IsNullOrEmpty(misafirAd) || string.IsNullOrEmpty(misafirTelefon))
                 { lblHata.Text = "Lütfen ad-soyad ve telefon bilgilerinizi girin."; lblHata.Visible = true; return; }
+                
+                string cleanPhone = misafirTelefon.Replace(" ", "").Replace("-", "").Replace("(", "").Replace(")", "");
+                if (!System.Text.RegularExpressions.Regex.IsMatch(cleanPhone, @"^0?5\d{9}$"))
+                {
+                    lblHata.Text = "Lütfen geçerli bir Türkiye cep telefonu numarası giriniz.";
+                    lblHata.Visible = true;
+                    return;
+                }
+                misafirTelefon = cleanPhone;
             }
             else
             {

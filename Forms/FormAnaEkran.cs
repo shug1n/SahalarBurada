@@ -10,6 +10,7 @@ namespace SahalarBurada.Forms
         public FormAnaEkran()
         {
             InitializeComponent();
+            this.ClientSize = new Size(1000, 700);
         }
 
 

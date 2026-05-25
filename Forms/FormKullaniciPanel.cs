@@ -19,7 +19,7 @@ namespace SahalarBurada.Forms
 
         public FormKullaniciPanel()
         {
-            this.Size = new Size(1000, 650);
+            this.ClientSize = new Size(1000, 700);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.Text = "Kullanıcı Paneli";
             this.BackColor = UIHelper.CArkaplan;
@@ -94,6 +94,15 @@ namespace SahalarBurada.Forms
             dgvRezervasyonlar.Columns.Add("Saat", "Saat");
             dgvRezervasyonlar.Columns.Add("Fiyat", "Fiyat");
 
+            var btnIptal = new DataGridViewButtonColumn();
+            btnIptal.Name = "btnIptal";
+            btnIptal.HeaderText = "İşlem";
+            btnIptal.Text = "İptal Et";
+            btnIptal.UseColumnTextForButtonValue = true;
+            btnIptal.FlatStyle = FlatStyle.Flat;
+            dgvRezervasyonlar.Columns.Add(btnIptal);
+            dgvRezervasyonlar.CellContentClick += DgvRezervasyonlar_CellContentClick;
+
             var padding = new Padding(35, 10, 35, 35);
             var pnlGridContainer = new Panel { Dock = DockStyle.Fill, Padding = padding };
             pnlGridContainer.Controls.Add(dgvRezervasyonlar);
@@ -128,13 +137,27 @@ namespace SahalarBurada.Forms
                         konum = (saha.Sehir + " / " + saha.Ilce).Trim(' ', '/');
                         adres = saha.Adres;
                     }
-                    dgvRezervasyonlar.Rows.Add(r.SahaAdi, konum, adres, r.Tarih.ToString("dd MMMM yyyy"), r.Saat, r.ToplamFiyat.ToString("N0") + " ₺");
+                    int idx = dgvRezervasyonlar.Rows.Add(r.SahaAdi, konum, adres, r.Tarih.ToString("dd MMMM yyyy"), r.Saat, r.ToplamFiyat.ToString("N0") + " ₺");
+                    dgvRezervasyonlar.Rows[idx].Tag = r.Id;
                     count++;
                 }
             }
             lblCount.Text = count > 0 
                 ? $"Toplam {count} rezervasyonunuz bulunuyor." 
                 : "Henüz bir rezervasyonunuz yok. Yeni saha ara butonuna tıklayarak arama yapabilirsiniz.";
+        }
+
+        private void DgvRezervasyonlar_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && dgvRezervasyonlar.Columns[e.ColumnIndex].Name == "btnIptal")
+            {
+                if (MessageBox.Show("Bu rezervasyonu iptal etmek istediğinize emin misiniz?", "Rezervasyon İptali", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    string id = dgvRezervasyonlar.Rows[e.RowIndex].Tag.ToString();
+                    SahaServisi.RezervasyonIptal(id);
+                    RezervasyonlariYukle();
+                }
+            }
         }
 
         private void BtnYeniArama_Click(object sender, EventArgs e)

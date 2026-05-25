@@ -12,6 +12,7 @@ namespace SahalarBurada.Forms
         public FormOrganizatorPanel()
         {
             InitializeComponent();
+            this.ClientSize = new Size(1000, 700);
             SetupLogic();
         }
 

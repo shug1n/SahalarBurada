@@ -12,6 +12,17 @@ namespace SahalarBurada.Forms
         public FormSahaAra()
         {
             InitializeComponent();
+            this.ClientSize = new Size(1000, 700);
+            pnlContent.Dock = DockStyle.None;
+            
+            // Extract btnGeri to put it outside the card
+            pnlContent.Controls.Remove(btnGeri);
+            this.Controls.Add(btnGeri);
+            this.Resize += (s, e) => btnGeri.Location = new Point(30, this.ClientSize.Height - 60);
+            btnGeri.Location = new Point(30, this.ClientSize.Height - 60);
+            
+            UIHelper.CenterControlsInCard(this, new Control[] { pnlContent });
+            
             SetupLogic();
         }
 

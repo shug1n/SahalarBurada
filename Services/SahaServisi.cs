@@ -85,6 +85,11 @@ namespace SahalarBurada.Services
         public static List<Rezervasyon> TumRezervasyonlar()
             => DatabaseServisi.GetAllReservations();
 
+        public static void RezervasyonIptal(string id)
+        {
+            DatabaseServisi.DeleteReservation(id);
+        }
+
         private static string TurkceGunAdi(DayOfWeek gun)
         {
             switch (gun)
