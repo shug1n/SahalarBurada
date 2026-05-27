@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using SahalarBurada.Helpers;
@@ -16,6 +17,27 @@ namespace SahalarBurada.Forms
             UIHelper.CenterControlsInCard(this, new Control[] { pnlTabBar, pnlGiris, pnlKayit });
             this.Resize += (s, e) => btnGeri.Location = new Point(30, this.ClientSize.Height - 60);
             btnGeri.Location = new Point(30, this.ClientSize.Height - 60);
+            LoadAyarlar();
+        }
+
+        private void LoadAyarlar()
+        {
+            var ayarlar = AyarlarHelper.Yukle();
+            txtGirisEposta.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            txtGirisEposta.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            var source = new AutoCompleteStringCollection();
+            if (ayarlar.KiraciOncekiEpostalar != null)
+            {
+                source.AddRange(ayarlar.KiraciOncekiEpostalar.ToArray());
+            }
+            txtGirisEposta.AutoCompleteCustomSource = source;
+
+            if (ayarlar.KiraciBeniHatirla)
+            {
+                txtGirisEposta.Text = ayarlar.KiraciKayitliEposta;
+                txtGirisSifre.Text = ayarlar.KiraciKayitliSifre;
+                chkBeniHatirla.Checked = true;
+            }
         }
 
         private void btnTabGiris_Click(object sender, EventArgs e) => TabGoster(true);
@@ -42,8 +64,33 @@ namespace SahalarBurada.Forms
             lblGirisHata.Visible = false;
             if (string.IsNullOrWhiteSpace(txtGirisEposta.Text) || string.IsNullOrWhiteSpace(txtGirisSifre.Text))
             { lblGirisHata.Text = "Lütfen tüm alanları doldurun."; lblGirisHata.Visible = true; return; }
-            var (ok, msg, k) = KullaniciServisi.KiracıGiris(txtGirisEposta.Text.Trim(), txtGirisSifre.Text);
+            string eposta = txtGirisEposta.Text.Trim();
+            var (ok, msg, k) = KullaniciServisi.KiracıGiris(eposta, txtGirisSifre.Text);
             if (!ok) { lblGirisHata.Text = msg; lblGirisHata.Visible = true; return; }
+
+            var ayarlar = AyarlarHelper.Yukle();
+            if (ayarlar.KiraciOncekiEpostalar == null)
+            {
+                ayarlar.KiraciOncekiEpostalar = new List<string>();
+            }
+            if (!ayarlar.KiraciOncekiEpostalar.Contains(eposta))
+            {
+                ayarlar.KiraciOncekiEpostalar.Add(eposta);
+            }
+
+            ayarlar.KiraciBeniHatirla = chkBeniHatirla.Checked;
+            if (chkBeniHatirla.Checked)
+            {
+                ayarlar.KiraciKayitliEposta = eposta;
+                ayarlar.KiraciKayitliSifre = txtGirisSifre.Text;
+            }
+            else
+            {
+                ayarlar.KiraciKayitliEposta = "";
+                ayarlar.KiraciKayitliSifre = "";
+            }
+            AyarlarHelper.Kaydet(ayarlar);
+
             Oturum.AktifKullanici = k;
             GirisBasarili();
         }
@@ -51,11 +98,24 @@ namespace SahalarBurada.Forms
         private void BtnKayit_Click(object sender, EventArgs e)
         {
             lblKayitHata.Visible = false;
-            if (string.IsNullOrWhiteSpace(txtKayitAd.Text) || string.IsNullOrWhiteSpace(txtKayitSoyad.Text) || string.IsNullOrWhiteSpace(txtKayitEposta.Text) || string.IsNullOrWhiteSpace(txtKayitSifre.Text))
-            { lblKayitHata.Text = "Lütfen tüm alanları doldurun."; lblKayitHata.Visible = true; return; }
+            if (string.IsNullOrWhiteSpace(txtKayitAd.Text) || string.IsNullOrWhiteSpace(txtKayitSoyad.Text) || 
+                string.IsNullOrWhiteSpace(txtKayitEposta.Text) || string.IsNullOrWhiteSpace(txtKayitTelefon.Text) || 
+                string.IsNullOrWhiteSpace(txtKayitSifre.Text))
+            { 
+                lblKayitHata.Text = "Lütfen tüm alanları doldurun (Telefon zorunludur)."; 
+                lblKayitHata.Visible = true; 
+                return; 
+            }
             if (txtKayitSifre.Text != txtKayitSifreTekrar.Text) { lblKayitHata.Text = "Şifreler uyuşmuyor."; lblKayitHata.Visible = true; return; }
             if (txtKayitSifre.Text.Length < 6) { lblKayitHata.Text = "Şifre en az 6 karakter."; lblKayitHata.Visible = true; return; }
-            var (ok, msg, k) = KullaniciServisi.KiracıKayit(txtKayitAd.Text.Trim(), txtKayitSoyad.Text.Trim(), txtKayitEposta.Text.Trim(), txtKayitSifre.Text);
+            
+            var (ok, msg, k) = KullaniciServisi.KiracıKayit(
+                txtKayitAd.Text.Trim(), 
+                txtKayitSoyad.Text.Trim(), 
+                txtKayitEposta.Text.Trim(), 
+                txtKayitTelefon.Text.Trim(), 
+                txtKayitSifre.Text);
+
             if (!ok) { lblKayitHata.Text = msg; lblKayitHata.Visible = true; return; }
             Oturum.AktifKullanici = k;
             GirisBasarili();

@@ -23,7 +23,8 @@ namespace SahalarBurada.Services
                     Soyad TEXT,
                     Eposta TEXT,
                     SifreHash TEXT,
-                    KayitTarihi TEXT
+                    KayitTarihi TEXT,
+                    Telefon TEXT
                 );";
                 using (var cmd = new SQLiteCommand(createUsers, conn)) cmd.ExecuteNonQuery();
 
@@ -49,9 +50,32 @@ namespace SahalarBurada.Services
                     MusaitGunler TEXT,
                     MusaitSaatler TEXT,
                     Aciklama TEXT,
-                    EklenmeTarihi TEXT
+                    EklenmeTarihi TEXT,
+                    Telefon TEXT
                 );";
                 using (var cmd = new SQLiteCommand(createFields, conn)) cmd.ExecuteNonQuery();
+
+                // Schema migration: Alter table to add Telefon column dynamically to fields if it doesn't exist
+                try
+                {
+                    using (var cmd = new SQLiteCommand("ALTER TABLE fields ADD COLUMN Telefon TEXT;", conn))
+                        cmd.ExecuteNonQuery();
+                }
+                catch (SQLiteException)
+                {
+                    // Column already exists, ignore safely
+                }
+
+                // Schema migration: Alter table to add Telefon column dynamically to users if it doesn't exist
+                try
+                {
+                    using (var cmd = new SQLiteCommand("ALTER TABLE users ADD COLUMN Telefon TEXT;", conn))
+                        cmd.ExecuteNonQuery();
+                }
+                catch (SQLiteException)
+                {
+                    // Column already exists, ignore safely
+                }
 
                 var createReservations = @"CREATE TABLE IF NOT EXISTS reservations (
                     Id TEXT PRIMARY KEY,
@@ -75,7 +99,7 @@ namespace SahalarBurada.Services
             using (var conn = new SQLiteConnection(ConnectionString))
             {
                 conn.Open();
-                string sql = "INSERT INTO users (Id, Ad, Soyad, Eposta, SifreHash, KayitTarihi) VALUES (@Id, @Ad, @Soyad, @Eposta, @SifreHash, @KayitTarihi)";
+                string sql = "INSERT INTO users (Id, Ad, Soyad, Eposta, SifreHash, KayitTarihi, Telefon) VALUES (@Id, @Ad, @Soyad, @Eposta, @SifreHash, @KayitTarihi, @Telefon)";
                 using (var cmd = new SQLiteCommand(sql, conn))
                 {
                     cmd.Parameters.AddWithValue("@Id", k.Id);
@@ -84,6 +108,7 @@ namespace SahalarBurada.Services
                     cmd.Parameters.AddWithValue("@Eposta", k.Eposta);
                     cmd.Parameters.AddWithValue("@SifreHash", k.SifreHash);
                     cmd.Parameters.AddWithValue("@KayitTarihi", k.KayitTarihi.ToString("o"));
+                    cmd.Parameters.AddWithValue("@Telefon", k.Telefon ?? "");
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -109,7 +134,8 @@ namespace SahalarBurada.Services
                                 Soyad = reader["Soyad"].ToString(),
                                 Eposta = reader["Eposta"].ToString(),
                                 SifreHash = reader["SifreHash"].ToString(),
-                                KayitTarihi = DateTime.Parse(reader["KayitTarihi"].ToString())
+                                KayitTarihi = DateTime.Parse(reader["KayitTarihi"].ToString()),
+                                Telefon = reader["Telefon"] != DBNull.Value ? reader["Telefon"].ToString() : ""
                             };
                         }
                     }
@@ -138,7 +164,8 @@ namespace SahalarBurada.Services
                                 Soyad = reader["Soyad"].ToString(),
                                 Eposta = reader["Eposta"].ToString(),
                                 SifreHash = reader["SifreHash"].ToString(),
-                                KayitTarihi = DateTime.Parse(reader["KayitTarihi"].ToString())
+                                KayitTarihi = DateTime.Parse(reader["KayitTarihi"].ToString()),
+                                Telefon = reader["Telefon"] != DBNull.Value ? reader["Telefon"].ToString() : ""
                             };
                         }
                     }
@@ -233,8 +260,8 @@ namespace SahalarBurada.Services
             {
                 conn.Open();
                 string sql = @"INSERT INTO fields 
-                    (Id, OrganizatorId, Ad, Sehir, Ilce, Adres, FiyatSaat, MusaitGunler, MusaitSaatler, Aciklama, EklenmeTarihi) 
-                    VALUES (@Id, @OrganizatorId, @Ad, @Sehir, @Ilce, @Adres, @FiyatSaat, @MusaitGunler, @MusaitSaatler, @Aciklama, @EklenmeTarihi)";
+                    (Id, OrganizatorId, Ad, Sehir, Ilce, Adres, FiyatSaat, MusaitGunler, MusaitSaatler, Aciklama, EklenmeTarihi, Telefon) 
+                    VALUES (@Id, @OrganizatorId, @Ad, @Sehir, @Ilce, @Adres, @FiyatSaat, @MusaitGunler, @MusaitSaatler, @Aciklama, @EklenmeTarihi, @Telefon)";
                 using (var cmd = new SQLiteCommand(sql, conn))
                 {
                     cmd.Parameters.AddWithValue("@Id", s.Id);
@@ -248,6 +275,7 @@ namespace SahalarBurada.Services
                     cmd.Parameters.AddWithValue("@MusaitSaatler", Jss.Serialize(s.MüsaitSaatler ?? new List<string>()));
                     cmd.Parameters.AddWithValue("@Aciklama", s.Aciklama);
                     cmd.Parameters.AddWithValue("@EklenmeTarihi", s.EklenmeTarihi.ToString("o"));
+                    cmd.Parameters.AddWithValue("@Telefon", s.Telefon ?? (object)DBNull.Value);
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -277,7 +305,8 @@ namespace SahalarBurada.Services
                             MüsaitGunler = Jss.Deserialize<List<string>>(reader["MusaitGunler"].ToString()),
                             MüsaitSaatler = Jss.Deserialize<List<string>>(reader["MusaitSaatler"].ToString()),
                             Aciklama = reader["Aciklama"].ToString(),
-                            EklenmeTarihi = DateTime.Parse(reader["EklenmeTarihi"].ToString())
+                            EklenmeTarihi = DateTime.Parse(reader["EklenmeTarihi"].ToString()),
+                            Telefon = reader["Telefon"] != DBNull.Value ? reader["Telefon"].ToString() : ""
                         };
                         list.Add(s);
                     }

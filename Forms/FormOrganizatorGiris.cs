@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using SahalarBurada.Helpers;
@@ -16,6 +17,27 @@ namespace SahalarBurada.Forms
             UIHelper.CenterControlsInCard(this, new Control[] { pnlTabBar, pnlGiris, pnlKayit });
             this.Resize += (s, e) => btnGeri.Location = new Point(30, this.ClientSize.Height - 60);
             btnGeri.Location = new Point(30, this.ClientSize.Height - 60);
+            LoadAyarlar();
+        }
+
+        private void LoadAyarlar()
+        {
+            var ayarlar = AyarlarHelper.Yukle();
+            txtGirisEposta.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            txtGirisEposta.AutoCompleteSource = AutoCompleteSource.CustomSource;
+            var source = new AutoCompleteStringCollection();
+            if (ayarlar.OrgOncekiEpostalar != null)
+            {
+                source.AddRange(ayarlar.OrgOncekiEpostalar.ToArray());
+            }
+            txtGirisEposta.AutoCompleteCustomSource = source;
+
+            if (ayarlar.OrgBeniHatirla)
+            {
+                txtGirisEposta.Text = ayarlar.OrgKayitliEposta;
+                txtGirisSifre.Text = ayarlar.OrgKayitliSifre;
+                chkBeniHatirla.Checked = true;
+            }
         }
 
         private void btnTabGiris_Click(object sender, EventArgs e) => TabGoster(true);
@@ -42,8 +64,33 @@ namespace SahalarBurada.Forms
             lblGirisHata.Visible = false;
             if (string.IsNullOrWhiteSpace(txtGirisEposta.Text) || string.IsNullOrWhiteSpace(txtGirisSifre.Text))
             { lblGirisHata.Text = "Lütfen tüm alanları doldurun."; lblGirisHata.Visible = true; return; }
-            var (ok, msg, org) = KullaniciServisi.OrgGiris(txtGirisEposta.Text.Trim(), txtGirisSifre.Text);
+            string eposta = txtGirisEposta.Text.Trim();
+            var (ok, msg, org) = KullaniciServisi.OrgGiris(eposta, txtGirisSifre.Text);
             if (!ok) { lblGirisHata.Text = msg; lblGirisHata.Visible = true; return; }
+
+            var ayarlar = AyarlarHelper.Yukle();
+            if (ayarlar.OrgOncekiEpostalar == null)
+            {
+                ayarlar.OrgOncekiEpostalar = new List<string>();
+            }
+            if (!ayarlar.OrgOncekiEpostalar.Contains(eposta))
+            {
+                ayarlar.OrgOncekiEpostalar.Add(eposta);
+            }
+
+            ayarlar.OrgBeniHatirla = chkBeniHatirla.Checked;
+            if (chkBeniHatirla.Checked)
+            {
+                ayarlar.OrgKayitliEposta = eposta;
+                ayarlar.OrgKayitliSifre = txtGirisSifre.Text;
+            }
+            else
+            {
+                ayarlar.OrgKayitliEposta = "";
+                ayarlar.OrgKayitliSifre = "";
+            }
+            AyarlarHelper.Kaydet(ayarlar);
+
             Oturum.AktifOrganizator = org; AcOrgPanel();
         }
 

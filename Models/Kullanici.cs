@@ -10,5 +10,6 @@ namespace SahalarBurada.Models
         public string Eposta { get; set; }
         public string SifreHash { get; set; }
         public DateTime KayitTarihi { get; set; }
+        public string Telefon { get; set; }
     }
 }

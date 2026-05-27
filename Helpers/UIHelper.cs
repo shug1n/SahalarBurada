@@ -271,5 +271,57 @@ namespace SahalarBurada.Helpers
         {
             SendMessage(textBox.Handle, EM_SETCUEBANNER, 0, placeholderText);
         }
+
+        public static void EnableEnterKeySelection(Form form)
+        {
+            if (form == null) return;
+            EnableEnterKeySelectionForControls(form.Controls);
+        }
+
+        private static void EnableEnterKeySelectionForControls(Control.ControlCollection controls)
+        {
+            if (controls == null) return;
+            foreach (Control c in controls)
+            {
+                if (c is CheckBox chk)
+                {
+                    chk.KeyDown += (sender, e) =>
+                    {
+                        if (e.KeyCode == Keys.Enter)
+                        {
+                            chk.Checked = !chk.Checked;
+                            e.Handled = true;
+                            e.SuppressKeyPress = true;
+                        }
+                    };
+                }
+                else if (c is ComboBox cmb)
+                {
+                    cmb.KeyDown += (sender, e) =>
+                    {
+                        if (e.KeyCode == Keys.Enter)
+                        {
+                            if (cmb.DroppedDown)
+                            {
+                                cmb.DroppedDown = false;
+                                e.Handled = true;
+                                e.SuppressKeyPress = true;
+                            }
+                            else
+                            {
+                                cmb.DroppedDown = true;
+                                e.Handled = true;
+                                e.SuppressKeyPress = true;
+                            }
+                        }
+                    };
+                }
+
+                if (c.HasChildren)
+                {
+                    EnableEnterKeySelectionForControls(c.Controls);
+                }
+            }
+        }
     }
 }

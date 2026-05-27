@@ -31,6 +31,7 @@ namespace SahalarBurada.Forms
             lblSehirDeger.Text    = _saha.Sehir ?? "—";
             lblIlceDeger.Text     = _saha.Ilce  ?? "—";
             lblFiyatDeger.Text    = _saha.FiyatSaat.ToString("N0") + " ₺ / saat";
+            lblTelefonDeger.Text  = string.IsNullOrWhiteSpace(_saha.Telefon) ? "—" : _saha.Telefon;
             lblGunlerDeger.Text   = string.Join(", ", _saha.MüsaitGunler);
             lblSaatlerDeger.Text  = $"{_saha.MüsaitSaatler.Count} dilim  ({_saha.MüsaitSaatler[0]} → {_saha.MüsaitSaatler[_saha.MüsaitSaatler.Count - 1]})";
             lblAciklamaDeger.Text = string.IsNullOrWhiteSpace(_saha.Aciklama) ? "—" : _saha.Aciklama;

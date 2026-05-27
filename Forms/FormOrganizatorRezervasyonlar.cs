@@ -9,160 +9,101 @@ using SahalarBurada.Services;
 
 namespace SahalarBurada.Forms
 {
-    public class FormOrganizatorRezervasyonlar : Form
+    public partial class FormOrganizatorRezervasyonlar : BaseChildForm
     {
-        private Panel pnlHeader;
-        private Panel pnlFilters;
-        private Label lblSahaSec;
-        private ComboBox cbSahalar;
-        private Label lblTarihSec;
-        private DateTimePicker dtpTarih;
-        private DataGridView dgvRezervasyonlar;
-        private Button btnKapat;
-
         private List<HaliSaha> _sahalar;
 
         public FormOrganizatorRezervasyonlar()
         {
-            this.Text = "SahalarBurada — Saha Rezervasyon & Doluluk Durumu";
-            this.ClientSize = new Size(950, 680);
-            this.StartPosition = FormStartPosition.CenterParent;
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.BackColor = UIHelper.CArkaplan;
-
-            SetupUI();
+            InitializeComponent();
+            
+            // Custom setup and dynamics
+            SetupDynamics();
             YukleSahalar();
         }
 
-        private void SetupUI()
+        private void SetupDynamics()
         {
-            // ── Header Panel ─────────────────────────────────────────────
-            pnlHeader = UIHelper.HeaderPanelOlustur(
-                "📅 Saha Rezervasyon & Doluluk Durumu",
-                "Seçilen saha ve tarihe göre saatlik doluluk oranını ve kiralayan bilgilerini görün."
-            );
-            this.Controls.Add(pnlHeader);
-
-            // ── Filters Panel ─────────────────────────────────────────────
-            pnlFilters = new Panel
+            // Custom header styling (gradient setup and custom title/subtitle)
+            pnlHeader.Paint += (s, e) =>
             {
-                Dock = DockStyle.Top,
-                Height = 70,
-                BackColor = UIHelper.CKart
-            };
-            pnlFilters.Paint += (s, e) =>
-            {
-                using (var pen = new Pen(UIHelper.CBolme, 1))
-                    e.Graphics.DrawLine(pen, 0, 69, pnlFilters.Width, 69);
+                var g = e.Graphics;
+                using (var br = new System.Drawing.Drawing2D.LinearGradientBrush(pnlHeader.ClientRectangle,
+                    UIHelper.CHeaderGradStart, UIHelper.CHeaderGradEnd,
+                    System.Drawing.Drawing2D.LinearGradientMode.Horizontal))
+                    g.FillRectangle(br, pnlHeader.ClientRectangle);
+                using (var pen = new Pen(Color.FromArgb(60, 255, 255, 255), 1))
+                    g.DrawLine(pen, 0, pnlHeader.Height - 1, pnlHeader.Width, pnlHeader.Height - 1);
             };
 
-            lblSahaSec = new Label
+            var lblTitle = new Label
             {
-                Text = "Saha Seçin:",
-                Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                ForeColor = UIHelper.CMetin,
-                Location = new Point(30, 24),
-                AutoSize = true
-            };
-
-            cbSahalar = new ComboBox
-            {
-                DropDownStyle = ComboBoxStyle.DropDownList,
-                Font = new Font("Segoe UI", 10),
-                Width = 240,
-                Location = new Point(120, 20)
-            };
-            cbSahalar.SelectedIndexChanged += FiltreDegisti;
-
-            lblTarihSec = new Label
-            {
-                Text = "Tarih Seçin:",
-                Font = new Font("Segoe UI", 10, FontStyle.Bold),
-                ForeColor = UIHelper.CMetin,
-                Location = new Point(390, 24),
-                AutoSize = true
-            };
-
-            dtpTarih = new DateTimePicker
-            {
-                Format = DateTimePickerFormat.Short,
-                Font = new Font("Segoe UI", 10),
-                Width = 150,
-                Location = new Point(480, 20)
-            };
-            dtpTarih.ValueChanged += FiltreDegisti;
-
-            btnKapat = new Button
-            {
-                Text = "Kapat",
-                BackColor = Color.FromArgb(100, 110, 100),
+                Text = "📅 Saha Rezervasyon & Doluluk Durumu",
+                Font = UIHelper.FBaslik,
                 ForeColor = Color.White,
-                FlatStyle = FlatStyle.Flat,
-                Size = new Size(100, 32),
-                Location = new Point(810, 18),
-                Font = new Font("Segoe UI", 9, FontStyle.Bold),
-                Cursor = Cursors.Hand
+                AutoSize = true,
+                Location = new Point(25, 16),
+                BackColor = Color.Transparent
             };
-            btnKapat.FlatAppearance.BorderSize = 0;
-            btnKapat.Click += (s, e) => this.Close();
-
-            pnlFilters.Controls.Add(lblSahaSec);
-            pnlFilters.Controls.Add(cbSahalar);
-            pnlFilters.Controls.Add(lblTarihSec);
-            pnlFilters.Controls.Add(dtpTarih);
-            pnlFilters.Controls.Add(btnKapat);
-            this.Controls.Add(pnlFilters);
-
-            // ── DataGridView ─────────────────────────────────────────────
-            dgvRezervasyonlar = new DataGridView
+            var lblSubtitle = new Label
             {
-                Dock = DockStyle.Fill,
-                BackgroundColor = UIHelper.CKart,
-                BorderStyle = BorderStyle.None,
-                AllowUserToAddRows = false,
-                AllowUserToDeleteRows = false,
-                ReadOnly = true,
-                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
-                RowHeadersVisible = false,
-                CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal,
-                GridColor = UIHelper.CBolme,
-                EnableHeadersVisualStyles = false,
-                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill
+                Text = "Seçilen saha ve tarihe göre saatlik doluluk oranını ve kiralayan bilgilerini görün.",
+                Font = UIHelper.FKucuk,
+                ForeColor = Color.FromArgb(180, 255, 255, 255),
+                AutoSize = true,
+                Location = new Point(27, 54),
+                BackColor = Color.Transparent
             };
+            pnlHeader.Controls.Add(lblTitle);
+            pnlHeader.Controls.Add(lblSubtitle);
+            lblTitle.BringToFront();
+            lblSubtitle.BringToFront();
 
+            // Set read-only false to allow button column clicks
+            dgvRezervasyonlar.ReadOnly = false;
+
+            // Setup DGV columns and settings
             dgvRezervasyonlar.Columns.Add("Saat", "Saat");
             dgvRezervasyonlar.Columns.Add("Durum", "Durum");
             dgvRezervasyonlar.Columns.Add("Kiralayan", "Kiralayan (Ad Soyad)");
             dgvRezervasyonlar.Columns.Add("Iletisim", "İletişim Bilgisi");
             dgvRezervasyonlar.Columns.Add("Ucret", "Toplam Ücret");
 
+            var btnDetayCol = new DataGridViewButtonColumn();
+            btnDetayCol.Name = "btnDetay";
+            btnDetayCol.HeaderText = "İşlem";
+            btnDetayCol.Text = "🔍 Detay";
+            btnDetayCol.UseColumnTextForButtonValue = true;
+            btnDetayCol.FlatStyle = FlatStyle.Flat;
+            btnDetayCol.DefaultCellStyle.BackColor = UIHelper.CKart;
+            btnDetayCol.DefaultCellStyle.ForeColor = UIHelper.CAna;
+            btnDetayCol.DefaultCellStyle.SelectionBackColor = Color.FromArgb(235, 245, 235);
+            btnDetayCol.DefaultCellStyle.SelectionForeColor = UIHelper.CAna;
+            btnDetayCol.DefaultCellStyle.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+            btnDetayCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgvRezervasyonlar.Columns.Add(btnDetayCol);
+
             // Kolon genişlik ayarları
             dgvRezervasyonlar.Columns["Saat"].Width = 100;
-            dgvRezervasyonlar.Columns["Durum"].Width = 120;
-            dgvRezervasyonlar.Columns["Kiralayan"].Width = 250;
-            dgvRezervasyonlar.Columns["Iletisim"].Width = 200;
-            dgvRezervasyonlar.Columns["Ucret"].Width = 150;
+            dgvRezervasyonlar.Columns["Durum"].Width = 100;
+            dgvRezervasyonlar.Columns["Kiralayan"].Width = 220;
+            dgvRezervasyonlar.Columns["Iletisim"].Width = 180;
+            dgvRezervasyonlar.Columns["Ucret"].Width = 120;
+            dgvRezervasyonlar.Columns["btnDetay"].Width = 120;
 
             UIHelper.DGVAyarla(dgvRezervasyonlar);
+        }
 
-            // Doluluk durumlarında BOŞ/DOLU renk hücre boyama ve özel çizim
-            dgvRezervasyonlar.CellFormatting += DgvRezervasyonlar_CellFormatting;
-            dgvRezervasyonlar.CellPainting += DgvRezervasyonlar_CellPainting;
+        private void PnlFilters_Paint(object sender, PaintEventArgs e)
+        {
+            using (var pen = new Pen(UIHelper.CBolme, 1))
+                e.Graphics.DrawLine(pen, 0, 69, pnlFilters.Width, 69);
+        }
 
-            var pnlGridContainer = new Panel
-            {
-                Dock = DockStyle.Fill,
-                Padding = new Padding(30, 20, 30, 30),
-                BackColor = UIHelper.CArkaplan
-            };
-            pnlGridContainer.Controls.Add(dgvRezervasyonlar);
-            this.Controls.Add(pnlGridContainer);
-
-            // Layout sıralaması
-            pnlFilters.BringToFront();
-            pnlHeader.SendToBack();
+        private void BtnKapat_Click(object sender, EventArgs e)
+        {
+            this.IsBackButtonClicked = true;
+            this.Close();
         }
 
         private void YukleSahalar()
@@ -238,7 +179,37 @@ namespace SahalarBurada.Forms
                     ucret = r.ToplamFiyat.ToString("N0") + " ₺";
                 }
 
-                dgvRezervasyonlar.Rows.Add(saat, durum, kiralayan, iletisim, ucret);
+                int idx = dgvRezervasyonlar.Rows.Add(saat, durum, kiralayan, iletisim, ucret);
+                if (rezervasyonlar.TryGetValue(saat, out var res))
+                {
+                    dgvRezervasyonlar.Rows[idx].Tag = res;
+                }
+                else
+                {
+                    dgvRezervasyonlar.Rows[idx].Tag = null;
+                }
+            }
+        }
+
+        private void DgvRezervasyonlar_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && dgvRezervasyonlar.Columns[e.ColumnIndex].Name == "btnDetay")
+            {
+                var r = dgvRezervasyonlar.Rows[e.RowIndex].Tag as Rezervasyon;
+                if (r != null)
+                {
+                    var f = new FormKiraciDetay(r);
+                    this.Hide();
+                    f.FormClosed += (s, ev) => {
+                        this.Show();
+                        RezervasyonlariGoster();
+                    };
+                    f.Show();
+                }
+                else
+                {
+                    MessageBox.Show("Bu saat dilimi boş olduğu için ayrıntı bulunmamaktadır.", "Bilgi", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
             }
         }
 

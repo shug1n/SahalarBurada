@@ -96,7 +96,12 @@ namespace SahalarBurada.Services
 
             try
             {
-                var parts = r.Saat.Split(':');
+                string saatKismi = r.Saat;
+                if (saatKismi.Contains("-"))
+                {
+                    saatKismi = saatKismi.Split('-')[0]; // Gets the start hour part, e.g. "15:00"
+                }
+                var parts = saatKismi.Split(':');
                 int hour = int.Parse(parts[0]);
                 int minute = int.Parse(parts[1]);
                 var rezervasyonZamani = r.Tarih.Date.AddHours(hour).AddMinutes(minute);

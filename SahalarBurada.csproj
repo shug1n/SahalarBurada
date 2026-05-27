@@ -65,6 +65,7 @@
     <Compile Include="Helpers\UIHelper.cs" />
     <Compile Include="Helpers\Oturum.cs" />
     <Compile Include="Helpers\TurkiyeVerisi.cs" />
+    <Compile Include="Helpers\AyarlarHelper.cs" />
     <!-- Services -->
     <Compile Include="Services\DatabaseServisi.cs" />
     <Compile Include="Services\KullaniciServisi.cs" />
@@ -94,6 +95,9 @@
     <Compile Include="Forms\FormKullaniciPanel.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\FormKullaniciPanel.Designer.cs">
+      <DependentUpon>FormKullaniciPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FormSahaAra.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -121,6 +125,15 @@
     <Compile Include="Forms\FormOrganizatorRezervasyonlar.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\FormOrganizatorRezervasyonlar.Designer.cs">
+      <DependentUpon>FormOrganizatorRezervasyonlar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormKiraciDetay.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormKiraciDetay.Designer.cs">
+      <DependentUpon>FormKiraciDetay.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FormSahaEkle.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -136,6 +149,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\FormAnaEkran.resx">
       <DependentUpon>FormAnaEkran.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormKiraciDetay.resx">
+      <DependentUpon>FormKiraciDetay.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormKiracıGiris.resx">
       <DependentUpon>FormKiracıGiris.cs</DependentUpon>

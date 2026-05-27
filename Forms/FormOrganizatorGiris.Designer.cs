@@ -17,6 +17,7 @@ namespace SahalarBurada.Forms
         private TextBox txtGirisEposta;
         private Label lblSifreGiris;
         private TextBox txtGirisSifre;
+        private CheckBox chkBeniHatirla;
         private Label lblDemoNot;
         private Label lblGirisHata;
         private Button btnGirisYap;
@@ -60,6 +61,7 @@ namespace SahalarBurada.Forms
             this.txtGirisEposta = new System.Windows.Forms.TextBox();
             this.lblSifreGiris = new System.Windows.Forms.Label();
             this.txtGirisSifre = new System.Windows.Forms.TextBox();
+            this.chkBeniHatirla = new System.Windows.Forms.CheckBox();
             this.lblDemoNot = new System.Windows.Forms.Label();
             this.lblGirisHata = new System.Windows.Forms.Label();
             this.btnGirisYap = new System.Windows.Forms.Button();
@@ -170,6 +172,7 @@ namespace SahalarBurada.Forms
             this.pnlGiris.Controls.Add(this.txtGirisEposta);
             this.pnlGiris.Controls.Add(this.lblSifreGiris);
             this.pnlGiris.Controls.Add(this.txtGirisSifre);
+            this.pnlGiris.Controls.Add(this.chkBeniHatirla);
             this.pnlGiris.Controls.Add(this.lblDemoNot);
             this.pnlGiris.Controls.Add(this.lblGirisHata);
             this.pnlGiris.Controls.Add(this.btnGirisYap);
@@ -223,15 +226,27 @@ namespace SahalarBurada.Forms
             this.txtGirisSifre.Size = new System.Drawing.Size(460, 25);
             this.txtGirisSifre.TabIndex = 3;
             // 
+            // chkBeniHatirla
+            // 
+            this.chkBeniHatirla.AutoSize = true;
+            this.chkBeniHatirla.Font = new System.Drawing.Font("Segoe UI", 9.5F);
+            this.chkBeniHatirla.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.chkBeniHatirla.Location = new System.Drawing.Point(50, 165);
+            this.chkBeniHatirla.Name = "chkBeniHatirla";
+            this.chkBeniHatirla.Size = new System.Drawing.Size(95, 21);
+            this.chkBeniHatirla.TabIndex = 4;
+            this.chkBeniHatirla.Text = "Beni Hatırla";
+            this.chkBeniHatirla.UseVisualStyleBackColor = true;
+            // 
             // lblDemoNot
             // 
             this.lblDemoNot.AutoSize = true;
             this.lblDemoNot.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblDemoNot.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lblDemoNot.Location = new System.Drawing.Point(50, 170);
+            this.lblDemoNot.Location = new System.Drawing.Point(50, 195);
             this.lblDemoNot.Name = "lblDemoNot";
             this.lblDemoNot.Size = new System.Drawing.Size(169, 15);
-            this.lblDemoNot.TabIndex = 4;
+            this.lblDemoNot.TabIndex = 5;
             this.lblDemoNot.Text = "Demo: demo@org.com  /  123456";
             // 
             // lblGirisHata
@@ -239,10 +254,10 @@ namespace SahalarBurada.Forms
             this.lblGirisHata.AutoSize = true;
             this.lblGirisHata.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.lblGirisHata.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(198)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
-            this.lblGirisHata.Location = new System.Drawing.Point(50, 195);
+            this.lblGirisHata.Location = new System.Drawing.Point(50, 220);
             this.lblGirisHata.Name = "lblGirisHata";
             this.lblGirisHata.Size = new System.Drawing.Size(33, 15);
-            this.lblGirisHata.TabIndex = 5;
+            this.lblGirisHata.TabIndex = 6;
             this.lblGirisHata.Text = "Hata";
             this.lblGirisHata.Visible = false;
             // 
@@ -255,10 +270,10 @@ namespace SahalarBurada.Forms
             this.btnGirisYap.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnGirisYap.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.btnGirisYap.ForeColor = System.Drawing.Color.White;
-            this.btnGirisYap.Location = new System.Drawing.Point(50, 220);
+            this.btnGirisYap.Location = new System.Drawing.Point(50, 245);
             this.btnGirisYap.Name = "btnGirisYap";
             this.btnGirisYap.Size = new System.Drawing.Size(460, 48);
-            this.btnGirisYap.TabIndex = 6;
+            this.btnGirisYap.TabIndex = 7;
             this.btnGirisYap.Text = "Giriş Yap";
             this.btnGirisYap.UseVisualStyleBackColor = false;
             this.btnGirisYap.Click += new System.EventHandler(this.BtnGiris_Click);

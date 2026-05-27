@@ -18,7 +18,9 @@ namespace SahalarBurada.Forms
         private Label lblIlce;
         private ComboBox cmbIlce;
         private Label lblFiyat;
-        private NumericUpDown nudFiyat;
+        private TextBox txtFiyat;
+        private Label lblTelefon;
+        private TextBox txtTelefon;
         private Label lblGunler;
         private CheckedListBox clbGunler;
         private Label lblSaatler;
@@ -52,7 +54,9 @@ namespace SahalarBurada.Forms
             this.lblIlce = new System.Windows.Forms.Label();
             this.cmbIlce = new System.Windows.Forms.ComboBox();
             this.lblFiyat = new System.Windows.Forms.Label();
-            this.nudFiyat = new System.Windows.Forms.NumericUpDown();
+            this.txtFiyat = new System.Windows.Forms.TextBox();
+            this.lblTelefon = new System.Windows.Forms.Label();
+            this.txtTelefon = new System.Windows.Forms.TextBox();
             this.lblGunler = new System.Windows.Forms.Label();
             this.clbGunler = new System.Windows.Forms.CheckedListBox();
             this.lblSaatler = new System.Windows.Forms.Label();
@@ -64,7 +68,6 @@ namespace SahalarBurada.Forms
             this.btnOzet = new System.Windows.Forms.Button();
             this.pnlHeader.SuspendLayout();
             this.pnlScroll.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudFiyat)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlHeader
@@ -115,7 +118,9 @@ namespace SahalarBurada.Forms
             this.pnlScroll.Controls.Add(this.lblIlce);
             this.pnlScroll.Controls.Add(this.cmbIlce);
             this.pnlScroll.Controls.Add(this.lblFiyat);
-            this.pnlScroll.Controls.Add(this.nudFiyat);
+            this.pnlScroll.Controls.Add(this.txtFiyat);
+            this.pnlScroll.Controls.Add(this.lblTelefon);
+            this.pnlScroll.Controls.Add(this.txtTelefon);
             this.pnlScroll.Controls.Add(this.lblGunler);
             this.pnlScroll.Controls.Add(this.clbGunler);
             this.pnlScroll.Controls.Add(this.lblSaatler);
@@ -228,17 +233,36 @@ namespace SahalarBurada.Forms
             this.lblFiyat.TabIndex = 8;
             this.lblFiyat.Text = "Saatlik Fiyat (₺): *";
             // 
-            // nudFiyat
             // 
-            this.nudFiyat.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.nudFiyat.Increment = new decimal(new int[] { 50, 0, 0, 0 });
-            this.nudFiyat.Location = new System.Drawing.Point(32, 256);
-            this.nudFiyat.Maximum = new decimal(new int[] { 9999, 0, 0, 0 });
-            this.nudFiyat.Minimum = new decimal(new int[] { 50, 0, 0, 0 });
-            this.nudFiyat.Name = "nudFiyat";
-            this.nudFiyat.Size = new System.Drawing.Size(612, 25);
-            this.nudFiyat.TabIndex = 9;
-            this.nudFiyat.Value = new decimal(new int[] { 300, 0, 0, 0 });
+            // txtFiyat
+            // 
+            this.txtFiyat.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtFiyat.Location = new System.Drawing.Point(32, 256);
+            this.txtFiyat.Name = "txtFiyat";
+            this.txtFiyat.Size = new System.Drawing.Size(295, 25);
+            this.txtFiyat.TabIndex = 9;
+            // 
+            // lblTelefon
+            // 
+            this.lblTelefon.AutoSize = true;
+            this.lblTelefon.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblTelefon.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.lblTelefon.Location = new System.Drawing.Point(349, 230);
+            this.lblTelefon.Name = "lblTelefon";
+            this.lblTelefon.Size = new System.Drawing.Size(206, 19);
+            this.lblTelefon.TabIndex = 100;
+            this.lblTelefon.Text = "Telefon (İletişim - Opsiyonel):";
+            // 
+            // txtTelefon
+            // 
+            this.txtTelefon.BackColor = System.Drawing.Color.White;
+            this.txtTelefon.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtTelefon.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtTelefon.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.txtTelefon.Location = new System.Drawing.Point(349, 256);
+            this.txtTelefon.Name = "txtTelefon";
+            this.txtTelefon.Size = new System.Drawing.Size(295, 25);
+            this.txtTelefon.TabIndex = 101;
             // 
             // lblGunler
             // 
@@ -369,7 +393,6 @@ namespace SahalarBurada.Forms
             this.pnlHeader.PerformLayout();
             this.pnlScroll.ResumeLayout(false);
             this.pnlScroll.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudFiyat)).EndInit();
             this.ResumeLayout(false);
 
         }

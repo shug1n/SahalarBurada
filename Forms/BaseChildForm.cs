@@ -8,6 +8,11 @@ namespace SahalarBurada.Forms
     {
         public bool IsBackButtonClicked { get; set; } = false;
 
+        public BaseChildForm()
+        {
+            this.Load += (s, e) => UIHelper.EnableEnterKeySelection(this);
+        }
+
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
             // Eğer kapanma nedeni kullanıcı kaynaklıysa (Çarpıya basma veya Geri tuşu ile Close() çağırma)

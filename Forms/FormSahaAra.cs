@@ -66,17 +66,34 @@ namespace SahalarBurada.Forms
         {
             var secili = cmbSaat.SelectedItem?.ToString();
             cmbSaat.Items.Clear();
-            int baslangic = 8;
-            
-            if (dtpTarih.Value.Date == DateTime.Today)
-            {
-                int guncelSaat = DateTime.Now.Hour;
-                if (guncelSaat + 1 > baslangic) 
-                    baslangic = guncelSaat + 1;
-            }
 
-            for (int i = baslangic; i <= 22; i++)
-                cmbSaat.Items.Add(i.ToString("D2") + ":00");
+            var tumSaatler = new System.Collections.Generic.List<(int baslangicSaat, string text)>
+            {
+                (15, "15:00-16:00"),
+                (16, "16:00-17:00"),
+                (17, "17:00-18:00"),
+                (18, "18:00-19:00"),
+                (19, "19:00-20:00"),
+                (20, "20:00-21:00"),
+                (21, "21:00-22:00"),
+                (22, "22:00-23:00"),
+                (23, "23:00-00:00"),
+                (0, "00:00-01:00")
+            };
+
+            bool bugun = dtpTarih.Value.Date == DateTime.Today;
+            int guncelSaat = DateTime.Now.Hour;
+
+            foreach (var item in tumSaatler)
+            {
+                if (bugun)
+                {
+                    int slotBaslangic = item.baslangicSaat == 0 ? 24 : item.baslangicSaat;
+                    if (guncelSaat >= slotBaslangic)
+                        continue;
+                }
+                cmbSaat.Items.Add(item.text);
+            }
 
             if (cmbSaat.Items.Count > 0)
             {

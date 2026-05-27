@@ -19,7 +19,7 @@ namespace SahalarBurada.Services
         }
 
         public static (bool basarili, string mesaj, Kullanici kullanici) KiracıKayit(
-            string ad, string soyad, string eposta, string sifre)
+            string ad, string soyad, string eposta, string telefon, string sifre)
         {
             if (DatabaseServisi.CheckUserExists(eposta))
                 return (false, "Bu e-posta zaten kayıtlı.", null);
@@ -27,7 +27,7 @@ namespace SahalarBurada.Services
             var k = new Kullanici
             {
                 Id = Guid.NewGuid().ToString(), Ad = ad, Soyad = soyad,
-                Eposta = eposta, SifreHash = SifreHelper.Hash(sifre),
+                Eposta = eposta, Telefon = telefon, SifreHash = SifreHelper.Hash(sifre),
                 KayitTarihi = DateTime.Now
             };
             DatabaseServisi.InsertUser(k);

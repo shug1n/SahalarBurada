@@ -21,6 +21,8 @@ namespace SahalarBurada.Forms
         private Label lblIlceDeger;
         private Label lblFiyatLabel;
         private Label lblFiyatDeger;
+        private Label lblTelefonLabel;
+        private Label lblTelefonDeger;
         private Label lblGunlerLabel;
         private Label lblGunlerDeger;
         private Label lblSaatlerLabel;
@@ -57,6 +59,8 @@ namespace SahalarBurada.Forms
             this.lblIlceDeger = new System.Windows.Forms.Label();
             this.lblFiyatLabel = new System.Windows.Forms.Label();
             this.lblFiyatDeger = new System.Windows.Forms.Label();
+            this.lblTelefonLabel = new System.Windows.Forms.Label();
+            this.lblTelefonDeger = new System.Windows.Forms.Label();
             this.lblGunlerLabel = new System.Windows.Forms.Label();
             this.lblGunlerDeger = new System.Windows.Forms.Label();
             this.lblSaatlerLabel = new System.Windows.Forms.Label();
@@ -134,6 +138,8 @@ namespace SahalarBurada.Forms
             this.pnlKart.Controls.Add(this.lblIlceDeger);
             this.pnlKart.Controls.Add(this.lblFiyatLabel);
             this.pnlKart.Controls.Add(this.lblFiyatDeger);
+            this.pnlKart.Controls.Add(this.lblTelefonLabel);
+            this.pnlKart.Controls.Add(this.lblTelefonDeger);
             this.pnlKart.Controls.Add(this.lblGunlerLabel);
             this.pnlKart.Controls.Add(this.lblGunlerDeger);
             this.pnlKart.Controls.Add(this.lblSaatlerLabel);
@@ -142,7 +148,7 @@ namespace SahalarBurada.Forms
             this.pnlKart.Controls.Add(this.lblAciklamaDeger);
             this.pnlKart.Location = new System.Drawing.Point(32, 18);
             this.pnlKart.Name = "pnlKart";
-            this.pnlKart.Size = new System.Drawing.Size(614, 432);
+            this.pnlKart.Size = new System.Drawing.Size(614, 464);
             this.pnlKart.TabIndex = 0;
             this.pnlKart.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlKart_Paint);
             // 
@@ -257,11 +263,31 @@ namespace SahalarBurada.Forms
             this.lblFiyatDeger.TabIndex = 8;
             this.lblFiyatDeger.Text = "-";
             // 
+            // lblTelefonLabel
+            // 
+            this.lblTelefonLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblTelefonLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.lblTelefonLabel.Location = new System.Drawing.Point(20, 180);
+            this.lblTelefonLabel.Name = "lblTelefonLabel";
+            this.lblTelefonLabel.Size = new System.Drawing.Size(145, 26);
+            this.lblTelefonLabel.TabIndex = 80;
+            this.lblTelefonLabel.Text = "Telefon (İletişim):";
+            // 
+            // lblTelefonDeger
+            // 
+            this.lblTelefonDeger.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.lblTelefonDeger.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
+            this.lblTelefonDeger.Location = new System.Drawing.Point(170, 180);
+            this.lblTelefonDeger.Name = "lblTelefonDeger";
+            this.lblTelefonDeger.Size = new System.Drawing.Size(430, 26);
+            this.lblTelefonDeger.TabIndex = 81;
+            this.lblTelefonDeger.Text = "-";
+            // 
             // lblGunlerLabel
             // 
             this.lblGunlerLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblGunlerLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.lblGunlerLabel.Location = new System.Drawing.Point(20, 180);
+            this.lblGunlerLabel.Location = new System.Drawing.Point(20, 212);
             this.lblGunlerLabel.Name = "lblGunlerLabel";
             this.lblGunlerLabel.Size = new System.Drawing.Size(145, 40);
             this.lblGunlerLabel.TabIndex = 9;
@@ -271,7 +297,7 @@ namespace SahalarBurada.Forms
             // 
             this.lblGunlerDeger.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblGunlerDeger.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lblGunlerDeger.Location = new System.Drawing.Point(170, 180);
+            this.lblGunlerDeger.Location = new System.Drawing.Point(170, 212);
             this.lblGunlerDeger.Name = "lblGunlerDeger";
             this.lblGunlerDeger.Size = new System.Drawing.Size(430, 40);
             this.lblGunlerDeger.TabIndex = 10;
@@ -281,7 +307,7 @@ namespace SahalarBurada.Forms
             // 
             this.lblSaatlerLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblSaatlerLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.lblSaatlerLabel.Location = new System.Drawing.Point(20, 226);
+            this.lblSaatlerLabel.Location = new System.Drawing.Point(20, 258);
             this.lblSaatlerLabel.Name = "lblSaatlerLabel";
             this.lblSaatlerLabel.Size = new System.Drawing.Size(145, 26);
             this.lblSaatlerLabel.TabIndex = 11;
@@ -291,7 +317,7 @@ namespace SahalarBurada.Forms
             // 
             this.lblSaatlerDeger.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblSaatlerDeger.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lblSaatlerDeger.Location = new System.Drawing.Point(170, 226);
+            this.lblSaatlerDeger.Location = new System.Drawing.Point(170, 258);
             this.lblSaatlerDeger.Name = "lblSaatlerDeger";
             this.lblSaatlerDeger.Size = new System.Drawing.Size(430, 26);
             this.lblSaatlerDeger.TabIndex = 12;
@@ -301,7 +327,7 @@ namespace SahalarBurada.Forms
             // 
             this.lblAciklamaLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblAciklamaLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.lblAciklamaLabel.Location = new System.Drawing.Point(20, 258);
+            this.lblAciklamaLabel.Location = new System.Drawing.Point(20, 290);
             this.lblAciklamaLabel.Name = "lblAciklamaLabel";
             this.lblAciklamaLabel.Size = new System.Drawing.Size(145, 48);
             this.lblAciklamaLabel.TabIndex = 13;
@@ -311,7 +337,7 @@ namespace SahalarBurada.Forms
             // 
             this.lblAciklamaDeger.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblAciklamaDeger.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
-            this.lblAciklamaDeger.Location = new System.Drawing.Point(170, 258);
+            this.lblAciklamaDeger.Location = new System.Drawing.Point(170, 290);
             this.lblAciklamaDeger.Name = "lblAciklamaDeger";
             this.lblAciklamaDeger.Size = new System.Drawing.Size(430, 48);
             this.lblAciklamaDeger.TabIndex = 14;

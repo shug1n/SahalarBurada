@@ -15,6 +15,7 @@ namespace SahalarBurada.Models
         public List<string> MüsaitGunler { get; set; }
         public List<string> MüsaitSaatler { get; set; }
         public string Aciklama { get; set; }
+        public string Telefon { get; set; }
         public DateTime EklenmeTarihi { get; set; }
     }
 }

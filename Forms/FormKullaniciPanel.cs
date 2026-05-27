@@ -6,100 +6,64 @@ using SahalarBurada.Services;
 
 namespace SahalarBurada.Forms
 {
-    public class FormKullaniciPanel : BaseChildForm
+    public partial class FormKullaniciPanel : BaseChildForm
     {
-        private Panel pnlHeader;
-        private DataGridView dgvRezervasyonlar;
-        private Button btnYeniArama;
-        private Button btnCikis;
-        private Panel pnlToolbar;
-        private Label lblCount;
-
         public FormKullaniciPanel()
         {
-            this.ClientSize = new Size(1000, 700);
-            this.StartPosition = FormStartPosition.CenterScreen;
-            this.Text = "Kullanıcı Paneli";
-            this.BackColor = UIHelper.CArkaplan;
-            this.Icon = SystemIcons.Application;
-
-            SetupUI();
+            InitializeComponent();
+            
+            // Custom setup and z-order dynamics
+            SetupDynamics();
             this.Load += (s, e) => RezervasyonlariYukle();
         }
 
-        private void SetupUI()
+        private void SetupDynamics()
         {
-            // ── Header (Gradient yeşil) ──────────────────────────────────
-            pnlHeader = UIHelper.HeaderPanelOlustur(
-                $"👤  Kullanıcı Paneli",
-                $"Hoş geldiniz, {Oturum.AktifKullanici.Ad} {Oturum.AktifKullanici.Soyad}  •  {Oturum.AktifKullanici.Eposta}"
-            );
-
-            btnYeniArama = new Button {
-                Text = "⚽  Yeni Saha Ara",
-                BackColor = UIHelper.CIkinci,
-                ForeColor = Color.White,
-                FlatStyle = FlatStyle.Flat,
-                Size = new Size(165, 38),
-                Location = new Point(this.Width - 310, 28),
-                Font = new Font("Segoe UI", 9, FontStyle.Bold),
-                Cursor = Cursors.Hand
+            // Custom header styling (gradient setup and custom subtitle)
+            pnlHeader.Paint += (s, e) =>
+            {
+                var g = e.Graphics;
+                using (var br = new System.Drawing.Drawing2D.LinearGradientBrush(pnlHeader.ClientRectangle,
+                    UIHelper.CHeaderGradStart, UIHelper.CHeaderGradEnd,
+                    System.Drawing.Drawing2D.LinearGradientMode.Horizontal))
+                    g.FillRectangle(br, pnlHeader.ClientRectangle);
+                using (var pen = new Pen(Color.FromArgb(60, 255, 255, 255), 1))
+                    g.DrawLine(pen, 0, pnlHeader.Height - 1, pnlHeader.Width, pnlHeader.Height - 1);
             };
-            btnYeniArama.FlatAppearance.BorderSize = 0;
-            btnYeniArama.FlatAppearance.MouseOverBackColor = UIHelper.CVurgu;
-            btnYeniArama.Click += BtnYeniArama_Click;
 
-            btnCikis = new Button {
-                Text = "Çıkış Yap",
-                BackColor = Color.FromArgb(185, 35, 35),
+            // Custom header label additions
+            var lblTitle = new Label
+            {
+                Text = "👤  Kullanıcı Paneli",
+                Font = UIHelper.FBaslik,
                 ForeColor = Color.White,
-                FlatStyle = FlatStyle.Flat,
-                Size = new Size(105, 38),
-                Location = new Point(this.Width - 135, 28),
-                Font = new Font("Segoe UI", 9, FontStyle.Bold),
-                Cursor = Cursors.Hand
+                AutoSize = true,
+                Location = new Point(25, 16),
+                BackColor = Color.Transparent
             };
-            btnCikis.FlatAppearance.BorderSize = 0;
-            btnCikis.FlatAppearance.MouseOverBackColor = Color.FromArgb(160, 20, 20);
-            btnCikis.Click += BtnCikis_Click;
+            var lblSubtitle = new Label
+            {
+                Text = $"Hoş geldiniz, {Oturum.AktifKullanici.Ad} {Oturum.AktifKullanici.Soyad}  •  {Oturum.AktifKullanici.Eposta}",
+                Font = UIHelper.FKucuk,
+                ForeColor = Color.FromArgb(180, 255, 255, 255),
+                AutoSize = true,
+                Location = new Point(27, 54),
+                BackColor = Color.Transparent
+            };
+            pnlHeader.Controls.Add(lblTitle);
+            pnlHeader.Controls.Add(lblSubtitle);
+            lblTitle.BringToFront();
+            lblSubtitle.BringToFront();
+            btnYeniArama.BringToFront();
+            btnCikis.BringToFront();
 
-            pnlHeader.Controls.Add(btnYeniArama);
-            pnlHeader.Controls.Add(btnCikis);
-            this.Controls.Add(pnlHeader);
-
-            // ── Toolbar ──────────────────────────────────────────────────
-            pnlToolbar = new Panel { Dock = DockStyle.Top, Height = 52, BackColor = UIHelper.CArkaplan };
             pnlToolbar.Paint += (s, e) =>
             {
                 using (var pen = new Pen(UIHelper.CBolme, 1))
                     e.Graphics.DrawLine(pen, 0, 51, pnlToolbar.Width, 51);
             };
-            lblCount = new Label {
-                Text = "Rezervasyonlarınız",
-                Font = new Font("Segoe UI", 11, FontStyle.Bold),
-                ForeColor = UIHelper.CMetin,
-                AutoSize = true,
-                Location = new Point(35, 15)
-            };
-            pnlToolbar.Controls.Add(lblCount);
-            this.Controls.Add(pnlToolbar);
 
-            // ── DataGridView ─────────────────────────────────────────────
-            dgvRezervasyonlar = new DataGridView {
-                Dock = DockStyle.Fill,
-                BackgroundColor = UIHelper.CKart,
-                BorderStyle = BorderStyle.None,
-                AllowUserToAddRows = false,
-                AllowUserToDeleteRows = false,
-                ReadOnly = false,   // false olmalı: button column click çalışsın
-                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
-                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
-                RowHeadersVisible = false,
-                CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal,
-                GridColor = UIHelper.CBolme,
-                EnableHeadersVisualStyles = false
-            };
-
+            // Setup DGV columns and settings
             dgvRezervasyonlar.Columns.Add(new DataGridViewTextBoxColumn { Name = "Saha",  HeaderText = "Saha Adı",  ReadOnly = true });
             dgvRezervasyonlar.Columns.Add(new DataGridViewTextBoxColumn { Name = "Konum", HeaderText = "İl / İlçe", ReadOnly = true });
             dgvRezervasyonlar.Columns.Add(new DataGridViewTextBoxColumn { Name = "Adres", HeaderText = "Adres",    ReadOnly = true });
@@ -122,22 +86,7 @@ namespace SahalarBurada.Forms
             btnIptal.DefaultCellStyle.Padding = new Padding(6, 4, 6, 4);
             dgvRezervasyonlar.Columns.Add(btnIptal);
 
-            // Önce kolonları ekle, SONRA DGVAyarla çağır — header style sonra gelince geçerli olur
             UIHelper.DGVAyarla(dgvRezervasyonlar);
-            dgvRezervasyonlar.CellContentClick += DgvRezervasyonlar_CellContentClick;
-
-            var pnlGridContainer = new Panel {
-                Dock = DockStyle.Fill,
-                Padding = new Padding(30, 12, 30, 30),
-                BackColor = UIHelper.CArkaplan
-            };
-            pnlGridContainer.Controls.Add(dgvRezervasyonlar);
-
-            // Fill önce, toolbar ve header sonra (WinForms z-order)
-            this.Controls.Clear();
-            this.Controls.Add(pnlGridContainer);
-            this.Controls.Add(pnlToolbar);
-            this.Controls.Add(pnlHeader);
 
             this.Resize += (s, e) => {
                 btnCikis.Location = new Point(this.Width - 145, 28);

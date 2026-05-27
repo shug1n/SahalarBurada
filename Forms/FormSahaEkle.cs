@@ -34,6 +34,7 @@ namespace SahalarBurada.Forms
             foreach (Control c in pnlScroll.Controls) allControls.Add(c);
             UIHelper.CenterControlsInCard(pnlScroll, allControls.ToArray());
 
+            UIHelper.SetPlaceholder(txtFiyat, "3000");
             SetupLogic();
         }
 
@@ -42,8 +43,14 @@ namespace SahalarBurada.Forms
             foreach (var g in new[] { "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar" })
                 clbGunler.Items.Add(g, true);
 
-            for (int i = 8; i <= 22; i++)
-                clbSaatler.Items.Add(i.ToString("D2") + ":00", true);
+            var saatlerListesi = new List<string>
+            {
+                "15:00-16:00", "16:00-17:00", "17:00-18:00", "18:00-19:00",
+                "19:00-20:00", "20:00-21:00", "21:00-22:00", "22:00-23:00",
+                "23:00-00:00", "00:00-01:00"
+            };
+            foreach (var s in saatlerListesi)
+                clbSaatler.Items.Add(s, true);
 
             // İl listesini yükle
             cmbSehir.Items.Clear();
@@ -82,6 +89,17 @@ namespace SahalarBurada.Forms
             if (gunler.Count == 0 || saatler.Count == 0)
             { lblHata.Text = "En az bir gün ve bir saat seçmelisiniz."; lblHata.Visible = true; return; }
 
+            double fiyat = 3000;
+            if (!string.IsNullOrWhiteSpace(txtFiyat.Text))
+            {
+                if (!double.TryParse(txtFiyat.Text.Trim(), out fiyat) || fiyat <= 0)
+                {
+                    lblHata.Text = "Saatlik fiyat alanına geçerli bir pozitif sayı girmelisiniz.";
+                    lblHata.Visible = true;
+                    return;
+                }
+            }
+
             var saha = new HaliSaha
             {
                 OrganizatorId = Oturum.AktifOrganizator.Id,
@@ -89,10 +107,11 @@ namespace SahalarBurada.Forms
                 Sehir         = cmbSehir.SelectedItem?.ToString(),
                 Ilce          = cmbIlce.SelectedItem?.ToString(),
                 Adres         = txtAdres.Text.Trim(),
-                FiyatSaat     = (double)nudFiyat.Value,
+                FiyatSaat     = fiyat,
                 MüsaitGunler  = gunler,
                 MüsaitSaatler = saatler,
-                Aciklama      = txtAciklama.Text.Trim()
+                Aciklama      = txtAciklama.Text.Trim(),
+                Telefon       = txtTelefon.Text.Trim()
             };
             var f = new FormSahaOzet(saha);
             this.Hide();
