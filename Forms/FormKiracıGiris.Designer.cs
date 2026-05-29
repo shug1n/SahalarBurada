@@ -376,7 +376,7 @@ namespace SahalarBurada.Forms
             this.lblTelefonKayit.Name = "lblTelefonKayit";
             this.lblTelefonKayit.Size = new System.Drawing.Size(95, 19);
             this.lblTelefonKayit.TabIndex = 12;
-            this.lblTelefonKayit.Text = "Telefon: *";
+            this.lblTelefonKayit.Text = "Telefon:";
             // 
             // txtKayitTelefon
             // 

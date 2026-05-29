@@ -14,8 +14,8 @@ namespace SahalarBurada.Forms
         }
 
 
-        private void NavSahaAra()     { var f = new FormSahaAra();          this.Hide(); f.FormClosed += (s, e) => this.Show(); f.Show(); }
-        private void NavKiracıGiris() { var f = new FormKiracıGiris();      this.Hide(); f.FormClosed += (s, e) => this.Show(); f.Show(); }
-        private void NavOrgGiris()    { var f = new FormOrganizatorGiris(); this.Hide(); f.FormClosed += (s, e) => this.Show(); f.Show(); }
+        private void NavSahaAra()     { var f = new FormSahaAra();          this.Hide(); f.FormClosed += (s, e) => { this.Location = f.Location; this.Show(); }; f.Show(); }
+        private void NavKiracıGiris() { var f = new FormKiracıGiris();      this.Hide(); f.FormClosed += (s, e) => { this.Location = f.Location; this.Show(); }; f.Show(); }
+        private void NavOrgGiris()    { var f = new FormOrganizatorGiris(); this.Hide(); f.FormClosed += (s, e) => { this.Location = f.Location; this.Show(); }; f.Show(); }
     }
 }

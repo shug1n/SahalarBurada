@@ -17,5 +17,6 @@ namespace SahalarBurada.Models
         public string Aciklama { get; set; }
         public string Telefon { get; set; }
         public DateTime EklenmeTarihi { get; set; }
+        public int Kapasite { get; set; } = 14;
     }
 }

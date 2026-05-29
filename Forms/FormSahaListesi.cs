@@ -73,8 +73,17 @@ namespace SahalarBurada.Forms
             f.FormClosed += (s, e) =>
             {
                 if (f.DialogResult == System.Windows.Forms.DialogResult.OK)
-                { this.DialogResult = System.Windows.Forms.DialogResult.OK; this.IsBackButtonClicked = true; this.Close(); }
-                else this.Show();
+                { 
+                    this.Location = f.Location;
+                    this.DialogResult = System.Windows.Forms.DialogResult.OK; 
+                    this.IsBackButtonClicked = true; 
+                    this.Close(); 
+                }
+                else 
+                {
+                    this.Location = f.Location;
+                    this.Show();
+                }
             };
             f.Show();
         }

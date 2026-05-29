@@ -16,6 +16,8 @@ namespace SahalarBurada.Forms
         public FormOrganizatorRezervasyonlar()
         {
             InitializeComponent();
+            this.ClientSize = new Size(1000, 700);
+            this.StartPosition = FormStartPosition.CenterScreen;
             
             // Custom setup and dynamics
             SetupDynamics();
@@ -201,6 +203,7 @@ namespace SahalarBurada.Forms
                     var f = new FormKiraciDetay(r);
                     this.Hide();
                     f.FormClosed += (s, ev) => {
+                        this.Location = f.Location;
                         this.Show();
                         RezervasyonlariGoster();
                     };

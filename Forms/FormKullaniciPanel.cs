@@ -8,6 +8,9 @@ namespace SahalarBurada.Forms
 {
     public partial class FormKullaniciPanel : BaseChildForm
     {
+        private Label lblSubtitle;
+        private Button btnProfil;
+
         public FormKullaniciPanel()
         {
             InitializeComponent();
@@ -41,7 +44,7 @@ namespace SahalarBurada.Forms
                 Location = new Point(25, 16),
                 BackColor = Color.Transparent
             };
-            var lblSubtitle = new Label
+            lblSubtitle = new Label
             {
                 Text = $"Hoş geldiniz, {Oturum.AktifKullanici.Ad} {Oturum.AktifKullanici.Soyad}  •  {Oturum.AktifKullanici.Eposta}",
                 Font = UIHelper.FKucuk,
@@ -54,6 +57,25 @@ namespace SahalarBurada.Forms
             pnlHeader.Controls.Add(lblSubtitle);
             lblTitle.BringToFront();
             lblSubtitle.BringToFront();
+
+            // Create Profilimi Düzenle button
+            btnProfil = new Button
+            {
+                BackColor = SahalarBurada.Helpers.UIHelper.CIkinci,
+                Cursor = System.Windows.Forms.Cursors.Hand,
+                FlatStyle = FlatStyle.Flat,
+                Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                ForeColor = Color.White,
+                Size = new Size(165, 38),
+                Text = "👤  Profilimi Düzenle",
+                UseVisualStyleBackColor = false
+            };
+            btnProfil.FlatAppearance.BorderSize = 0;
+            btnProfil.FlatAppearance.MouseOverBackColor = SahalarBurada.Helpers.UIHelper.CVurgu;
+            pnlHeader.Controls.Add(btnProfil);
+            btnProfil.BringToFront();
+            btnProfil.Click += BtnProfil_Click;
+
             btnYeniArama.BringToFront();
             btnCikis.BringToFront();
 
@@ -91,7 +113,11 @@ namespace SahalarBurada.Forms
             this.Resize += (s, e) => {
                 btnCikis.Location = new Point(this.Width - 145, 28);
                 btnYeniArama.Location = new Point(this.Width - 322, 28);
+                btnProfil.Location = new Point(this.Width - 499, 28);
             };
+            btnCikis.Location = new Point(this.Width - 145, 28);
+            btnYeniArama.Location = new Point(this.Width - 322, 28);
+            btnProfil.Location = new Point(this.Width - 499, 28);
         }
 
         private void RezervasyonlariYukle()
@@ -143,11 +169,26 @@ namespace SahalarBurada.Forms
             }
         }
 
+        private void BtnProfil_Click(object sender, EventArgs e)
+        {
+            var f = new FormProfilGuncelle();
+            this.Hide();
+            f.FormClosed += (s, ev) =>
+            {
+                this.Location = f.Location;
+                this.Show();
+                lblSubtitle.Text = $"Hoş geldiniz, {Oturum.AktifKullanici.Ad} {Oturum.AktifKullanici.Soyad}  •  {Oturum.AktifKullanici.Eposta}";
+                RezervasyonlariYukle();
+            };
+            f.Show();
+        }
+
         private void BtnYeniArama_Click(object sender, EventArgs e)
         {
             var f = new FormSahaAra();
             this.Hide();
             f.FormClosed += (s, ev) => { 
+                this.Location = f.Location;
                 this.Show(); 
                 RezervasyonlariYukle(); 
             };

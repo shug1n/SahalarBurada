@@ -33,7 +33,8 @@ namespace SahalarBurada.Services
             foreach (var saha in tumSahalar)
             {
                 if (!saha.MüsaitGunler.Contains(gunAdi))   continue;
-                if (!saha.MüsaitSaatler.Contains(saat))    continue;
+                string baslangicSaat = saat.Contains("-") ? saat.Split('-')[0] : saat;
+                if (!saha.MüsaitSaatler.Contains(saat) && !saha.MüsaitSaatler.Contains(baslangicSaat))    continue;
 
                 // Şehir filtresi
                 if (!string.IsNullOrWhiteSpace(sehir) &&
@@ -56,9 +57,16 @@ namespace SahalarBurada.Services
 
         public static void SahaEkle(HaliSaha saha)
         {
-            saha.Id = Guid.NewGuid().ToString();
-            saha.EklenmeTarihi = DateTime.Now;
-            DatabaseServisi.InsertField(saha);
+            if (string.IsNullOrEmpty(saha.Id))
+            {
+                saha.Id = Guid.NewGuid().ToString();
+                saha.EklenmeTarihi = DateTime.Now;
+                DatabaseServisi.InsertField(saha);
+            }
+            else
+            {
+                DatabaseServisi.UpdateField(saha);
+            }
         }
 
         public static bool RezervasyonEkle(Rezervasyon r)

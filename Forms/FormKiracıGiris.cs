@@ -14,6 +14,29 @@ namespace SahalarBurada.Forms
         {
             InitializeComponent();
             this.ClientSize = new Size(1000, 700);
+
+            // Shift controls below Y=210 down by 15 pixels in pnlKayit to add password hint
+            pnlKayit.Height += 15;
+            foreach (Control c in pnlKayit.Controls)
+            {
+                if (c.Top >= 210)
+                {
+                    c.Top += 15;
+                }
+            }
+
+            // Create password hint label
+            var lblSifreNot = new Label
+            {
+                Text = "ℹ️ Şifre en az 6 karakter içermelidir.",
+                Location = new Point(50, 213),
+                Size = new Size(440, 16),
+                Font = new Font("Segoe UI", 8.25F, FontStyle.Italic),
+                ForeColor = Color.DimGray,
+                AutoSize = false
+            };
+            pnlKayit.Controls.Add(lblSifreNot);
+
             UIHelper.CenterControlsInCard(this, new Control[] { pnlTabBar, pnlGiris, pnlKayit });
             this.Resize += (s, e) => btnGeri.Location = new Point(30, this.ClientSize.Height - 60);
             btnGeri.Location = new Point(30, this.ClientSize.Height - 60);
@@ -106,6 +129,15 @@ namespace SahalarBurada.Forms
                 lblKayitHata.Visible = true; 
                 return; 
             }
+            string telefon = txtKayitTelefon.Text.Trim();
+            string cleanPhone = telefon.Replace(" ", "").Replace("-", "").Replace("(", "").Replace(")", "");
+            if (!System.Text.RegularExpressions.Regex.IsMatch(cleanPhone, @"^0?5\d{9}$"))
+            {
+                lblKayitHata.Text = "Lütfen geçerli bir Türkiye cep telefonu numarası giriniz.";
+                lblKayitHata.Visible = true;
+                return;
+            }
+
             if (txtKayitSifre.Text != txtKayitSifreTekrar.Text) { lblKayitHata.Text = "Şifreler uyuşmuyor."; lblKayitHata.Visible = true; return; }
             if (txtKayitSifre.Text.Length < 6) { lblKayitHata.Text = "Şifre en az 6 karakter."; lblKayitHata.Visible = true; return; }
             
@@ -113,7 +145,7 @@ namespace SahalarBurada.Forms
                 txtKayitAd.Text.Trim(), 
                 txtKayitSoyad.Text.Trim(), 
                 txtKayitEposta.Text.Trim(), 
-                txtKayitTelefon.Text.Trim(), 
+                cleanPhone, 
                 txtKayitSifre.Text);
 
             if (!ok) { lblKayitHata.Text = msg; lblKayitHata.Visible = true; return; }
@@ -125,7 +157,7 @@ namespace SahalarBurada.Forms
         {
             var f = new FormKullaniciPanel();
             this.Hide();
-            f.FormClosed += (s, e) => { this.IsBackButtonClicked = true; this.Close(); };
+            f.FormClosed += (s, e) => { this.Location = f.Location; this.IsBackButtonClicked = true; this.Close(); };
             f.Show();
         }
     }

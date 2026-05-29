@@ -68,8 +68,47 @@ namespace SahalarBurada.Forms
                 pnlToolbar.Controls.Add(btnRezervasyonlar);
             }
 
+            // Dynamically Add Profilimi Düzenle Button
+            if (pnlToolbar.Controls["btnProfil"] == null)
+            {
+                var btnProfil = new Button
+                {
+                    Name = "btnProfil",
+                    Text = "👤  Profilimi Düzenle",
+                    BackColor = UIHelper.CIkinci,
+                    ForeColor = Color.White,
+                    FlatStyle = FlatStyle.Flat,
+                    Size = new Size(185, 40),
+                    Location = new Point(548, 10),
+                    Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                    Cursor = Cursors.Hand
+                };
+                btnProfil.FlatAppearance.BorderSize = 0;
+                btnProfil.FlatAppearance.MouseOverBackColor = UIHelper.CVurgu;
+                btnProfil.Click += BtnProfil_Click;
+                pnlToolbar.Controls.Add(btnProfil);
+            }
+
             pnlContent.BackColor = UIHelper.CArkaplan;
             dgvSahalar.BackgroundColor = UIHelper.CKart;
+
+            if (!dgvSahalar.Columns.Contains("btnDuzenle"))
+            {
+                var btnDuzenle = new DataGridViewButtonColumn();
+                btnDuzenle.Name = "btnDuzenle";
+                btnDuzenle.HeaderText = "İşlem";
+                btnDuzenle.Text = "Düzenle";
+                btnDuzenle.UseColumnTextForButtonValue = true;
+                btnDuzenle.FlatStyle = FlatStyle.Flat;
+                btnDuzenle.DefaultCellStyle.BackColor = UIHelper.CKart;
+                btnDuzenle.DefaultCellStyle.ForeColor = UIHelper.CAna;
+                btnDuzenle.DefaultCellStyle.SelectionBackColor = Color.FromArgb(240, 248, 240);
+                btnDuzenle.DefaultCellStyle.SelectionForeColor = UIHelper.CAna;
+                btnDuzenle.DefaultCellStyle.Font = new Font("Segoe UI", 9, FontStyle.Bold);
+                btnDuzenle.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                btnDuzenle.DefaultCellStyle.Padding = new Padding(6, 4, 6, 4);
+                dgvSahalar.Columns.Add(btnDuzenle);
+            }
 
             if (!dgvSahalar.Columns.Contains("btnSil"))
             {
@@ -87,14 +126,15 @@ namespace SahalarBurada.Forms
                 btnSil.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 btnSil.DefaultCellStyle.Padding = new Padding(6, 4, 6, 4);
                 dgvSahalar.Columns.Add(btnSil);
-                dgvSahalar.CellContentClick += DgvSahalar_CellContentClick;
             }
+
+            dgvSahalar.CellContentClick += DgvSahalar_CellContentClick;
 
             UIHelper.DGVAyarla(dgvSahalar);
             dgvSahalar.ReadOnly = false;
             foreach (DataGridViewColumn col in dgvSahalar.Columns)
             {
-                if (col.Name != "btnSil") col.ReadOnly = true;
+                if (col.Name != "btnSil" && col.Name != "btnDuzenle") col.ReadOnly = true;
             }
             
             SahalariYukle();
@@ -102,13 +142,28 @@ namespace SahalarBurada.Forms
 
         private void DgvSahalar_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0 && dgvSahalar.Columns[e.ColumnIndex].Name == "btnSil")
+            if (e.RowIndex >= 0)
             {
-                if (MessageBox.Show("Bu sahayı ve tüm rezervasyonlarını silmek istediğinize emin misiniz?", "Saha Sil", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                if (dgvSahalar.Columns[e.ColumnIndex].Name == "btnSil")
+                {
+                    if (MessageBox.Show("Bu sahayı ve tüm rezervasyonlarını silmek istediğinize emin misiniz?", "Saha Sil", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+                    {
+                        string sahaId = dgvSahalar.Rows[e.RowIndex].Tag.ToString();
+                        DatabaseServisi.DeleteField(sahaId);
+                        SahalariYukle();
+                    }
+                }
+                else if (dgvSahalar.Columns[e.ColumnIndex].Name == "btnDuzenle")
                 {
                     string sahaId = dgvSahalar.Rows[e.RowIndex].Tag.ToString();
-                    DatabaseServisi.DeleteField(sahaId);
-                    SahalariYukle();
+                    var saha = SahaServisi.OrganizatorSahalari(Oturum.AktifOrganizator.Id).Find(x => x.Id == sahaId);
+                    if (saha != null)
+                    {
+                        var f = new FormSahaEkle(saha);
+                        this.Hide();
+                        f.FormClosed += (s, ev) => { this.Location = f.Location; this.Show(); SahalariYukle(); };
+                        f.Show();
+                    }
                 }
             }
         }
@@ -139,7 +194,23 @@ namespace SahalarBurada.Forms
         {
             var f = new FormSahaEkle();
             this.Hide();
-            f.FormClosed += (s, ev) => { this.Show(); SahalariYukle(); };
+            f.FormClosed += (s, ev) => { this.Location = f.Location; this.Show(); SahalariYukle(); };
+            f.Show();
+        }
+
+        private void BtnProfil_Click(object sender, EventArgs e)
+        {
+            var f = new FormProfilGuncelle();
+            this.Hide();
+            f.FormClosed += (s, ev) =>
+            {
+                this.Location = f.Location;
+                this.Show();
+                var org = Oturum.AktifOrganizator;
+                lblHeaderBaslik.Text = $"🏢  {org.IsletmeAdi}";
+                lblHeaderAltBaslik.Text = $"Hoş geldiniz, {org.Ad} {org.Soyad}  •  {org.Eposta}";
+                SahalariYukle();
+            };
             f.Show();
         }
 
@@ -147,7 +218,7 @@ namespace SahalarBurada.Forms
         {
             var f = new FormOrganizatorRezervasyonlar();
             this.Hide();
-            f.FormClosed += (s, ev) => this.Show();
+            f.FormClosed += (s, ev) => { this.Location = f.Location; this.Show(); };
             f.ShowDialog();
         }
     }

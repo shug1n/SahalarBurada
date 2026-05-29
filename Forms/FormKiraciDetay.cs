@@ -10,11 +10,54 @@ namespace SahalarBurada.Forms
     public partial class FormKiraciDetay : BaseChildForm
     {
         private readonly Rezervasyon _rezervasyon;
+        private Label lblKisiSayisiLabel;
+        private Label lblKisiSayisiValue;
 
         public FormKiraciDetay(Rezervasyon rezervasyon)
         {
             _rezervasyon = rezervasyon ?? throw new ArgumentNullException(nameof(rezervasyon));
             InitializeComponent();
+            
+            this.ClientSize = new Size(1000, 700);
+            this.StartPosition = FormStartPosition.CenterScreen;
+
+            // Programmatically change pnlKart size to fit KisiSayisi
+            pnlKart.Size = new Size(515, 350);
+
+            // Programmatically add KisiSayisi label and value
+            lblKisiSayisiLabel = new Label
+            {
+                AutoSize = true,
+                Font = new Font("Segoe UI", 9F),
+                ForeColor = Color.FromArgb(95, 110, 95),
+                Location = new Point(275, 295),
+                Name = "lblKisiSayisiLabel",
+                Size = new Size(81, 15),
+                Text = "👥 Katılacak Kişi Sayısı"
+            };
+
+            lblKisiSayisiValue = new Label
+            {
+                AutoSize = true,
+                Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                ForeColor = Color.FromArgb(28, 36, 28),
+                Location = new Point(275, 315),
+                Name = "lblKisiSayisiValue",
+                Size = new Size(87, 19),
+                Text = "1 kişi"
+            };
+
+            pnlKart.Controls.Add(lblKisiSayisiLabel);
+            pnlKart.Controls.Add(lblKisiSayisiValue);
+
+            // Dynamically manage btnGeri location and layout
+            this.Controls.Remove(btnGeri);
+            this.Controls.Add(btnGeri);
+            this.Resize += (s, e) => btnGeri.Location = new Point(30, this.ClientSize.Height - 60);
+            btnGeri.Location = new Point(30, this.ClientSize.Height - 60);
+
+            UIHelper.CenterControlsInCard(this, new Control[] { pnlKart }, false);
+
             SetupDynamics();
             
             this.Load += FormKiraciDetay_Load;
@@ -59,6 +102,7 @@ namespace SahalarBurada.Forms
             lblTarihValue.Text = _rezervasyon.Tarih.ToString("dd MMMM yyyy dddd");
             lblSaatValue.Text = _rezervasyon.Saat;
             lblUcretValue.Text = _rezervasyon.ToplamFiyat.ToString("N0") + " ₺";
+            lblKisiSayisiValue.Text = $"{_rezervasyon.KisiSayisi} Kişi";
 
             if (!string.IsNullOrEmpty(_rezervasyon.KullaniciId))
             {
@@ -71,7 +115,8 @@ namespace SahalarBurada.Forms
                     lblContactValue.Text = user.Eposta;
                     
                     lblTypeLabel.Text = "Telefon Numarası";
-                    lblTypeValue.Text = !string.IsNullOrEmpty(user.Telefon) ? user.Telefon : "Belirtilmemiş";
+                    string phone = !string.IsNullOrEmpty(_rezervasyon.MisafirTelefon) ? _rezervasyon.MisafirTelefon : (!string.IsNullOrEmpty(user.Telefon) ? user.Telefon : "Belirtilmemiş");
+                    lblTypeValue.Text = phone;
                     lblTypeValue.ForeColor = UIHelper.CMetin;
                     
                     lblDateLabel.Text = "Üyelik Durumu";

@@ -310,7 +310,7 @@ namespace SahalarBurada.Forms
             this.lblIsletme.Name = "lblIsletme";
             this.lblIsletme.Size = new System.Drawing.Size(95, 19);
             this.lblIsletme.TabIndex = 0;
-            this.lblIsletme.Text = "İşletme Adı: *";
+            this.lblIsletme.Text = "İşletme Adı:";
             // 
             // txtIsletme
             // 

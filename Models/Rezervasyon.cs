@@ -14,5 +14,6 @@ namespace SahalarBurada.Models
         public string Saat { get; set; }           // "14:00"
         public double ToplamFiyat { get; set; }
         public DateTime OlusturmaTarihi { get; set; }
+        public int KisiSayisi { get; set; } = 1;
     }
 }

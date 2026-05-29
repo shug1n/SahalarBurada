@@ -21,6 +21,9 @@ namespace SahalarBurada.Services
         public static (bool basarili, string mesaj, Kullanici kullanici) KiracıKayit(
             string ad, string soyad, string eposta, string telefon, string sifre)
         {
+            if (sifre == null || sifre.Length < 6)
+                return (false, "Şifre en az 6 karakter olmalıdır.", null);
+
             if (DatabaseServisi.CheckUserExists(eposta))
                 return (false, "Bu e-posta zaten kayıtlı.", null);
 
@@ -44,15 +47,18 @@ namespace SahalarBurada.Services
         }
 
         public static (bool basarili, string mesaj, Organizator org) OrgKayit(
-            string isletme, string ad, string soyad, string eposta, string sifre)
+            string isletme, string ad, string soyad, string eposta, string telefon, string sifre)
         {
+            if (sifre == null || sifre.Length < 6)
+                return (false, "Şifre en az 6 karakter olmalıdır.", null);
+
             if (DatabaseServisi.CheckOrganizerExists(eposta))
                 return (false, "Bu e-posta zaten kayıtlı.", null);
 
             var o = new Organizator
             {
                 Id = Guid.NewGuid().ToString(), IsletmeAdi = isletme,
-                Ad = ad, Soyad = soyad, Eposta = eposta,
+                Ad = ad, Soyad = soyad, Eposta = eposta, Telefon = telefon,
                 SifreHash = SifreHelper.Hash(sifre), KayitTarihi = DateTime.Now
             };
             DatabaseServisi.InsertOrganizer(o);

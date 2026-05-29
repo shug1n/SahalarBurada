@@ -251,7 +251,7 @@ namespace SahalarBurada.Forms
             this.lblTelefon.Name = "lblTelefon";
             this.lblTelefon.Size = new System.Drawing.Size(206, 19);
             this.lblTelefon.TabIndex = 100;
-            this.lblTelefon.Text = "Telefon (İletişim - Opsiyonel):";
+            this.lblTelefon.Text = "Telefon:";
             // 
             // txtTelefon
             // 

@@ -19,6 +19,9 @@ namespace SahalarBurada.Forms
             InitializeComponent();
             this.ClientSize = new Size(1000, 700);
 
+            nudKisiSayisi.Minimum = 1;
+            nudKisiSayisi.Maximum = 100;
+
             SetupLogic();
 
             pnlScroll.Controls.Remove(btnGeri);
@@ -28,9 +31,14 @@ namespace SahalarBurada.Forms
             btnGeri.BringToFront();
             btnOnayla.BringToFront();
 
+            pnlScroll.Dock = DockStyle.None;
+            pnlScroll.Location = new Point(0, 95);
+            pnlScroll.Size = new Size(1000, 700 - 95 - 80);
+
             this.Resize += (s, e) => {
                 btnGeri.Location = new Point(30, this.ClientSize.Height - 60);
                 btnOnayla.Location = new Point(220, this.ClientSize.Height - 60);
+                pnlScroll.Size = new Size(this.ClientSize.Width, this.ClientSize.Height - 95 - 80);
             };
             btnGeri.Location = new Point(30, this.ClientSize.Height - 60);
             btnOnayla.Location = new Point(220, this.ClientSize.Height - 60);
@@ -42,11 +50,16 @@ namespace SahalarBurada.Forms
 
         private void SetupLogic()
         {
-            string saatSonu = (int.Parse(_saat.Split(':')[0]) + 1).ToString("D2") + ":00";
+            string saatGosterim = _saat;
+            if (!saatGosterim.Contains("-"))
+            {
+                string saatSonu = (int.Parse(_saat.Split(':')[0]) + 1).ToString("D2") + ":00";
+                saatGosterim = $"{_saat} – {saatSonu}";
+            }
             lblSahaDeger.Text   = _saha.Ad;
             lblAdresDeger.Text  = _saha.Adres;
             lblTarihDeger.Text  = _tarih.ToString("dd MMMM yyyy, dddd");
-            lblSaatDeger.Text   = $"{_saat} – {saatSonu}  (1 saat)";
+            lblSaatDeger.Text   = $"{saatGosterim}  (1 saat)";
             lblFiyatDeger.Text  = $"{_saha.FiyatSaat:N0} ₺  (toplam saha ücreti)";
 
             HesaplaKisiBasi();
@@ -89,6 +102,21 @@ namespace SahalarBurada.Forms
         private void BtnOnayla_Click(object sender, EventArgs e)
         {
             lblHata.Visible = false;
+
+            int kisi = (int)nudKisiSayisi.Value;
+            if (kisi < 1)
+            {
+                lblHata.Text = "Katılımcı sayısı en az 1 kişi olmalıdır.";
+                lblHata.Visible = true;
+                return;
+            }
+            if (kisi > _saha.Kapasite)
+            {
+                lblHata.Text = $"Bu saha için maksimum katılımcı sayısı {_saha.Kapasite} kişidir.";
+                lblHata.Visible = true;
+                return;
+            }
+
             string misafirAd = null, misafirTelefon = null, kullaniciId = null;
             if (!Oturum.GirisYapildi)
             {
@@ -110,6 +138,7 @@ namespace SahalarBurada.Forms
             {
                 kullaniciId = Oturum.AktifKullanici.Id;
                 misafirAd   = Oturum.AktifKullanici.Ad + " " + Oturum.AktifKullanici.Soyad;
+                misafirTelefon = Oturum.AktifKullanici.Telefon;
             }
             bool basarili = SahaServisi.RezervasyonEkle(new Rezervasyon
             {
@@ -120,7 +149,8 @@ namespace SahalarBurada.Forms
                 MisafirTelefon = misafirTelefon,
                 Tarih          = _tarih,
                 Saat           = _saat,
-                ToplamFiyat    = _saha.FiyatSaat
+                ToplamFiyat    = _saha.FiyatSaat,
+                KisiSayisi     = kisi
             });
 
             if (!basarili)
@@ -129,7 +159,6 @@ namespace SahalarBurada.Forms
                 lblHata.Visible = true;
                 return;
             }
-            int kisi = (int)nudKisiSayisi.Value;
             double kisiBasi = _saha.FiyatSaat / kisi;
             string kisiMesaji = kisi > 1 ? $"  👥 Kişi sayısı: {kisi}  →  Kişi başı: {kisiBasi:N0} ₺\n" : "";
             MessageBox.Show(
