@@ -109,7 +109,10 @@ namespace SahalarBurada.Services
                     Aciklama TEXT,
                     EklenmeTarihi TEXT,
                     Telefon TEXT,
-                    Kapasite INTEGER DEFAULT 14
+                    Kamera INTEGER,
+                    UstKapali INTEGER,
+                    KramponKiralama INTEGER,
+                    Metrekare INTEGER
                 );";
                 using (var cmd = new SQLiteCommand(createFields, conn)) cmd.ExecuteNonQuery();
 
@@ -124,16 +127,37 @@ namespace SahalarBurada.Services
                     // Column already exists, ignore safely
                 }
 
-                // Schema migration: Alter table to add Kapasite column dynamically to fields if it doesn't exist
+                // Schema migration: Alter table to add Kamera column dynamically to fields if it doesn't exist
                 try
                 {
-                    using (var cmd = new SQLiteCommand("ALTER TABLE fields ADD COLUMN Kapasite INTEGER DEFAULT 14;", conn))
+                    using (var cmd = new SQLiteCommand("ALTER TABLE fields ADD COLUMN Kamera INTEGER;", conn))
                         cmd.ExecuteNonQuery();
                 }
-                catch (SQLiteException)
+                catch (SQLiteException) { }
+
+                // Schema migration: Alter table to add UstKapali column dynamically to fields if it doesn't exist
+                try
                 {
-                    // Column already exists, ignore safely
+                    using (var cmd = new SQLiteCommand("ALTER TABLE fields ADD COLUMN UstKapali INTEGER;", conn))
+                        cmd.ExecuteNonQuery();
                 }
+                catch (SQLiteException) { }
+
+                // Schema migration: Alter table to add KramponKiralama column dynamically to fields if it doesn't exist
+                try
+                {
+                    using (var cmd = new SQLiteCommand("ALTER TABLE fields ADD COLUMN KramponKiralama INTEGER;", conn))
+                        cmd.ExecuteNonQuery();
+                }
+                catch (SQLiteException) { }
+
+                // Schema migration: Alter table to add Metrekare column dynamically to fields if it doesn't exist
+                try
+                {
+                    using (var cmd = new SQLiteCommand("ALTER TABLE fields ADD COLUMN Metrekare INTEGER;", conn))
+                        cmd.ExecuteNonQuery();
+                }
+                catch (SQLiteException) { }
 
                 // Schema migration: Alter table to add Telefon column dynamically to users if it doesn't exist
                 try
@@ -175,6 +199,186 @@ namespace SahalarBurada.Services
                 if (needsReset)
                 {
                     SeedData(conn);
+                }
+
+                // Seeding random values for the new properties on existing records if they don't have it set
+                try
+                {
+                    var rand = new Random();
+                    var fieldsToUpdate = new List<HaliSaha>();
+                    using (var cmdSelect = new SQLiteCommand("SELECT * FROM fields WHERE Kamera IS NULL OR UstKapali IS NULL OR KramponKiralama IS NULL OR Metrekare IS NULL;", conn))
+                    using (var reader = cmdSelect.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var s = new HaliSaha
+                            {
+                                Id = reader["Id"].ToString(),
+                                Kamera = reader["Kamera"] != DBNull.Value ? (bool?)(Convert.ToInt32(reader["Kamera"]) == 1) : null,
+                                UstKapali = reader["UstKapali"] != DBNull.Value ? (bool?)(Convert.ToInt32(reader["UstKapali"]) == 1) : null,
+                                KramponKiralama = reader["KramponKiralama"] != DBNull.Value ? (bool?)(Convert.ToInt32(reader["KramponKiralama"]) == 1) : null,
+                                Metrekare = reader["Metrekare"] != DBNull.Value ? (int?)Convert.ToInt32(reader["Metrekare"]) : null
+                            };
+                            fieldsToUpdate.Add(s);
+                        }
+                    }
+
+                    if (fieldsToUpdate.Count > 0)
+                    {
+                        int[] sizes = { 600, 800, 1000, 1200 };
+                        foreach (var f in fieldsToUpdate)
+                        {
+                            bool randomKamera = rand.Next(2) == 1;
+                            bool randomUstKapali = rand.Next(2) == 1;
+                            bool randomKrampon = rand.Next(2) == 1;
+                            int randomSize = sizes[rand.Next(sizes.Length)];
+
+                            using (var cmdUpdate = new SQLiteCommand(@"UPDATE fields SET 
+                                Kamera = @Kamera, 
+                                UstKapali = @UstKapali, 
+                                KramponKiralama = @KramponKiralama, 
+                                Metrekare = @Metrekare 
+                                WHERE Id = @Id;", conn))
+                            {
+                                cmdUpdate.Parameters.AddWithValue("@Id", f.Id);
+                                cmdUpdate.Parameters.AddWithValue("@Kamera", f.Kamera ?? randomKamera);
+                                cmdUpdate.Parameters.AddWithValue("@UstKapali", f.UstKapali ?? randomUstKapali);
+                                cmdUpdate.Parameters.AddWithValue("@KramponKiralama", f.KramponKiralama ?? randomKrampon);
+                                cmdUpdate.Parameters.AddWithValue("@Metrekare", f.Metrekare ?? randomSize);
+                                cmdUpdate.ExecuteNonQuery();
+                            }
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    // Ignore gracefully
+                }
+
+                // Ensure Engin organizer, renter, and 2 pitches are seeded
+                try
+                {
+                    bool enginUserExists = false;
+                    using (var cmd = new SQLiteCommand("SELECT COUNT(*) FROM users WHERE Eposta = 'engin@gmail.com';", conn))
+                    {
+                        enginUserExists = Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+                    }
+
+                    if (!enginUserExists)
+                    {
+                        using (var cmd = new SQLiteCommand("INSERT INTO users (Id, Ad, Soyad, Eposta, SifreHash, KayitTarihi, Telefon) VALUES (@Id, @Ad, @Soyad, @Eposta, @SifreHash, @KayitTarihi, @Telefon)", conn))
+                        {
+                            cmd.Parameters.AddWithValue("@Id", "u_engin");
+                            cmd.Parameters.AddWithValue("@Ad", "Engin");
+                            cmd.Parameters.AddWithValue("@Soyad", "Demir");
+                            cmd.Parameters.AddWithValue("@Eposta", "engin@gmail.com");
+                            cmd.Parameters.AddWithValue("@SifreHash", SifreHelper.Hash("123456"));
+                            cmd.Parameters.AddWithValue("@KayitTarihi", DateTime.Now.ToString("o"));
+                            cmd.Parameters.AddWithValue("@Telefon", "05329999999");
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    bool enginOrgExists = false;
+                    using (var cmd = new SQLiteCommand("SELECT COUNT(*) FROM organizers WHERE Eposta = 'engin@gmail.com';", conn))
+                    {
+                        enginOrgExists = Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+                    }
+
+                    if (!enginOrgExists)
+                    {
+                        using (var cmd = new SQLiteCommand("INSERT INTO organizers (Id, IsletmeAdi, Ad, Soyad, Eposta, SifreHash, KayitTarihi, Telefon) VALUES (@Id, @IsletmeAdi, @Ad, @Soyad, @Eposta, @SifreHash, @KayitTarihi, @Telefon)", conn))
+                        {
+                            cmd.Parameters.AddWithValue("@Id", "o_engin");
+                            cmd.Parameters.AddWithValue("@IsletmeAdi", "Engin Spor Kompleksi");
+                            cmd.Parameters.AddWithValue("@Ad", "Engin");
+                            cmd.Parameters.AddWithValue("@Soyad", "Demir");
+                            cmd.Parameters.AddWithValue("@Eposta", "engin@gmail.com");
+                            cmd.Parameters.AddWithValue("@SifreHash", SifreHelper.Hash("123456"));
+                            cmd.Parameters.AddWithValue("@KayitTarihi", DateTime.Now.ToString("o"));
+                            cmd.Parameters.AddWithValue("@Telefon", "05329999998");
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    bool pitch1Exists = false;
+                    using (var cmd = new SQLiteCommand("SELECT COUNT(*) FROM fields WHERE Id = 'f_engin_1';", conn))
+                    {
+                        pitch1Exists = Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+                    }
+
+                    var tumGunler = new List<string> { "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar" };
+                    var tumSaatler = new List<string>
+                    {
+                        "00:00-01:00", "01:00-02:00", "02:00-03:00", "03:00-04:00",
+                        "04:00-05:00", "05:00-06:00", "06:00-07:00", "07:00-08:00",
+                        "08:00-09:00", "09:00-10:00", "10:00-11:00", "11:00-12:00",
+                        "12:00-13:00", "13:00-14:00", "14:00-15:00", "15:00-16:00",
+                        "16:00-17:00", "17:00-18:00", "18:00-19:00", "19:00-20:00",
+                        "20:00-21:00", "21:00-22:00", "22:00-23:00", "23:00-00:00"
+                    };
+
+                    if (!pitch1Exists)
+                    {
+                        using (var cmd = new SQLiteCommand(@"INSERT INTO fields 
+                            (Id, OrganizatorId, Ad, Sehir, Ilce, Adres, FiyatSaat, MusaitGunler, MusaitSaatler, Aciklama, EklenmeTarihi, Telefon, Kamera, UstKapali, KramponKiralama, Metrekare) 
+                            VALUES (@Id, @OrganizatorId, @Ad, @Sehir, @Ilce, @Adres, @FiyatSaat, @MusaitGunler, @MusaitSaatler, @Aciklama, @EklenmeTarihi, @Telefon, @Kamera, @UstKapali, @KramponKiralama, @Metrekare)", conn))
+                        {
+                            cmd.Parameters.AddWithValue("@Id", "f_engin_1");
+                            cmd.Parameters.AddWithValue("@OrganizatorId", "o_engin");
+                            cmd.Parameters.AddWithValue("@Ad", "Çanakkale Merkez Halı Sahası");
+                            cmd.Parameters.AddWithValue("@Sehir", "Çanakkale");
+                            cmd.Parameters.AddWithValue("@Ilce", "Merkez");
+                            cmd.Parameters.AddWithValue("@Adres", "Çanakkale Merkez Spor Vadisi No:17");
+                            cmd.Parameters.AddWithValue("@FiyatSaat", 1500.0);
+                            cmd.Parameters.AddWithValue("@MusaitGunler", Jss.Serialize(tumGunler));
+                            cmd.Parameters.AddWithValue("@MusaitSaatler", Jss.Serialize(tumSaatler));
+                            cmd.Parameters.AddWithValue("@Aciklama", "Çanakkale merkezde, profesyonel zeminli açık saha keyfi.");
+                            cmd.Parameters.AddWithValue("@EklenmeTarihi", DateTime.Now.ToString("o"));
+                            cmd.Parameters.AddWithValue("@Telefon", "05329999998");
+                            cmd.Parameters.AddWithValue("@Kamera", 1);
+                            cmd.Parameters.AddWithValue("@UstKapali", 0);
+                            cmd.Parameters.AddWithValue("@KramponKiralama", 1);
+                            cmd.Parameters.AddWithValue("@Metrekare", 800);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    bool pitch2Exists = false;
+                    using (var cmd = new SQLiteCommand("SELECT COUNT(*) FROM fields WHERE Id = 'f_engin_2';", conn))
+                    {
+                        pitch2Exists = Convert.ToInt32(cmd.ExecuteScalar()) > 0;
+                    }
+
+                    if (!pitch2Exists)
+                    {
+                        using (var cmd = new SQLiteCommand(@"INSERT INTO fields 
+                            (Id, OrganizatorId, Ad, Sehir, Ilce, Adres, FiyatSaat, MusaitGunler, MusaitSaatler, Aciklama, EklenmeTarihi, Telefon, Kamera, UstKapali, KramponKiralama, Metrekare) 
+                            VALUES (@Id, @OrganizatorId, @Ad, @Sehir, @Ilce, @Adres, @FiyatSaat, @MusaitGunler, @MusaitSaatler, @Aciklama, @EklenmeTarihi, @Telefon, @Kamera, @UstKapali, @KramponKiralama, @Metrekare)", conn))
+                        {
+                            cmd.Parameters.AddWithValue("@Id", "f_engin_2");
+                            cmd.Parameters.AddWithValue("@OrganizatorId", "o_engin");
+                            cmd.Parameters.AddWithValue("@Ad", "Lapseki Sahil Halı Sahası");
+                            cmd.Parameters.AddWithValue("@Sehir", "Çanakkale");
+                            cmd.Parameters.AddWithValue("@Ilce", "Lapseki");
+                            cmd.Parameters.AddWithValue("@Adres", "Lapseki Sahil Kordon Boyu No:19");
+                            cmd.Parameters.AddWithValue("@FiyatSaat", 1200.0);
+                            cmd.Parameters.AddWithValue("@MusaitGunler", Jss.Serialize(tumGunler));
+                            cmd.Parameters.AddWithValue("@MusaitSaatler", Jss.Serialize(tumSaatler));
+                            cmd.Parameters.AddWithValue("@Aciklama", "Çanakkale Lapseki'de deniz manzaralı, harika açık saha.");
+                            cmd.Parameters.AddWithValue("@EklenmeTarihi", DateTime.Now.ToString("o"));
+                            cmd.Parameters.AddWithValue("@Telefon", "05329999998");
+                            cmd.Parameters.AddWithValue("@Kamera", 0);
+                            cmd.Parameters.AddWithValue("@UstKapali", 1);
+                            cmd.Parameters.AddWithValue("@KramponKiralama", 0);
+                            cmd.Parameters.AddWithValue("@Metrekare", 1000);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    // Ignore
                 }
             }
         }
@@ -348,8 +552,8 @@ namespace SahalarBurada.Services
             {
                 conn.Open();
                 string sql = @"INSERT INTO fields 
-                    (Id, OrganizatorId, Ad, Sehir, Ilce, Adres, FiyatSaat, MusaitGunler, MusaitSaatler, Aciklama, EklenmeTarihi, Telefon, Kapasite) 
-                    VALUES (@Id, @OrganizatorId, @Ad, @Sehir, @Ilce, @Adres, @FiyatSaat, @MusaitGunler, @MusaitSaatler, @Aciklama, @EklenmeTarihi, @Telefon, @Kapasite)";
+                    (Id, OrganizatorId, Ad, Sehir, Ilce, Adres, FiyatSaat, MusaitGunler, MusaitSaatler, Aciklama, EklenmeTarihi, Telefon, Kamera, UstKapali, KramponKiralama, Metrekare) 
+                    VALUES (@Id, @OrganizatorId, @Ad, @Sehir, @Ilce, @Adres, @FiyatSaat, @MusaitGunler, @MusaitSaatler, @Aciklama, @EklenmeTarihi, @Telefon, @Kamera, @UstKapali, @KramponKiralama, @Metrekare)";
                 using (var cmd = new SQLiteCommand(sql, conn))
                 {
                     cmd.Parameters.AddWithValue("@Id", s.Id);
@@ -364,7 +568,10 @@ namespace SahalarBurada.Services
                     cmd.Parameters.AddWithValue("@Aciklama", s.Aciklama);
                     cmd.Parameters.AddWithValue("@EklenmeTarihi", s.EklenmeTarihi.ToString("o"));
                     cmd.Parameters.AddWithValue("@Telefon", s.Telefon ?? (object)DBNull.Value);
-                    cmd.Parameters.AddWithValue("@Kapasite", s.Kapasite);
+                    cmd.Parameters.AddWithValue("@Kamera", s.Kamera.HasValue ? (object)(s.Kamera.Value ? 1 : 0) : DBNull.Value);
+                    cmd.Parameters.AddWithValue("@UstKapali", s.UstKapali.HasValue ? (object)(s.UstKapali.Value ? 1 : 0) : DBNull.Value);
+                    cmd.Parameters.AddWithValue("@KramponKiralama", s.KramponKiralama.HasValue ? (object)(s.KramponKiralama.Value ? 1 : 0) : DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Metrekare", s.Metrekare.HasValue ? (object)s.Metrekare.Value : DBNull.Value);
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -396,7 +603,10 @@ namespace SahalarBurada.Services
                             Aciklama = reader["Aciklama"].ToString(),
                             EklenmeTarihi = DateTime.Parse(reader["EklenmeTarihi"].ToString()),
                             Telefon = reader["Telefon"] != DBNull.Value ? reader["Telefon"].ToString() : "",
-                            Kapasite = reader["Kapasite"] != DBNull.Value ? Convert.ToInt32(reader["Kapasite"]) : 14
+                            Kamera = reader["Kamera"] != DBNull.Value ? (bool?)(Convert.ToInt32(reader["Kamera"]) == 1) : null,
+                            UstKapali = reader["UstKapali"] != DBNull.Value ? (bool?)(Convert.ToInt32(reader["UstKapali"]) == 1) : null,
+                            KramponKiralama = reader["KramponKiralama"] != DBNull.Value ? (bool?)(Convert.ToInt32(reader["KramponKiralama"]) == 1) : null,
+                            Metrekare = reader["Metrekare"] != DBNull.Value ? (int?)Convert.ToInt32(reader["Metrekare"]) : null
                         };
                         list.Add(s);
                     }
@@ -558,7 +768,9 @@ namespace SahalarBurada.Services
                     Ad = @Ad, Sehir = @Sehir, Ilce = @Ilce, Adres = @Adres, 
                     FiyatSaat = @FiyatSaat, MusaitGunler = @MusaitGunler, 
                     MusaitSaatler = @MusaitSaatler, Aciklama = @Aciklama, 
-                    Telefon = @Telefon, Kapasite = @Kapasite 
+                    Telefon = @Telefon,
+                    Kamera = @Kamera, UstKapali = @UstKapali, 
+                    KramponKiralama = @KramponKiralama, Metrekare = @Metrekare 
                     WHERE Id = @Id";
                 using (var cmd = new SQLiteCommand(sql, conn))
                 {
@@ -572,7 +784,10 @@ namespace SahalarBurada.Services
                     cmd.Parameters.AddWithValue("@MusaitSaatler", Jss.Serialize(s.MüsaitSaatler ?? new List<string>()));
                     cmd.Parameters.AddWithValue("@Aciklama", s.Aciklama);
                     cmd.Parameters.AddWithValue("@Telefon", s.Telefon ?? "");
-                    cmd.Parameters.AddWithValue("@Kapasite", s.Kapasite);
+                    cmd.Parameters.AddWithValue("@Kamera", s.Kamera.HasValue ? (object)(s.Kamera.Value ? 1 : 0) : DBNull.Value);
+                    cmd.Parameters.AddWithValue("@UstKapali", s.UstKapali.HasValue ? (object)(s.UstKapali.Value ? 1 : 0) : DBNull.Value);
+                    cmd.Parameters.AddWithValue("@KramponKiralama", s.KramponKiralama.HasValue ? (object)(s.KramponKiralama.Value ? 1 : 0) : DBNull.Value);
+                    cmd.Parameters.AddWithValue("@Metrekare", s.Metrekare.HasValue ? (object)s.Metrekare.Value : DBNull.Value);
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -680,36 +895,36 @@ namespace SahalarBurada.Services
             };
 
             string insertFieldSql = @"INSERT INTO fields 
-                (Id, OrganizatorId, Ad, Sehir, Ilce, Adres, FiyatSaat, MusaitGunler, MusaitSaatler, Aciklama, EklenmeTarihi, Telefon, Kapasite) 
-                VALUES (@Id, @OrganizatorId, @Ad, @Sehir, @Ilce, @Adres, @FiyatSaat, @MusaitGunler, @MusaitSaatler, @Aciklama, @EklenmeTarihi, @Telefon, @Kapasite)";
+                (Id, OrganizatorId, Ad, Sehir, Ilce, Adres, FiyatSaat, MusaitGunler, MusaitSaatler, Aciklama, EklenmeTarihi, Telefon) 
+                VALUES (@Id, @OrganizatorId, @Ad, @Sehir, @Ilce, @Adres, @FiyatSaat, @MusaitGunler, @MusaitSaatler, @Aciklama, @EklenmeTarihi, @Telefon)";
 
             var fields = new[]
             {
-                new { Id = "f1", OrganizatorId = "o_demo", Ad = "Olimpiyat Merkez Saha", Sehir = "İstanbul", Ilce = "Kadıköy", Adres = "Olimpiyat Merkez Spor Tesisleri No:1", FiyatSaat = 1200.0, Telefon = "05321234567", Kapasite = 14, Aciklama = "Profesyonel zeminli, aydınlatmalı açık saha keyfi." },
-                new { Id = "f2", OrganizatorId = "o_demo", Ad = "Olimpiyat Kapalı Saha", Sehir = "İstanbul", Ilce = "Kadıköy", Adres = "Olimpiyat Merkez Spor Tesisleri No:2", FiyatSaat = 1400.0, Telefon = "05321234567", Kapasite = 14, Aciklama = "Kış aylarında sıcak ve konforlu kapalı saha deneyimi." },
+                new { Id = "f1", OrganizatorId = "o_demo", Ad = "Olimpiyat Merkez Saha", Sehir = "İstanbul", Ilce = "Kadıköy", Adres = "Olimpiyat Merkez Spor Tesisleri No:1", FiyatSaat = 1200.0, Telefon = "05321234567", Aciklama = "Profesyonel zeminli, aydınlatmalı açık saha keyfi." },
+                new { Id = "f2", OrganizatorId = "o_demo", Ad = "Olimpiyat Kapalı Saha", Sehir = "İstanbul", Ilce = "Kadıköy", Adres = "Olimpiyat Merkez Spor Tesisleri No:2", FiyatSaat = 1400.0, Telefon = "05321234567", Aciklama = "Kış aylarında sıcak ve konforlu kapalı saha deneyimi." },
                 
-                new { Id = "f3", OrganizatorId = "o_2", Ad = "Şampiyon Arena A", Sehir = "İstanbul", Ilce = "Kadıköy", Adres = "Şampiyon Kompleksi Spor Sok. No:5", FiyatSaat = 1100.0, Telefon = "05332000002", Kapasite = 14, Aciklama = "Tribünlü ve kaliteli suni çime sahip modern saha." },
-                new { Id = "f4", OrganizatorId = "o_2", Ad = "Şampiyon Kapalı B", Sehir = "İstanbul", Ilce = "Kadıköy", Adres = "Şampiyon Kompleksi Spor Sok. No:6", FiyatSaat = 1300.0, Telefon = "05332000002", Kapasite = 14, Aciklama = "Rüzgar ve yağmur geçirmeyen özel çadır korumalı saha." },
+                new { Id = "f3", OrganizatorId = "o_2", Ad = "Şampiyon Arena A", Sehir = "İstanbul", Ilce = "Kadıköy", Adres = "Şampiyon Kompleksi Spor Sok. No:5", FiyatSaat = 1100.0, Telefon = "05332000002", Aciklama = "Tribünlü ve kaliteli suni çime sahip modern saha." },
+                new { Id = "f4", OrganizatorId = "o_2", Ad = "Şampiyon Kapalı B", Sehir = "İstanbul", Ilce = "Kadıköy", Adres = "Şampiyon Kompleksi Spor Sok. No:6", FiyatSaat = 1300.0, Telefon = "05332000002", Aciklama = "Rüzgar ve yağmur geçirmeyen özel çadır korumalı saha." },
                 
-                new { Id = "f5", OrganizatorId = "o_3", Ad = "Arena Bornova", Sehir = "İzmir", Ilce = "Bornova", Adres = "Bornova Spor Caddesi No:10", FiyatSaat = 1000.0, Telefon = "05342000003", Kapasite = 14, Aciklama = "İzmir'in en gözde, soyunma odaları yenilenmiş harika sahası." },
-                new { Id = "f6", OrganizatorId = "o_3", Ad = "Arena Alsancak", Sehir = "İzmir", Ilce = "Konak", Adres = "Alsancak Kordon Boyu No:15", FiyatSaat = 1200.0, Telefon = "05342000003", Kapasite = 14, Aciklama = "Alsancak sahilinde harika manzaralı açık saha." },
+                new { Id = "f5", OrganizatorId = "o_3", Ad = "Arena Bornova", Sehir = "İzmir", Ilce = "Bornova", Adres = "Bornova Spor Caddesi No:10", FiyatSaat = 1000.0, Telefon = "05342000003", Aciklama = "İzmir'in en gözde, soyunma odaları yenilenmiş harika sahası." },
+                new { Id = "f6", OrganizatorId = "o_3", Ad = "Arena Alsancak", Sehir = "İzmir", Ilce = "Konak", Adres = "Alsancak Kordon Boyu No:15", FiyatSaat = 1200.0, Telefon = "05342000003", Aciklama = "Alsancak sahilinde harika manzaralı açık saha." },
                 
-                new { Id = "f7", OrganizatorId = "o_4", Ad = "Kanal Boyu Açık Saha", Sehir = "Ankara", Ilce = "Çankaya", Adres = "Kanal Boyu Cad. No:24", FiyatSaat = 1500.0, Telefon = "05352000004", Kapasite = 14, Aciklama = "Ankara merkezde, geniş otoparklı modern spor tesisi." },
-                new { Id = "f8", OrganizatorId = "o_4", Ad = "Kanal Boyu Çim Saha", Sehir = "Ankara", Ilce = "Çankaya", Adres = "Kanal Boyu Cad. No:25", FiyatSaat = 1700.0, Telefon = "05352000004", Kapasite = 22, Aciklama = "11'e 11 maçlar için ideal doğal çim zemin." },
+                new { Id = "f7", OrganizatorId = "o_4", Ad = "Kanal Boyu Açık Saha", Sehir = "Ankara", Ilce = "Çankaya", Adres = "Kanal Boyu Cad. No:24", FiyatSaat = 1500.0, Telefon = "05352000004", Aciklama = "Ankara merkezde, geniş otoparklı modern spor tesisi." },
+                new { Id = "f8", OrganizatorId = "o_4", Ad = "Kanal Boyu Çim Saha", Sehir = "Ankara", Ilce = "Çankaya", Adres = "Kanal Boyu Cad. No:25", FiyatSaat = 1700.0, Telefon = "05352000004", Aciklama = "11'e 11 maçlar için ideal doğal çim zemin." },
                 
-                new { Id = "f9", OrganizatorId = "o_5", Ad = "Kadıköy Yıldız Saha", Sehir = "İstanbul", Ilce = "Kadıköy", Adres = "Kadıköy Sahil Parkı içi", FiyatSaat = 1500.0, Telefon = "05362000005", Kapasite = 14, Aciklama = "Harika deniz manzaralı, kaliteli zemin kaplamalı açık saha." },
-                new { Id = "f10", OrganizatorId = "o_5", Ad = "Kadıköy Kapalı Arenası", Sehir = "İstanbul", Ilce = "Kadıköy", Adres = "Kadıköy Sahil Parkı içi", FiyatSaat = 1700.0, Telefon = "05362000005", Kapasite = 14, Aciklama = "Özel aydınlatmalı, havalandırma sistemli kapalı tesis." },
+                new { Id = "f9", OrganizatorId = "o_5", Ad = "Kadıköy Yıldız Saha", Sehir = "İstanbul", Ilce = "Kadıköy", Adres = "Kadıköy Sahil Parkı içi", FiyatSaat = 1500.0, Telefon = "05362000005", Aciklama = "Harika deniz manzaralı, kaliteli zemin kaplamalı açık saha." },
+                new { Id = "f10", OrganizatorId = "o_5", Ad = "Kadıköy Kapalı Arenası", Sehir = "İstanbul", Ilce = "Kadıköy", Adres = "Kadıköy Sahil Parkı içi", FiyatSaat = 1700.0, Telefon = "05362000005", Aciklama = "Özel aydınlatmalı, havalandırma sistemli kapalı tesis." },
                 
-                new { Id = "f11", OrganizatorId = "o_6", Ad = "Bornova Olimpik Saha", Sehir = "İzmir", Ilce = "Bornova", Adres = "Bornova Gençlik Parkı Yanı", FiyatSaat = 900.0, Telefon = "05372000006", Kapasite = 14, Aciklama = "Öğrencilere indirimli, cana yakın personeli olan tesis." },
-                new { Id = "f12", OrganizatorId = "o_7", Ad = "Çankaya Prestij Arenası", Sehir = "Ankara", Ilce = "Çankaya", Adres = "Tunalı Hilmi Cad. No:120", FiyatSaat = 1800.0, Telefon = "05382000007", Kapasite = 14, Aciklama = "Başkentin merkezinde, lüks kafe alanı ve geniş soyunma odaları." },
-                new { Id = "f13", OrganizatorId = "o_8", Ad = "Alsancak Liman Saha", Sehir = "İzmir", Ilce = "Konak", Adres = "Alsancak Kordon Boyu", FiyatSaat = 1200.0, Telefon = "05392000008", Kapasite = 14, Aciklama = "Merkezi konumda, metroya 2 dakika yürüme mesafesinde." },
-                new { Id = "f14", OrganizatorId = "o_9", Ad = "Kartal Sahil Parkı Sahası", Sehir = "İstanbul", Ilce = "Kartal", Adres = "Kartal Sahil Yolu No:200", FiyatSaat = 1000.0, Telefon = "05302000009", Kapasite = 14, Aciklama = "Geniş tribünlü ve kafeteryalı lüks açık saha." },
-                new { Id = "f15", OrganizatorId = "o_10", Ad = "Beşiktaş Kaptan Arena", Sehir = "İstanbul", Ilce = "Beşiktaş", Adres = "Beşiktaş Barbaros Bulvarı No:80", FiyatSaat = 2000.0, Telefon = "05312000010", Kapasite = 14, Aciklama = "İstanbul'un merkezinde üst seviye hizmet and mükemmel zemin." },
-                new { Id = "f16", OrganizatorId = "o_11", Ad = "Bornova Suni Çim Saha", Sehir = "İzmir", Ilce = "Bornova", Adres = "Bornova Gençlik Parkı Yanı No:5", FiyatSaat = 950.0, Telefon = "05322000011", Kapasite = 14, Aciklama = "Esnek zemin yapısı ile diz ve ayak bileği dostu suni çim." },
-                new { Id = "f17", OrganizatorId = "o_12", Ad = "Alsancak Çadır Saha", Sehir = "İzmir", Ilce = "Konak", Adres = "Alsancak Kordon Boyu No:7", FiyatSaat = 1350.0, Telefon = "05332000012", Kapasite = 14, Aciklama = "Her mevsimde kesintisiz futbol keyfi sunan kapalı çadır saha." },
-                new { Id = "f18", OrganizatorId = "o_13", Ad = "Kartal Kapalı Kompleksi", Sehir = "İstanbul", Ilce = "Kartal", Adres = "Kartal Sahil Yolu No:205", FiyatSaat = 1200.0, Telefon = "05342000013", Kapasite = 14, Aciklama = "Yüksek tavanlı, ferah ve geniş kapalı futbol sahası." },
-                new { Id = "f19", OrganizatorId = "o_14", Ad = "Beşiktaş Yıldız Parkı Saha", Sehir = "İstanbul", Ilce = "Beşiktaş", Adres = "Beşiktaş Barbaros Bulvarı No:85", FiyatSaat = 2100.0, Telefon = "05352000014", Kapasite = 14, Aciklama = "Özel çim zeminli, aydınlatmalı premium halı saha." },
-                new { Id = "f20", OrganizatorId = "o_15", Ad = "TRCUP", Sehir = "Çanakkale", Ilce = "Merkez", Adres = "Atatürk Cad. No:4", FiyatSaat = 3000.0, Telefon = "05362000015", Kapasite = 20, Aciklama = "Turnuvalar ve özel organizasyonlar için tasarlanmış birinci sınıf saha." }
+                new { Id = "f11", OrganizatorId = "o_6", Ad = "Bornova Olimpik Saha", Sehir = "İzmir", Ilce = "Bornova", Adres = "Bornova Gençlik Parkı Yanı", FiyatSaat = 900.0, Telefon = "05372000006", Aciklama = "Öğrencilere indirimli, cana yakın personeli olan tesis." },
+                new { Id = "f12", OrganizatorId = "o_7", Ad = "Çankaya Prestij Arenası", Sehir = "Ankara", Ilce = "Çankaya", Adres = "Tunalı Hilmi Cad. No:120", FiyatSaat = 1800.0, Telefon = "05382000007", Aciklama = "Başkentin merkezinde, lüks kafe alanı ve geniş soyunma odaları." },
+                new { Id = "f13", OrganizatorId = "o_8", Ad = "Alsancak Liman Saha", Sehir = "İzmir", Ilce = "Konak", Adres = "Alsancak Kordon Boyu", FiyatSaat = 1200.0, Telefon = "05392000008", Aciklama = "Merkezi konumda, metroya 2 dakika yürüme mesafesinde." },
+                new { Id = "f14", OrganizatorId = "o_9", Ad = "Kartal Sahil Parkı Sahası", Sehir = "İstanbul", Ilce = "Kartal", Adres = "Kartal Sahil Yolu No:200", FiyatSaat = 1000.0, Telefon = "05302000009", Aciklama = "Geniş tribünlü ve kafeteryalı lüks açık saha." },
+                new { Id = "f15", OrganizatorId = "o_10", Ad = "Beşiktaş Kaptan Arena", Sehir = "İstanbul", Ilce = "Beşiktaş", Adres = "Beşiktaş Barbaros Bulvarı No:80", FiyatSaat = 2000.0, Telefon = "05312000010", Aciklama = "İstanbul'un merkezinde üst seviye hizmet and mükemmel zemin." },
+                new { Id = "f16", OrganizatorId = "o_11", Ad = "Bornova Suni Çim Saha", Sehir = "İzmir", Ilce = "Bornova", Adres = "Bornova Gençlik Parkı Yanı No:5", FiyatSaat = 950.0, Telefon = "05322000011", Aciklama = "Esnek zemin yapısı ile diz ve ayak bileği dostu suni çim." },
+                new { Id = "f17", OrganizatorId = "o_12", Ad = "Alsancak Çadır Saha", Sehir = "İzmir", Ilce = "Konak", Adres = "Alsancak Kordon Boyu No:7", FiyatSaat = 1350.0, Telefon = "05332000012", Aciklama = "Her mevsimde kesintisiz futbol keyfi sunan kapalı çadır saha." },
+                new { Id = "f18", OrganizatorId = "o_13", Ad = "Kartal Kapalı Kompleksi", Sehir = "İstanbul", Ilce = "Kartal", Adres = "Kartal Sahil Yolu No:205", FiyatSaat = 1200.0, Telefon = "05342000013", Aciklama = "Yüksek tavanlı, ferah ve geniş kapalı futbol sahası." },
+                new { Id = "f19", OrganizatorId = "o_14", Ad = "Beşiktaş Yıldız Parkı Saha", Sehir = "İstanbul", Ilce = "Beşiktaş", Adres = "Beşiktaş Barbaros Bulvarı No:85", FiyatSaat = 2100.0, Telefon = "05352000014", Aciklama = "Özel çim zeminli, aydınlatmalı premium halı saha." },
+                new { Id = "f20", OrganizatorId = "o_15", Ad = "TRCUP", Sehir = "Çanakkale", Ilce = "Merkez", Adres = "Atatürk Cad. No:4", FiyatSaat = 3000.0, Telefon = "05362000015", Aciklama = "Turnuvalar ve özel organizasyonlar için tasarlanmış birinci sınıf saha." }
             };
 
             foreach (var f in fields)
@@ -728,7 +943,6 @@ namespace SahalarBurada.Services
                     cmd.Parameters.AddWithValue("@Aciklama", f.Aciklama);
                     cmd.Parameters.AddWithValue("@EklenmeTarihi", DateTime.Now.ToString("o"));
                     cmd.Parameters.AddWithValue("@Telefon", f.Telefon);
-                    cmd.Parameters.AddWithValue("@Kapasite", f.Kapasite);
                     cmd.ExecuteNonQuery();
                 }
             }

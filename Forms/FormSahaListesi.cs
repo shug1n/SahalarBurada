@@ -54,10 +54,33 @@ namespace SahalarBurada.Forms
             if (!string.IsNullOrEmpty(konum))
                 kart.Controls.Add(new Label { Text = konum, Font = UIHelper.FNormal, ForeColor = UIHelper.CMetin, AutoSize = true, Location = new Point(22, 82) });
             kart.Controls.Add(new Label { Text = $"💰  {saha.FiyatSaat:N0} ₺ / saat", Font = new Font("Segoe UI", 11, FontStyle.Bold), ForeColor = UIHelper.CAna, AutoSize = true, Location = new Point(210, 82) });
+            
+            var ozellikler = new List<string>();
+            if (saha.Kamera == true) ozellikler.Add("🎥 Kamera");
+            if (saha.UstKapali == true) ozellikler.Add("⛺ Kapalı");
+            else if (saha.UstKapali == false) ozellikler.Add("🌤 Açık");
+            if (saha.KramponKiralama == true) ozellikler.Add("🥾 Krampon");
+            if (saha.Metrekare.HasValue && saha.Metrekare.Value > 0) ozellikler.Add($"📐 {saha.Metrekare.Value} m²");
+
+            if (ozellikler.Count > 0)
+            {
+                string ozelliklerMetni = "✨ " + string.Join("  •  ", ozellikler);
+                var lblOzellik = new Label 
+                { 
+                    Text = ozelliklerMetni, 
+                    Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), 
+                    ForeColor = UIHelper.CIkinci, 
+                    AutoSize = true, 
+                    MaximumSize = new Size(295, 0),
+                    Location = new Point(390, 83) 
+                };
+                kart.Controls.Add(lblOzellik);
+            }
+
             if (!string.IsNullOrWhiteSpace(saha.Aciklama))
             {
                 var kisa = saha.Aciklama.Length > 95 ? saha.Aciklama.Substring(0, 95) + "…" : saha.Aciklama;
-                kart.Controls.Add(new Label { Text = kisa, Font = UIHelper.FKucukItalik, ForeColor = UIHelper.CMetinAcik, AutoSize = false, Size = new Size(560, 18), Location = new Point(22, 118) });
+                kart.Controls.Add(new Label { Text = kisa, Font = UIHelper.FKucukItalik, ForeColor = UIHelper.CMetinAcik, AutoSize = false, Size = new Size(560, 18), Location = new Point(22, 124) });
             }
             var sahaRef = saha;
             var btnSec  = UIHelper.BtnPrimary("Seç  →", 700, 60, 100, 40);

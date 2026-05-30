@@ -250,9 +250,10 @@ namespace SahalarBurada.Forms
             this.colAdres.Name = "colAdres";
             this.colAdres.ReadOnly = true;
             // 
+            // 
             // colKapasite
             // 
-            this.colKapasite.HeaderText = "Kapasite";
+            this.colKapasite.HeaderText = "Şehir / İlçe";
             this.colKapasite.Name = "colKapasite";
             this.colKapasite.ReadOnly = true;
             // 

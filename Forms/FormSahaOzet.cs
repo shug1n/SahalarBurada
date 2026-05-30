@@ -17,11 +17,11 @@ namespace SahalarBurada.Forms
             InitializeComponent();
             this.ClientSize = new Size(1000, 700);
 
+            SetupLogic();
+
             var allControls = new System.Collections.Generic.List<Control>();
             foreach (Control c in pnlScroll.Controls) allControls.Add(c);
             UIHelper.CenterControlsInCard(pnlScroll, allControls.ToArray(), false);
-
-            SetupLogic();
         }
 
         private void SetupLogic()
@@ -45,8 +45,99 @@ namespace SahalarBurada.Forms
             lblAciklamaDeger.Top = newY;
             lblAciklamaDeger.Text = string.IsNullOrWhiteSpace(_saha.Aciklama) ? "—" : _saha.Aciklama;
 
-            int cardHeightNeeded = lblAciklamaDeger.Bottom + 30;
+            int currentY = lblAciklamaDeger.Bottom + 12;
+
+            // Kamera
+            var lblKameraLabel = new Label
+            {
+                Text = "Saha İçi Kamera:",
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                ForeColor = Color.FromArgb(30, 30, 30),
+                Location = new Point(20, currentY),
+                Size = new Size(145, 26)
+            };
+            var lblKameraVal = new Label
+            {
+                Text = _saha.Kamera == true ? "Var" : (_saha.Kamera == false ? "Yok" : "Belirtilmemiş"),
+                Font = new Font("Segoe UI", 10),
+                ForeColor = Color.FromArgb(100, 100, 100),
+                Location = new Point(170, currentY),
+                Size = new Size(430, 26)
+            };
+            pnlKart.Controls.Add(lblKameraLabel);
+            pnlKart.Controls.Add(lblKameraVal);
+            currentY += 32;
+
+            // Üstü Durumu
+            var lblUstLabel = new Label
+            {
+                Text = "Saha Üstü Durumu:",
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                ForeColor = Color.FromArgb(30, 30, 30),
+                Location = new Point(20, currentY),
+                Size = new Size(145, 26)
+            };
+            var lblUstVal = new Label
+            {
+                Text = _saha.UstKapali == true ? "Üstü Kapalı" : (_saha.UstKapali == false ? "Üstü Açık" : "Belirtilmemiş"),
+                Font = new Font("Segoe UI", 10),
+                ForeColor = Color.FromArgb(100, 100, 100),
+                Location = new Point(170, currentY),
+                Size = new Size(430, 26)
+            };
+            pnlKart.Controls.Add(lblUstLabel);
+            pnlKart.Controls.Add(lblUstVal);
+            currentY += 32;
+
+            // Krampon
+            var lblKramponLabel = new Label
+            {
+                Text = "Krampon Kiralama:",
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                ForeColor = Color.FromArgb(30, 30, 30),
+                Location = new Point(20, currentY),
+                Size = new Size(145, 26)
+            };
+            var lblKramponVal = new Label
+            {
+                Text = _saha.KramponKiralama == true ? "Krampon Kiralanıyor" : (_saha.KramponKiralama == false ? "Krampon Kiralanmıyor" : "Belirtilmemiş"),
+                Font = new Font("Segoe UI", 10),
+                ForeColor = Color.FromArgb(100, 100, 100),
+                Location = new Point(170, currentY),
+                Size = new Size(430, 26)
+            };
+            pnlKart.Controls.Add(lblKramponLabel);
+            pnlKart.Controls.Add(lblKramponVal);
+            currentY += 32;
+
+            // Büyüklük (m²)
+            var lblBoyutLabel = new Label
+            {
+                Text = "Saha Büyüklüğü:",
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                ForeColor = Color.FromArgb(30, 30, 30),
+                Location = new Point(20, currentY),
+                Size = new Size(145, 26)
+            };
+            var lblBoyutVal = new Label
+            {
+                Text = _saha.Metrekare.HasValue ? $"{_saha.Metrekare.Value} m²" : "Belirtilmemiş",
+                Font = new Font("Segoe UI", 10),
+                ForeColor = Color.FromArgb(100, 100, 100),
+                Location = new Point(170, currentY),
+                Size = new Size(430, 26)
+            };
+            pnlKart.Controls.Add(lblBoyutLabel);
+            pnlKart.Controls.Add(lblBoyutVal);
+            currentY += 32;
+
+            int cardHeightNeeded = currentY + 18;
             pnlKart.Height = Math.Max(pnlKart.Height, cardHeightNeeded);
+
+            // Dynamically position info label and action buttons below the updated pnlKart
+            lblBilgi.Top = pnlKart.Bottom + 12;
+            btnDuzenle.Top = lblBilgi.Bottom + 12;
+            btnKaydet.Top = lblBilgi.Bottom + 12;
         }
 
         private void pnlKart_Paint(object sender, PaintEventArgs e)

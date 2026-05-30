@@ -10,8 +10,11 @@ namespace SahalarBurada.Forms
 {
     public partial class FormSahaEkle : BaseChildForm
     {
-        private NumericUpDown numKapasite;
         private readonly HaliSaha _duzenlenenSaha;
+        private ComboBox cmbKamera;
+        private ComboBox cmbUstKapali;
+        private ComboBox cmbKrampon;
+        private TextBox txtMetrekare;
 
         public FormSahaEkle(HaliSaha duzenlenenSaha = null)
         {
@@ -38,39 +41,106 @@ namespace SahalarBurada.Forms
             btnGeri.Location = new Point(30, this.ClientSize.Height - 60);
             btnOzet.Location = new Point(190, this.ClientSize.Height - 60);
 
-            // Shift controls below Y=280 down by 70 pixels
-            foreach (Control c in pnlScroll.Controls)
-            {
-                if (c.Top >= 300)
-                {
-                    c.Top += 70;
-                }
-            }
+            // Programmatically add optional characteristic fields dynamically below txtAciklama
+            int startY = txtAciklama.Bottom + 20;
 
-            // Create Kapasite label and control programmatically
-            var lblKapasite = new Label
+            var lblKamera = new Label
             {
-                Text = "Maksimum Kapasite (Kişi Sayısı): *",
-                Location = new Point(32, 300),
+                Text = "Saha İçi Kamera: (Opsiyonel)",
+                Location = new Point(32, startY),
                 Size = new Size(295, 20),
                 Font = new Font("Segoe UI", 10, FontStyle.Bold),
                 ForeColor = Color.FromArgb(30, 30, 30),
                 AutoSize = true
             };
 
-            this.numKapasite = new NumericUpDown
+            this.cmbKamera = new ComboBox
             {
-                Name = "numKapasite",
-                Location = new Point(32, 326),
+                Name = "cmbKamera",
+                Location = new Point(32, startY + 26),
                 Size = new Size(295, 25),
                 Font = new Font("Segoe UI", 10),
-                Minimum = 1,
-                Maximum = 999, // Capacity limit removed (increased to 999)
-                Value = 14
+                DropDownStyle = ComboBoxStyle.DropDownList
+            };
+            this.cmbKamera.Items.AddRange(new object[] { "Belirtilmemiş", "Kamera Var", "Kamera Yok" });
+            this.cmbKamera.SelectedIndex = 0;
+
+            var lblUstKapali = new Label
+            {
+                Text = "Saha Üstü Durumu: (Opsiyonel)",
+                Location = new Point(349, startY),
+                Size = new Size(295, 20),
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                ForeColor = Color.FromArgb(30, 30, 30),
+                AutoSize = true
             };
 
-            pnlScroll.Controls.Add(lblKapasite);
-            pnlScroll.Controls.Add(this.numKapasite);
+            this.cmbUstKapali = new ComboBox
+            {
+                Name = "cmbUstKapali",
+                Location = new Point(349, startY + 26),
+                Size = new Size(295, 25),
+                Font = new Font("Segoe UI", 10),
+                DropDownStyle = ComboBoxStyle.DropDownList
+            };
+            this.cmbUstKapali.Items.AddRange(new object[] { "Belirtilmemiş", "Üstü Açık", "Üstü Kapalı" });
+            this.cmbUstKapali.SelectedIndex = 0;
+
+            int startY2 = startY + 70;
+
+            var lblKrampon = new Label
+            {
+                Text = "Krampon Kiralama: (Opsiyonel)",
+                Location = new Point(32, startY2),
+                Size = new Size(295, 20),
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                ForeColor = Color.FromArgb(30, 30, 30),
+                AutoSize = true
+            };
+
+            this.cmbKrampon = new ComboBox
+            {
+                Name = "cmbKrampon",
+                Location = new Point(32, startY2 + 26),
+                Size = new Size(295, 25),
+                Font = new Font("Segoe UI", 10),
+                DropDownStyle = ComboBoxStyle.DropDownList
+            };
+            this.cmbKrampon.Items.AddRange(new object[] { "Belirtilmemiş", "Krampon Kiralanıyor", "Krampon Kiralanmıyor" });
+            this.cmbKrampon.SelectedIndex = 0;
+
+            var lblMetrekare = new Label
+            {
+                Text = "Saha Büyüklüğü (m²): (Opsiyonel)",
+                Location = new Point(349, startY2),
+                Size = new Size(295, 20),
+                Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                ForeColor = Color.FromArgb(30, 30, 30),
+                AutoSize = true
+            };
+
+            this.txtMetrekare = new TextBox
+            {
+                Name = "txtMetrekare",
+                Location = new Point(349, startY2 + 26),
+                Size = new Size(295, 25),
+                Font = new Font("Segoe UI", 10),
+                BackColor = Color.White,
+                BorderStyle = BorderStyle.FixedSingle,
+                ForeColor = Color.FromArgb(30, 30, 30)
+            };
+
+            pnlScroll.Controls.Add(lblKamera);
+            pnlScroll.Controls.Add(this.cmbKamera);
+            pnlScroll.Controls.Add(lblUstKapali);
+            pnlScroll.Controls.Add(this.cmbUstKapali);
+            pnlScroll.Controls.Add(lblKrampon);
+            pnlScroll.Controls.Add(this.cmbKrampon);
+            pnlScroll.Controls.Add(lblMetrekare);
+            pnlScroll.Controls.Add(this.txtMetrekare);
+
+            // Shift error label further down
+            lblHata.Top = startY2 + 70;
 
             var allControls = new List<Control>();
             foreach (Control c in pnlScroll.Controls) allControls.Add(c);
@@ -78,6 +148,7 @@ namespace SahalarBurada.Forms
 
             UIHelper.SetPlaceholder(txtFiyat, "3000");
             UIHelper.SetPlaceholder(txtTelefon, "Örn: 0532 123 45 67");
+            UIHelper.SetPlaceholder(txtMetrekare, "Örn: 800");
             SetupLogic();
 
             if (_duzenlenenSaha != null)
@@ -90,7 +161,21 @@ namespace SahalarBurada.Forms
                 txtFiyat.Text = _duzenlenenSaha.FiyatSaat.ToString();
                 txtTelefon.Text = _duzenlenenSaha.Telefon;
                 txtAciklama.Text = _duzenlenenSaha.Aciklama;
-                numKapasite.Value = _duzenlenenSaha.Kapasite;
+
+                // Load optional properties
+                if (_duzenlenenSaha.Kamera == true) cmbKamera.SelectedIndex = 1;
+                else if (_duzenlenenSaha.Kamera == false) cmbKamera.SelectedIndex = 2;
+                else cmbKamera.SelectedIndex = 0;
+
+                if (_duzenlenenSaha.UstKapali == false) cmbUstKapali.SelectedIndex = 1; // Üstü Açık
+                else if (_duzenlenenSaha.UstKapali == true) cmbUstKapali.SelectedIndex = 2; // Üstü Kapalı
+                else cmbUstKapali.SelectedIndex = 0;
+
+                if (_duzenlenenSaha.KramponKiralama == true) cmbKrampon.SelectedIndex = 1;
+                else if (_duzenlenenSaha.KramponKiralama == false) cmbKrampon.SelectedIndex = 2;
+                else cmbKrampon.SelectedIndex = 0;
+
+                txtMetrekare.Text = _duzenlenenSaha.Metrekare.HasValue ? _duzenlenenSaha.Metrekare.Value.ToString() : "";
 
                 // Load sehir and ilce
                 cmbSehir.SelectedItem = _duzenlenenSaha.Sehir;
@@ -193,6 +278,33 @@ namespace SahalarBurada.Forms
                 return;
             }
 
+            bool? kamera = null;
+            if (cmbKamera.SelectedIndex == 1) kamera = true;
+            else if (cmbKamera.SelectedIndex == 2) kamera = false;
+
+            bool? ustKapali = null;
+            if (cmbUstKapali.SelectedIndex == 1) ustKapali = false;
+            else if (cmbUstKapali.SelectedIndex == 2) ustKapali = true;
+
+            bool? krampon = null;
+            if (cmbKrampon.SelectedIndex == 1) krampon = true;
+            else if (cmbKrampon.SelectedIndex == 2) krampon = false;
+
+            int? metrekare = null;
+            if (!string.IsNullOrWhiteSpace(txtMetrekare.Text))
+            {
+                if (int.TryParse(txtMetrekare.Text.Trim(), out int val) && val > 0)
+                {
+                    metrekare = val;
+                }
+                else
+                {
+                    lblHata.Text = "Saha büyüklüğü alanına geçerli bir pozitif tam sayı girmelisiniz veya boş bırakmalısınız.";
+                    lblHata.Visible = true;
+                    return;
+                }
+            }
+
             HaliSaha saha = _duzenlenenSaha;
             if (saha == null)
             {
@@ -208,7 +320,10 @@ namespace SahalarBurada.Forms
                     MüsaitSaatler = saatler,
                     Aciklama      = txtAciklama.Text.Trim(),
                     Telefon       = cleanPhone,
-                    Kapasite      = (int)numKapasite.Value
+                    Kamera        = kamera,
+                    UstKapali     = ustKapali,
+                    KramponKiralama = krampon,
+                    Metrekare     = metrekare
                 };
             }
             else
@@ -222,7 +337,10 @@ namespace SahalarBurada.Forms
                 saha.MüsaitSaatler = saatler;
                 saha.Aciklama      = txtAciklama.Text.Trim();
                 saha.Telefon       = cleanPhone;
-                saha.Kapasite      = (int)numKapasite.Value;
+                saha.Kamera        = kamera;
+                saha.UstKapali     = ustKapali;
+                saha.KramponKiralama = krampon;
+                saha.Metrekare     = metrekare;
             }
             var f = new FormSahaOzet(saha);
             this.Hide();

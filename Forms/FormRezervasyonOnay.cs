@@ -110,12 +110,6 @@ namespace SahalarBurada.Forms
                 lblHata.Visible = true;
                 return;
             }
-            if (kisi > _saha.Kapasite)
-            {
-                lblHata.Text = $"Bu saha için maksimum katılımcı sayısı {_saha.Kapasite} kişidir.";
-                lblHata.Visible = true;
-                return;
-            }
 
             string misafirAd = null, misafirTelefon = null, kullaniciId = null;
             if (!Oturum.GirisYapildi)

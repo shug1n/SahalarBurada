@@ -165,7 +165,7 @@ namespace SahalarBurada.Forms
                         if (user != null)
                         {
                             kiralayan = $"{user.Ad} {user.Soyad} (Üye)";
-                            iletisim = user.Eposta;
+                            iletisim = !string.IsNullOrEmpty(user.Telefon) ? user.Telefon : (!string.IsNullOrEmpty(r.MisafirTelefon) ? r.MisafirTelefon : "Belirtilmemiş");
                         }
                         else
                         {
