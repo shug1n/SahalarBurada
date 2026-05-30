@@ -41,13 +41,19 @@ namespace SahalarBurada.Forms
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormProfilGuncelle));
             this.SuspendLayout();
-            // Basic settings
-            this.BackColor = UIHelper.CArkaplan;
-            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            // 
+            // FormProfilGuncelle
+            // 
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(248)))), ((int)(((byte)(245)))));
+            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FormProfilGuncelle";
             this.ResumeLayout(false);
+
         }
 
         private void SetupForm()

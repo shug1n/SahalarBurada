@@ -50,6 +50,7 @@ namespace SahalarBurada.Forms
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormOrganizatorGiris));
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.lblHeaderBaslik = new System.Windows.Forms.Label();
             this.lblHeaderAltBaslik = new System.Windows.Forms.Label();
@@ -106,7 +107,7 @@ namespace SahalarBurada.Forms
             this.lblHeaderBaslik.ForeColor = System.Drawing.Color.White;
             this.lblHeaderBaslik.Location = new System.Drawing.Point(25, 16);
             this.lblHeaderBaslik.Name = "lblHeaderBaslik";
-            this.lblHeaderBaslik.Size = new System.Drawing.Size(225, 30);
+            this.lblHeaderBaslik.Size = new System.Drawing.Size(240, 30);
             this.lblHeaderBaslik.TabIndex = 0;
             this.lblHeaderBaslik.Text = "🏢  Organizatör Girişi";
             // 
@@ -118,7 +119,7 @@ namespace SahalarBurada.Forms
             this.lblHeaderAltBaslik.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.lblHeaderAltBaslik.Location = new System.Drawing.Point(27, 52);
             this.lblHeaderAltBaslik.Name = "lblHeaderAltBaslik";
-            this.lblHeaderAltBaslik.Size = new System.Drawing.Size(268, 15);
+            this.lblHeaderAltBaslik.Size = new System.Drawing.Size(245, 15);
             this.lblHeaderAltBaslik.TabIndex = 1;
             this.lblHeaderAltBaslik.Text = "İşletme hesabınızla giriş yapın veya kayıt olun";
             // 
@@ -233,7 +234,7 @@ namespace SahalarBurada.Forms
             this.chkBeniHatirla.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.chkBeniHatirla.Location = new System.Drawing.Point(50, 165);
             this.chkBeniHatirla.Name = "chkBeniHatirla";
-            this.chkBeniHatirla.Size = new System.Drawing.Size(95, 21);
+            this.chkBeniHatirla.Size = new System.Drawing.Size(93, 21);
             this.chkBeniHatirla.TabIndex = 4;
             this.chkBeniHatirla.Text = "Beni Hatırla";
             this.chkBeniHatirla.UseVisualStyleBackColor = true;
@@ -245,7 +246,7 @@ namespace SahalarBurada.Forms
             this.lblDemoNot.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.lblDemoNot.Location = new System.Drawing.Point(50, 195);
             this.lblDemoNot.Name = "lblDemoNot";
-            this.lblDemoNot.Size = new System.Drawing.Size(169, 15);
+            this.lblDemoNot.Size = new System.Drawing.Size(185, 15);
             this.lblDemoNot.TabIndex = 5;
             this.lblDemoNot.Text = "Demo: demo@org.com  /  123456";
             // 
@@ -256,7 +257,7 @@ namespace SahalarBurada.Forms
             this.lblGirisHata.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(198)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.lblGirisHata.Location = new System.Drawing.Point(50, 220);
             this.lblGirisHata.Name = "lblGirisHata";
-            this.lblGirisHata.Size = new System.Drawing.Size(33, 15);
+            this.lblGirisHata.Size = new System.Drawing.Size(32, 15);
             this.lblGirisHata.TabIndex = 6;
             this.lblGirisHata.Text = "Hata";
             this.lblGirisHata.Visible = false;
@@ -308,7 +309,7 @@ namespace SahalarBurada.Forms
             this.lblIsletme.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.lblIsletme.Location = new System.Drawing.Point(50, 15);
             this.lblIsletme.Name = "lblIsletme";
-            this.lblIsletme.Size = new System.Drawing.Size(95, 19);
+            this.lblIsletme.Size = new System.Drawing.Size(88, 19);
             this.lblIsletme.TabIndex = 0;
             this.lblIsletme.Text = "İşletme Adı:";
             // 
@@ -352,7 +353,7 @@ namespace SahalarBurada.Forms
             this.lblSoyad.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.lblSoyad.Location = new System.Drawing.Point(280, 85);
             this.lblSoyad.Name = "lblSoyad";
-            this.lblSoyad.Size = new System.Drawing.Size(54, 19);
+            this.lblSoyad.Size = new System.Drawing.Size(55, 19);
             this.lblSoyad.TabIndex = 4;
             this.lblSoyad.Text = "Soyad:";
             // 
@@ -419,7 +420,7 @@ namespace SahalarBurada.Forms
             this.lblSifreTekrar.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.lblSifreTekrar.Location = new System.Drawing.Point(50, 295);
             this.lblSifreTekrar.Name = "lblSifreTekrar";
-            this.lblSifreTekrar.Size = new System.Drawing.Size(91, 19);
+            this.lblSifreTekrar.Size = new System.Drawing.Size(92, 19);
             this.lblSifreTekrar.TabIndex = 10;
             this.lblSifreTekrar.Text = "Şifre Tekrar:";
             // 
@@ -442,7 +443,7 @@ namespace SahalarBurada.Forms
             this.lblKayitHata.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(198)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.lblKayitHata.Location = new System.Drawing.Point(50, 365);
             this.lblKayitHata.Name = "lblKayitHata";
-            this.lblKayitHata.Size = new System.Drawing.Size(33, 15);
+            this.lblKayitHata.Size = new System.Drawing.Size(32, 15);
             this.lblKayitHata.TabIndex = 12;
             this.lblKayitHata.Text = "Hata";
             this.lblKayitHata.Visible = false;
@@ -492,6 +493,7 @@ namespace SahalarBurada.Forms
             this.Controls.Add(this.pnlHeader);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FormOrganizatorGiris";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

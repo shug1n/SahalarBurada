@@ -31,6 +31,7 @@ namespace SahalarBurada.Forms
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSahaAra));
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.lblHeaderBaslik = new System.Windows.Forms.Label();
             this.lblHeaderAltBaslik = new System.Windows.Forms.Label();
@@ -47,11 +48,9 @@ namespace SahalarBurada.Forms
             this.lblHata = new System.Windows.Forms.Label();
             this.btnListele = new System.Windows.Forms.Button();
             this.btnGeri = new System.Windows.Forms.Button();
-            
             this.pnlHeader.SuspendLayout();
             this.pnlContent.SuspendLayout();
             this.SuspendLayout();
-
             // 
             // pnlHeader
             // 
@@ -72,7 +71,7 @@ namespace SahalarBurada.Forms
             this.lblHeaderBaslik.ForeColor = System.Drawing.Color.White;
             this.lblHeaderBaslik.Location = new System.Drawing.Point(25, 16);
             this.lblHeaderBaslik.Name = "lblHeaderBaslik";
-            this.lblHeaderBaslik.Size = new System.Drawing.Size(155, 30);
+            this.lblHeaderBaslik.Size = new System.Drawing.Size(147, 30);
             this.lblHeaderBaslik.TabIndex = 0;
             this.lblHeaderBaslik.Text = "📅  Saha Ara";
             // 
@@ -84,7 +83,7 @@ namespace SahalarBurada.Forms
             this.lblHeaderAltBaslik.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.lblHeaderAltBaslik.Location = new System.Drawing.Point(27, 52);
             this.lblHeaderAltBaslik.Name = "lblHeaderAltBaslik";
-            this.lblHeaderAltBaslik.Size = new System.Drawing.Size(262, 15);
+            this.lblHeaderAltBaslik.Size = new System.Drawing.Size(245, 15);
             this.lblHeaderAltBaslik.TabIndex = 1;
             this.lblHeaderAltBaslik.Text = "Tarih ve saat seçerek müsait sahaları listeleyin";
             // 
@@ -116,7 +115,7 @@ namespace SahalarBurada.Forms
             this.lblKullanici.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.lblKullanici.Location = new System.Drawing.Point(50, 20);
             this.lblKullanici.Name = "lblKullanici";
-            this.lblKullanici.Size = new System.Drawing.Size(206, 15);
+            this.lblKullanici.Size = new System.Drawing.Size(205, 15);
             this.lblKullanici.TabIndex = 0;
             this.lblKullanici.Text = "👤 Misafir olarak arama yapıyorsunuz";
             // 
@@ -127,6 +126,7 @@ namespace SahalarBurada.Forms
             this.lblSehir.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.lblSehir.Location = new System.Drawing.Point(50, 50);
             this.lblSehir.Name = "lblSehir";
+            this.lblSehir.Size = new System.Drawing.Size(126, 19);
             this.lblSehir.TabIndex = 1;
             this.lblSehir.Text = "Şehir (opsiyonel):";
             // 
@@ -147,6 +147,7 @@ namespace SahalarBurada.Forms
             this.lblIlce.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.lblIlce.Location = new System.Drawing.Point(285, 50);
             this.lblIlce.Name = "lblIlce";
+            this.lblIlce.Size = new System.Drawing.Size(115, 19);
             this.lblIlce.TabIndex = 3;
             this.lblIlce.Text = "İlçe (opsiyonel):";
             // 
@@ -167,7 +168,7 @@ namespace SahalarBurada.Forms
             this.lblTarih.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.lblTarih.Location = new System.Drawing.Point(50, 115);
             this.lblTarih.Name = "lblTarih";
-            this.lblTarih.Size = new System.Drawing.Size(84, 19);
+            this.lblTarih.Size = new System.Drawing.Size(85, 19);
             this.lblTarih.TabIndex = 5;
             this.lblTarih.Text = "Tarih Seçin:";
             // 
@@ -207,7 +208,7 @@ namespace SahalarBurada.Forms
             this.lblHata.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(198)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.lblHata.Location = new System.Drawing.Point(50, 255);
             this.lblHata.Name = "lblHata";
-            this.lblHata.Size = new System.Drawing.Size(33, 15);
+            this.lblHata.Size = new System.Drawing.Size(32, 15);
             this.lblHata.TabIndex = 9;
             this.lblHata.Text = "Hata";
             this.lblHata.Visible = false;
@@ -253,6 +254,7 @@ namespace SahalarBurada.Forms
             this.Controls.Add(this.pnlHeader);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FormSahaAra";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

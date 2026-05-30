@@ -1,3 +1,4 @@
+using SahalarBurada.Properties;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
@@ -14,7 +15,7 @@ namespace SahalarBurada.Helpers
             if (_notifyIcon != null) return;
 
             _notifyIcon = new NotifyIcon();
-            _notifyIcon.Icon = SystemIcons.Application; // Default icon, can be changed later
+            _notifyIcon.Icon = Resources.soccer_icon;
             _notifyIcon.Text = "SahalarBurada";
             _notifyIcon.Visible = false;
 

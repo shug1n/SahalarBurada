@@ -24,6 +24,7 @@ namespace SahalarBurada.Forms
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSahaListesi));
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.lblHeaderBaslik = new System.Windows.Forms.Label();
             this.lblHeaderAltBaslik = new System.Windows.Forms.Label();
@@ -55,7 +56,7 @@ namespace SahalarBurada.Forms
             this.lblHeaderBaslik.ForeColor = System.Drawing.Color.White;
             this.lblHeaderBaslik.Location = new System.Drawing.Point(25, 16);
             this.lblHeaderBaslik.Name = "lblHeaderBaslik";
-            this.lblHeaderBaslik.Size = new System.Drawing.Size(200, 30);
+            this.lblHeaderBaslik.Size = new System.Drawing.Size(206, 30);
             this.lblHeaderBaslik.TabIndex = 0;
             this.lblHeaderBaslik.Text = "📋  Uygun Sahalar";
             // 
@@ -67,7 +68,7 @@ namespace SahalarBurada.Forms
             this.lblHeaderAltBaslik.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.lblHeaderAltBaslik.Location = new System.Drawing.Point(27, 52);
             this.lblHeaderAltBaslik.Name = "lblHeaderAltBaslik";
-            this.lblHeaderAltBaslik.Size = new System.Drawing.Size(150, 15);
+            this.lblHeaderAltBaslik.Size = new System.Drawing.Size(158, 15);
             this.lblHeaderAltBaslik.TabIndex = 1;
             this.lblHeaderAltBaslik.Text = "Bulunan sahalar yükleniyor...";
             // 
@@ -131,6 +132,7 @@ namespace SahalarBurada.Forms
             this.Controls.Add(this.pnlHeader);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FormSahaListesi";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

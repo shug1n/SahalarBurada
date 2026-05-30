@@ -33,6 +33,10 @@ namespace SahalarBurada.Forms
 
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormOrganizatorPanel));
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.lblHeaderBaslik = new System.Windows.Forms.Label();
             this.lblHeaderAltBaslik = new System.Windows.Forms.Label();
@@ -74,7 +78,7 @@ namespace SahalarBurada.Forms
             this.lblHeaderBaslik.ForeColor = System.Drawing.Color.White;
             this.lblHeaderBaslik.Location = new System.Drawing.Point(25, 16);
             this.lblHeaderBaslik.Name = "lblHeaderBaslik";
-            this.lblHeaderBaslik.Size = new System.Drawing.Size(200, 30);
+            this.lblHeaderBaslik.Size = new System.Drawing.Size(173, 30);
             this.lblHeaderBaslik.TabIndex = 0;
             this.lblHeaderBaslik.Text = "🏢  İşletme Adı";
             // 
@@ -86,7 +90,7 @@ namespace SahalarBurada.Forms
             this.lblHeaderAltBaslik.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.lblHeaderAltBaslik.Location = new System.Drawing.Point(27, 52);
             this.lblHeaderAltBaslik.Name = "lblHeaderAltBaslik";
-            this.lblHeaderAltBaslik.Size = new System.Drawing.Size(150, 15);
+            this.lblHeaderAltBaslik.Size = new System.Drawing.Size(81, 15);
             this.lblHeaderAltBaslik.TabIndex = 1;
             this.lblHeaderAltBaslik.Text = "Hoş geldiniz...";
             // 
@@ -172,7 +176,7 @@ namespace SahalarBurada.Forms
             this.lblSahalarim.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.lblSahalarim.Location = new System.Drawing.Point(22, 18);
             this.lblSahalarim.Name = "lblSahalarim";
-            this.lblSahalarim.Size = new System.Drawing.Size(99, 25);
+            this.lblSahalarim.Size = new System.Drawing.Size(96, 25);
             this.lblSahalarim.TabIndex = 0;
             this.lblSahalarim.Text = "Sahalarım";
             // 
@@ -183,24 +187,29 @@ namespace SahalarBurada.Forms
             this.lblSahaCount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.lblSahaCount.Location = new System.Drawing.Point(22, 46);
             this.lblSahaCount.Name = "lblSahaCount";
-            this.lblSahaCount.Size = new System.Drawing.Size(120, 15);
+            this.lblSahaCount.Size = new System.Drawing.Size(119, 15);
             this.lblSahaCount.TabIndex = 1;
             this.lblSahaCount.Text = "Toplam 0 saha kayıtlı";
             // 
             // dgvSahalar
             // 
             this.dgvSahalar.AllowUserToAddRows = false;
-            this.dgvSahalar.AlternatingRowsDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(247)))));
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(247)))), ((int)(((byte)(250)))), ((int)(((byte)(247)))));
+            this.dgvSahalar.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvSahalar.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvSahalar.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvSahalar.BackgroundColor = System.Drawing.Color.White;
             this.dgvSahalar.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.dgvSahalar.ColumnHeadersDefaultCellStyle.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.dgvSahalar.ColumnHeadersDefaultCellStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(94)))), ((int)(((byte)(32)))));
-            this.dgvSahalar.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.dgvSahalar.ColumnHeadersDefaultCellStyle.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(94)))), ((int)(((byte)(32)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvSahalar.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvSahalar.ColumnHeadersHeight = 40;
             this.dgvSahalar.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.dgvSahalar.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -209,10 +218,14 @@ namespace SahalarBurada.Forms
             this.colKapasite,
             this.colFiyat,
             this.colTarih});
-            this.dgvSahalar.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.dgvSahalar.DefaultCellStyle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.dgvSahalar.DefaultCellStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(230)))), ((int)(((byte)(201)))));
-            this.dgvSahalar.DefaultCellStyle.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 10F);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(230)))), ((int)(((byte)(201)))));
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvSahalar.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvSahalar.EnableHeadersVisualStyles = false;
             this.dgvSahalar.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(218)))), ((int)(((byte)(224)))), ((int)(((byte)(218)))));
             this.dgvSahalar.Location = new System.Drawing.Point(22, 72);
@@ -264,6 +277,7 @@ namespace SahalarBurada.Forms
             this.Controls.Add(this.pnlHeader);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FormOrganizatorPanel";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

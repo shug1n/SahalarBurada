@@ -50,6 +50,7 @@ namespace SahalarBurada.Forms
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormKiracıGiris));
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.lblHeaderBaslik = new System.Windows.Forms.Label();
             this.lblHeaderAltBaslik = new System.Windows.Forms.Label();
@@ -78,9 +79,9 @@ namespace SahalarBurada.Forms
             this.txtKayitSifreTekrar = new System.Windows.Forms.TextBox();
             this.lblKayitHata = new System.Windows.Forms.Label();
             this.btnKayitOl = new System.Windows.Forms.Button();
-            this.btnGeri = new System.Windows.Forms.Button();
             this.lblTelefonKayit = new System.Windows.Forms.Label();
             this.txtKayitTelefon = new System.Windows.Forms.TextBox();
+            this.btnGeri = new System.Windows.Forms.Button();
             this.pnlHeader.SuspendLayout();
             this.pnlTabBar.SuspendLayout();
             this.pnlGiris.SuspendLayout();
@@ -233,7 +234,7 @@ namespace SahalarBurada.Forms
             this.chkBeniHatirla.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.chkBeniHatirla.Location = new System.Drawing.Point(50, 160);
             this.chkBeniHatirla.Name = "chkBeniHatirla";
-            this.chkBeniHatirla.Size = new System.Drawing.Size(95, 21);
+            this.chkBeniHatirla.Size = new System.Drawing.Size(93, 21);
             this.chkBeniHatirla.TabIndex = 4;
             this.chkBeniHatirla.Text = "Beni Hatırla";
             this.chkBeniHatirla.UseVisualStyleBackColor = true;
@@ -367,28 +368,6 @@ namespace SahalarBurada.Forms
             this.txtKayitEposta.Size = new System.Drawing.Size(200, 25);
             this.txtKayitEposta.TabIndex = 5;
             // 
-            // lblTelefonKayit
-            // 
-            this.lblTelefonKayit.AutoSize = true;
-            this.lblTelefonKayit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblTelefonKayit.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.lblTelefonKayit.Location = new System.Drawing.Point(270, 90);
-            this.lblTelefonKayit.Name = "lblTelefonKayit";
-            this.lblTelefonKayit.Size = new System.Drawing.Size(95, 19);
-            this.lblTelefonKayit.TabIndex = 12;
-            this.lblTelefonKayit.Text = "Telefon:";
-            // 
-            // txtKayitTelefon
-            // 
-            this.txtKayitTelefon.BackColor = System.Drawing.Color.White;
-            this.txtKayitTelefon.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtKayitTelefon.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtKayitTelefon.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.txtKayitTelefon.Location = new System.Drawing.Point(270, 115);
-            this.txtKayitTelefon.Name = "txtKayitTelefon";
-            this.txtKayitTelefon.Size = new System.Drawing.Size(200, 25);
-            this.txtKayitTelefon.TabIndex = 6;
-            // 
             // lblSifreKayit
             // 
             this.lblSifreKayit.AutoSize = true;
@@ -464,6 +443,28 @@ namespace SahalarBurada.Forms
             this.btnKayitOl.UseVisualStyleBackColor = false;
             this.btnKayitOl.Click += new System.EventHandler(this.BtnKayit_Click);
             // 
+            // lblTelefonKayit
+            // 
+            this.lblTelefonKayit.AutoSize = true;
+            this.lblTelefonKayit.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblTelefonKayit.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.lblTelefonKayit.Location = new System.Drawing.Point(270, 90);
+            this.lblTelefonKayit.Name = "lblTelefonKayit";
+            this.lblTelefonKayit.Size = new System.Drawing.Size(62, 19);
+            this.lblTelefonKayit.TabIndex = 12;
+            this.lblTelefonKayit.Text = "Telefon:";
+            // 
+            // txtKayitTelefon
+            // 
+            this.txtKayitTelefon.BackColor = System.Drawing.Color.White;
+            this.txtKayitTelefon.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtKayitTelefon.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtKayitTelefon.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.txtKayitTelefon.Location = new System.Drawing.Point(270, 115);
+            this.txtKayitTelefon.Name = "txtKayitTelefon";
+            this.txtKayitTelefon.Size = new System.Drawing.Size(200, 25);
+            this.txtKayitTelefon.TabIndex = 6;
+            // 
             // btnGeri
             // 
             this.btnGeri.BackColor = System.Drawing.Color.White;
@@ -492,6 +493,7 @@ namespace SahalarBurada.Forms
             this.Controls.Add(this.pnlHeader);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FormKiracıGiris";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

@@ -49,6 +49,7 @@ namespace SahalarBurada.Forms
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormRezervasyonOnay));
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.lblHeaderBaslik = new System.Windows.Forms.Label();
             this.lblHeaderAltBaslik = new System.Windows.Forms.Label();
@@ -65,6 +66,9 @@ namespace SahalarBurada.Forms
             this.lblSaatDeger = new System.Windows.Forms.Label();
             this.lblFiyatLabel = new System.Windows.Forms.Label();
             this.lblFiyatDeger = new System.Windows.Forms.Label();
+            this.lblKisiSayisiLabel = new System.Windows.Forms.Label();
+            this.nudKisiSayisi = new System.Windows.Forms.NumericUpDown();
+            this.lblKisiBasiLabel = new System.Windows.Forms.Label();
             this.pnlMisafir = new System.Windows.Forms.Panel();
             this.lblMisafirBaslik = new System.Windows.Forms.Label();
             this.lblMisafirUyari = new System.Windows.Forms.Label();
@@ -76,13 +80,10 @@ namespace SahalarBurada.Forms
             this.lblHata = new System.Windows.Forms.Label();
             this.btnGeri = new System.Windows.Forms.Button();
             this.btnOnayla = new System.Windows.Forms.Button();
-            this.lblKisiSayisiLabel = new System.Windows.Forms.Label();
-            this.nudKisiSayisi = new System.Windows.Forms.NumericUpDown();
-            this.lblKisiBasiLabel = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.nudKisiSayisi)).BeginInit();
             this.pnlHeader.SuspendLayout();
             this.pnlScroll.SuspendLayout();
             this.pnlDetay.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudKisiSayisi)).BeginInit();
             this.pnlMisafir.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -105,7 +106,7 @@ namespace SahalarBurada.Forms
             this.lblHeaderBaslik.ForeColor = System.Drawing.Color.White;
             this.lblHeaderBaslik.Location = new System.Drawing.Point(25, 16);
             this.lblHeaderBaslik.Name = "lblHeaderBaslik";
-            this.lblHeaderBaslik.Size = new System.Drawing.Size(262, 30);
+            this.lblHeaderBaslik.Size = new System.Drawing.Size(252, 30);
             this.lblHeaderBaslik.TabIndex = 0;
             this.lblHeaderBaslik.Text = "✅  Rezervasyon Onayı";
             // 
@@ -117,7 +118,7 @@ namespace SahalarBurada.Forms
             this.lblHeaderAltBaslik.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.lblHeaderAltBaslik.Location = new System.Drawing.Point(27, 52);
             this.lblHeaderAltBaslik.Name = "lblHeaderAltBaslik";
-            this.lblHeaderAltBaslik.Size = new System.Drawing.Size(199, 15);
+            this.lblHeaderAltBaslik.Size = new System.Drawing.Size(182, 15);
             this.lblHeaderAltBaslik.TabIndex = 1;
             this.lblHeaderAltBaslik.Text = "Bilgileri kontrol edin ve onaylayın";
             // 
@@ -137,7 +138,7 @@ namespace SahalarBurada.Forms
             this.pnlScroll.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlScroll.Location = new System.Drawing.Point(0, 95);
             this.pnlScroll.Name = "pnlScroll";
-            this.pnlScroll.Size = new System.Drawing.Size(640, 505);
+            this.pnlScroll.Size = new System.Drawing.Size(640, 595);
             this.pnlScroll.TabIndex = 1;
             // 
             // pnlDetay
@@ -167,7 +168,7 @@ namespace SahalarBurada.Forms
             this.lblDetayBaslik.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(94)))), ((int)(((byte)(32)))));
             this.lblDetayBaslik.Location = new System.Drawing.Point(16, 12);
             this.lblDetayBaslik.Name = "lblDetayBaslik";
-            this.lblDetayBaslik.Size = new System.Drawing.Size(222, 25);
+            this.lblDetayBaslik.Size = new System.Drawing.Size(234, 25);
             this.lblDetayBaslik.TabIndex = 0;
             this.lblDetayBaslik.Text = "📋 Rezervasyon Detayları";
             // 
@@ -276,6 +277,47 @@ namespace SahalarBurada.Forms
             this.lblFiyatDeger.TabIndex = 10;
             this.lblFiyatDeger.Text = "-";
             // 
+            // lblKisiSayisiLabel
+            // 
+            this.lblKisiSayisiLabel.AutoSize = true;
+            this.lblKisiSayisiLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblKisiSayisiLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
+            this.lblKisiSayisiLabel.Location = new System.Drawing.Point(35, 220);
+            this.lblKisiSayisiLabel.Name = "lblKisiSayisiLabel";
+            this.lblKisiSayisiLabel.Size = new System.Drawing.Size(153, 19);
+            this.lblKisiSayisiLabel.TabIndex = 6;
+            this.lblKisiSayisiLabel.Text = "👥 Kaç kişi katılacak?";
+            // 
+            // nudKisiSayisi
+            // 
+            this.nudKisiSayisi.Font = new System.Drawing.Font("Segoe UI", 11F);
+            this.nudKisiSayisi.Location = new System.Drawing.Point(35, 246);
+            this.nudKisiSayisi.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudKisiSayisi.Name = "nudKisiSayisi";
+            this.nudKisiSayisi.Size = new System.Drawing.Size(120, 27);
+            this.nudKisiSayisi.TabIndex = 7;
+            this.nudKisiSayisi.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudKisiSayisi.ValueChanged += new System.EventHandler(this.NudKisiSayisi_ValueChanged);
+            // 
+            // lblKisiBasiLabel
+            // 
+            this.lblKisiBasiLabel.AutoSize = true;
+            this.lblKisiBasiLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblKisiBasiLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(94)))), ((int)(((byte)(32)))));
+            this.lblKisiBasiLabel.Location = new System.Drawing.Point(170, 250);
+            this.lblKisiBasiLabel.Name = "lblKisiBasiLabel";
+            this.lblKisiBasiLabel.Size = new System.Drawing.Size(113, 19);
+            this.lblKisiBasiLabel.TabIndex = 8;
+            this.lblKisiBasiLabel.Text = "→ Kişi başı: — ₺";
+            // 
             // pnlMisafir
             // 
             this.pnlMisafir.BackColor = System.Drawing.Color.White;
@@ -299,7 +341,7 @@ namespace SahalarBurada.Forms
             this.lblMisafirBaslik.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(94)))), ((int)(((byte)(32)))));
             this.lblMisafirBaslik.Location = new System.Drawing.Point(16, 12);
             this.lblMisafirBaslik.Name = "lblMisafirBaslik";
-            this.lblMisafirBaslik.Size = new System.Drawing.Size(180, 25);
+            this.lblMisafirBaslik.Size = new System.Drawing.Size(175, 25);
             this.lblMisafirBaslik.TabIndex = 0;
             this.lblMisafirBaslik.Text = "👤 İletişim Bilgileri";
             // 
@@ -320,7 +362,7 @@ namespace SahalarBurada.Forms
             this.lblMisafirAdLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.lblMisafirAdLabel.Location = new System.Drawing.Point(16, 70);
             this.lblMisafirAdLabel.Name = "lblMisafirAdLabel";
-            this.lblMisafirAdLabel.Size = new System.Drawing.Size(77, 19);
+            this.lblMisafirAdLabel.Size = new System.Drawing.Size(78, 19);
             this.lblMisafirAdLabel.TabIndex = 2;
             this.lblMisafirAdLabel.Text = "Ad Soyad:";
             // 
@@ -360,42 +402,10 @@ namespace SahalarBurada.Forms
             this.lblAktifKullanici.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
             this.lblAktifKullanici.Location = new System.Drawing.Point(35, 310);
             this.lblAktifKullanici.Name = "lblAktifKullanici";
-            this.lblAktifKullanici.Size = new System.Drawing.Size(126, 19);
+            this.lblAktifKullanici.Size = new System.Drawing.Size(127, 19);
             this.lblAktifKullanici.TabIndex = 2;
             this.lblAktifKullanici.Text = "👤 Kullanıcı adına...";
             this.lblAktifKullanici.Visible = false;
-            // 
-            // lblKisiSayisiLabel
-            // 
-            this.lblKisiSayisiLabel.AutoSize = true;
-            this.lblKisiSayisiLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblKisiSayisiLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(30)))), ((int)(((byte)(30)))));
-            this.lblKisiSayisiLabel.Location = new System.Drawing.Point(35, 220);
-            this.lblKisiSayisiLabel.Name = "lblKisiSayisiLabel";
-            this.lblKisiSayisiLabel.TabIndex = 6;
-            this.lblKisiSayisiLabel.Text = "👥 Kaç kişi katılacak?";
-            // 
-            // nudKisiSayisi
-            // 
-            this.nudKisiSayisi.Font = new System.Drawing.Font("Segoe UI", 11F);
-            this.nudKisiSayisi.Location = new System.Drawing.Point(35, 246);
-            this.nudKisiSayisi.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
-            this.nudKisiSayisi.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
-            this.nudKisiSayisi.Name = "nudKisiSayisi";
-            this.nudKisiSayisi.Size = new System.Drawing.Size(120, 26);
-            this.nudKisiSayisi.TabIndex = 7;
-            this.nudKisiSayisi.Value = new decimal(new int[] { 1, 0, 0, 0 });
-            this.nudKisiSayisi.ValueChanged += new System.EventHandler(this.NudKisiSayisi_ValueChanged);
-            // 
-            // lblKisiBasiLabel
-            // 
-            this.lblKisiBasiLabel.AutoSize = true;
-            this.lblKisiBasiLabel.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblKisiBasiLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(94)))), ((int)(((byte)(32)))));
-            this.lblKisiBasiLabel.Location = new System.Drawing.Point(170, 250);
-            this.lblKisiBasiLabel.Name = "lblKisiBasiLabel";
-            this.lblKisiBasiLabel.TabIndex = 8;
-            this.lblKisiBasiLabel.Text = "→ Kişi başı: — ₺";
             // 
             // lblHata
             // 
@@ -404,7 +414,7 @@ namespace SahalarBurada.Forms
             this.lblHata.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(198)))), ((int)(((byte)(40)))), ((int)(((byte)(40)))));
             this.lblHata.Location = new System.Drawing.Point(35, 348);
             this.lblHata.Name = "lblHata";
-            this.lblHata.Size = new System.Drawing.Size(33, 15);
+            this.lblHata.Size = new System.Drawing.Size(32, 15);
             this.lblHata.TabIndex = 3;
             this.lblHata.Text = "Hata";
             this.lblHata.Visible = false;
@@ -451,6 +461,7 @@ namespace SahalarBurada.Forms
             this.Controls.Add(this.pnlHeader);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FormRezervasyonOnay";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -461,9 +472,9 @@ namespace SahalarBurada.Forms
             this.pnlScroll.PerformLayout();
             this.pnlDetay.ResumeLayout(false);
             this.pnlDetay.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudKisiSayisi)).EndInit();
             this.pnlMisafir.ResumeLayout(false);
             this.pnlMisafir.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nudKisiSayisi)).EndInit();
             this.ResumeLayout(false);
 
         }

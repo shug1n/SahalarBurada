@@ -38,11 +38,13 @@ namespace SahalarBurada.Forms
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormAnaEkran));
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.lblLogo = new System.Windows.Forms.Label();
             this.lblSlogan = new System.Windows.Forms.Label();
             this.tblCards = new System.Windows.Forms.TableLayoutPanel();
             this.pnlKiraci = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
             this.lblKiraciIkon = new System.Windows.Forms.Label();
             this.lblKiraciBaslik = new System.Windows.Forms.Label();
             this.lblKiraciAciklama = new System.Windows.Forms.Label();
@@ -57,7 +59,6 @@ namespace SahalarBurada.Forms
             this.btnOrgGiris = new System.Windows.Forms.Button();
             this.lblOrgNot = new System.Windows.Forms.Label();
             this.lblOrgDemo = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
             this.pnlHeader.SuspendLayout();
             this.tblCards.SuspendLayout();
             this.pnlKiraci.SuspendLayout();
@@ -134,6 +135,17 @@ namespace SahalarBurada.Forms
             this.pnlKiraci.Size = new System.Drawing.Size(456, 475);
             this.pnlKiraci.TabIndex = 0;
             this.pnlKiraci.Paint += new System.Windows.Forms.PaintEventHandler(this.PaintKartKenar);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.label1.Location = new System.Drawing.Point(36, 345);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(332, 15);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Bilgilerinizi kaydederek bir sonraki ziyaretinizde vakit kazanın.";
             // 
             // lblKiraciIkon
             // 
@@ -308,23 +320,13 @@ namespace SahalarBurada.Forms
             this.lblOrgDemo.TabIndex = 6;
             this.lblOrgDemo.Text = "Saha sahipleri için özel kontrol paneli.";
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.label1.Location = new System.Drawing.Point(36, 345);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(332, 15);
-            this.label1.TabIndex = 7;
-            this.label1.Text = "Bilgilerinizi kaydederek bir sonraki ziyaretinizde vakit kazanın.";
-            // 
             // FormAnaEkran
             // 
             this.ClientSize = new System.Drawing.Size(1020, 690);
             this.Controls.Add(this.tblCards);
             this.Controls.Add(this.pnlHeader);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FormAnaEkran";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

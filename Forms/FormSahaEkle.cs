@@ -229,5 +229,10 @@ namespace SahalarBurada.Forms
             f.FormClosed += (s, ev) => { if (f.DialogResult == System.Windows.Forms.DialogResult.OK) { this.IsBackButtonClicked = true; this.Close(); } else this.Show(); };
             f.Show();
         }
+
+        private void FormSahaEkle_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

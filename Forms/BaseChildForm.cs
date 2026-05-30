@@ -28,5 +28,19 @@ namespace SahalarBurada.Forms
 
             base.OnFormClosing(e);
         }
+
+        private void InitializeComponent()
+        {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BaseChildForm));
+            this.SuspendLayout();
+            // 
+            // BaseChildForm
+            // 
+            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "BaseChildForm";
+            this.ResumeLayout(false);
+
+        }
     }
 }

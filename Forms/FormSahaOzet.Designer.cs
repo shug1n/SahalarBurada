@@ -43,6 +43,7 @@ namespace SahalarBurada.Forms
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormSahaOzet));
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.lblHeaderBaslik = new System.Windows.Forms.Label();
             this.lblHeaderAltBaslik = new System.Windows.Forms.Label();
@@ -94,7 +95,7 @@ namespace SahalarBurada.Forms
             this.lblHeaderBaslik.ForeColor = System.Drawing.Color.White;
             this.lblHeaderBaslik.Location = new System.Drawing.Point(25, 16);
             this.lblHeaderBaslik.Name = "lblHeaderBaslik";
-            this.lblHeaderBaslik.Size = new System.Drawing.Size(155, 30);
+            this.lblHeaderBaslik.Size = new System.Drawing.Size(166, 30);
             this.lblHeaderBaslik.TabIndex = 0;
             this.lblHeaderBaslik.Text = "📄  Saha Özeti";
             // 
@@ -106,7 +107,7 @@ namespace SahalarBurada.Forms
             this.lblHeaderAltBaslik.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(200)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.lblHeaderAltBaslik.Location = new System.Drawing.Point(27, 52);
             this.lblHeaderAltBaslik.Name = "lblHeaderAltBaslik";
-            this.lblHeaderAltBaslik.Size = new System.Drawing.Size(306, 15);
+            this.lblHeaderAltBaslik.Size = new System.Drawing.Size(272, 15);
             this.lblHeaderAltBaslik.TabIndex = 1;
             this.lblHeaderAltBaslik.Text = "Bilgileri kontrol edin; onaylayarak kaydedebilirsiniz";
             // 
@@ -159,7 +160,7 @@ namespace SahalarBurada.Forms
             this.lblKartBaslik.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(27)))), ((int)(((byte)(94)))), ((int)(((byte)(32)))));
             this.lblKartBaslik.Location = new System.Drawing.Point(18, 14);
             this.lblKartBaslik.Name = "lblKartBaslik";
-            this.lblKartBaslik.Size = new System.Drawing.Size(199, 25);
+            this.lblKartBaslik.Size = new System.Drawing.Size(204, 25);
             this.lblKartBaslik.TabIndex = 0;
             this.lblKartBaslik.Text = "📋 Saha Bilgileri Özeti";
             // 
@@ -350,7 +351,7 @@ namespace SahalarBurada.Forms
             this.lblBilgi.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(100)))), ((int)(((byte)(100)))));
             this.lblBilgi.Location = new System.Drawing.Point(32, 468);
             this.lblBilgi.Name = "lblBilgi";
-            this.lblBilgi.Size = new System.Drawing.Size(325, 15);
+            this.lblBilgi.Size = new System.Drawing.Size(328, 15);
             this.lblBilgi.TabIndex = 1;
             this.lblBilgi.Text = "ℹ  Bilgiler doğru mu? Onayladıktan sonra sisteme kaydedilir.";
             // 
@@ -396,6 +397,7 @@ namespace SahalarBurada.Forms
             this.Controls.Add(this.pnlHeader);
             this.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FormSahaOzet";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

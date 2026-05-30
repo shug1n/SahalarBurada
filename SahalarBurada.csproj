@@ -150,6 +150,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\BaseChildForm.resx">
+      <DependentUpon>BaseChildForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormAnaEkran.resx">
       <DependentUpon>FormAnaEkran.cs</DependentUpon>
     </EmbeddedResource>
@@ -159,6 +162,36 @@
     <EmbeddedResource Include="Forms\FormKiracıGiris.resx">
       <DependentUpon>FormKiracıGiris.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormKullaniciPanel.resx">
+      <DependentUpon>FormKullaniciPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormOrganizatorGiris.resx">
+      <DependentUpon>FormOrganizatorGiris.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormOrganizatorPanel.resx">
+      <DependentUpon>FormOrganizatorPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormOrganizatorRezervasyonlar.resx">
+      <DependentUpon>FormOrganizatorRezervasyonlar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormProfilGuncelle.resx">
+      <DependentUpon>FormProfilGuncelle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormRezervasyonOnay.resx">
+      <DependentUpon>FormRezervasyonOnay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormSahaAra.resx">
+      <DependentUpon>FormSahaAra.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormSahaEkle.resx">
+      <DependentUpon>FormSahaEkle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormSahaListesi.resx">
+      <DependentUpon>FormSahaListesi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormSahaOzet.resx">
+      <DependentUpon>FormSahaOzet.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -167,6 +200,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

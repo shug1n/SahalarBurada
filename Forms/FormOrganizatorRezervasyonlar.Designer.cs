@@ -15,6 +15,7 @@ namespace SahalarBurada.Forms
 
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormOrganizatorRezervasyonlar));
             this.pnlHeader = new System.Windows.Forms.Panel();
             this.pnlFilters = new System.Windows.Forms.Panel();
             this.lblSahaSec = new System.Windows.Forms.Label();
@@ -24,7 +25,6 @@ namespace SahalarBurada.Forms
             this.btnKapat = new System.Windows.Forms.Button();
             this.dgvRezervasyonlar = new System.Windows.Forms.DataGridView();
             this.pnlGridContainer = new System.Windows.Forms.Panel();
-            this.pnlHeader.SuspendLayout();
             this.pnlFilters.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRezervasyonlar)).BeginInit();
             this.pnlGridContainer.SuspendLayout();
@@ -32,9 +32,8 @@ namespace SahalarBurada.Forms
             // 
             // pnlHeader
             // 
-            this.pnlHeader.BackColor = SahalarBurada.Helpers.UIHelper.CAna;
+            this.pnlHeader.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(88)))), ((int)(((byte)(30)))));
             this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlHeader.Height = 95;
             this.pnlHeader.Location = new System.Drawing.Point(0, 0);
             this.pnlHeader.Name = "pnlHeader";
             this.pnlHeader.Size = new System.Drawing.Size(950, 95);
@@ -42,14 +41,13 @@ namespace SahalarBurada.Forms
             // 
             // pnlFilters
             // 
-            this.pnlFilters.BackColor = SahalarBurada.Helpers.UIHelper.CKart;
+            this.pnlFilters.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(254)))), ((int)(((byte)(252)))));
             this.pnlFilters.Controls.Add(this.lblSahaSec);
             this.pnlFilters.Controls.Add(this.cbSahalar);
             this.pnlFilters.Controls.Add(this.lblTarihSec);
             this.pnlFilters.Controls.Add(this.dtpTarih);
             this.pnlFilters.Controls.Add(this.btnKapat);
             this.pnlFilters.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlFilters.Height = 70;
             this.pnlFilters.Location = new System.Drawing.Point(0, 95);
             this.pnlFilters.Name = "pnlFilters";
             this.pnlFilters.Size = new System.Drawing.Size(950, 70);
@@ -60,10 +58,10 @@ namespace SahalarBurada.Forms
             // 
             this.lblSahaSec.AutoSize = true;
             this.lblSahaSec.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblSahaSec.ForeColor = SahalarBurada.Helpers.UIHelper.CMetin;
+            this.lblSahaSec.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(36)))), ((int)(((byte)(28)))));
             this.lblSahaSec.Location = new System.Drawing.Point(30, 24);
             this.lblSahaSec.Name = "lblSahaSec";
-            this.lblSahaSec.Size = new System.Drawing.Size(81, 19);
+            this.lblSahaSec.Size = new System.Drawing.Size(84, 19);
             this.lblSahaSec.TabIndex = 0;
             this.lblSahaSec.Text = "Saha Seçin:";
             // 
@@ -81,7 +79,7 @@ namespace SahalarBurada.Forms
             // 
             this.lblTarihSec.AutoSize = true;
             this.lblTarihSec.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.lblTarihSec.ForeColor = SahalarBurada.Helpers.UIHelper.CMetin;
+            this.lblTarihSec.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(36)))), ((int)(((byte)(28)))));
             this.lblTarihSec.Location = new System.Drawing.Point(390, 24);
             this.lblTarihSec.Name = "lblTarihSec";
             this.lblTarihSec.Size = new System.Drawing.Size(85, 19);
@@ -119,11 +117,11 @@ namespace SahalarBurada.Forms
             this.dgvRezervasyonlar.AllowUserToAddRows = false;
             this.dgvRezervasyonlar.AllowUserToDeleteRows = false;
             this.dgvRezervasyonlar.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dgvRezervasyonlar.BackgroundColor = SahalarBurada.Helpers.UIHelper.CKart;
+            this.dgvRezervasyonlar.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(254)))), ((int)(((byte)(252)))));
             this.dgvRezervasyonlar.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dgvRezervasyonlar.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             this.dgvRezervasyonlar.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvRezervasyonlar.GridColor = SahalarBurada.Helpers.UIHelper.CBolme;
+            this.dgvRezervasyonlar.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(210)))), ((int)(((byte)(220)))), ((int)(((byte)(210)))));
             this.dgvRezervasyonlar.Location = new System.Drawing.Point(30, 20);
             this.dgvRezervasyonlar.Name = "dgvRezervasyonlar";
             this.dgvRezervasyonlar.ReadOnly = true;
@@ -137,7 +135,7 @@ namespace SahalarBurada.Forms
             // 
             // pnlGridContainer
             // 
-            this.pnlGridContainer.BackColor = SahalarBurada.Helpers.UIHelper.CArkaplan;
+            this.pnlGridContainer.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(248)))), ((int)(((byte)(245)))));
             this.pnlGridContainer.Controls.Add(this.dgvRezervasyonlar);
             this.pnlGridContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlGridContainer.Location = new System.Drawing.Point(0, 165);
@@ -148,18 +146,18 @@ namespace SahalarBurada.Forms
             // 
             // FormOrganizatorRezervasyonlar
             // 
-            this.BackColor = SahalarBurada.Helpers.UIHelper.CArkaplan;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(248)))), ((int)(((byte)(245)))));
             this.ClientSize = new System.Drawing.Size(950, 680);
             this.Controls.Add(this.pnlGridContainer);
             this.Controls.Add(this.pnlFilters);
             this.Controls.Add(this.pnlHeader);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FormOrganizatorRezervasyonlar";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "SahalarBurada — Saha Rezervasyon & Doluluk Durumu";
-            this.pnlHeader.ResumeLayout(false);
             this.pnlFilters.ResumeLayout(false);
             this.pnlFilters.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRezervasyonlar)).EndInit();
