@@ -310,9 +310,7 @@ namespace SahalarBurada.Services
                     var tumGunler = new List<string> { "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar" };
                     var tumSaatler = new List<string>
                     {
-                        "00:00-01:00", "01:00-02:00", "02:00-03:00", "03:00-04:00",
-                        "04:00-05:00", "05:00-06:00", "06:00-07:00", "07:00-08:00",
-                        "08:00-09:00", "09:00-10:00", "10:00-11:00", "11:00-12:00",
+                        "00:00-01:00",
                         "12:00-13:00", "13:00-14:00", "14:00-15:00", "15:00-16:00",
                         "16:00-17:00", "17:00-18:00", "18:00-19:00", "19:00-20:00",
                         "20:00-21:00", "21:00-22:00", "22:00-23:00", "23:00-00:00"
@@ -379,6 +377,155 @@ namespace SahalarBurada.Services
                 catch (Exception)
                 {
                     // Ignore
+                }
+
+                // Clean up working hours (MusaitSaatler) for all existing fields (gece 1 ile öğlen 12 arasını kaldır)
+                try
+                {
+                    var fieldsToUpdate = new List<(string Id, string MusaitSaatler)>();
+                    using (var cmdSelect = new SQLiteCommand("SELECT Id, MusaitSaatler FROM fields;", conn))
+                    using (var reader = cmdSelect.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            fieldsToUpdate.Add((reader["Id"].ToString(), reader["MusaitSaatler"].ToString()));
+                        }
+                    }
+
+                    foreach (var field in fieldsToUpdate)
+                    {
+                        var saatler = Jss.Deserialize<List<string>>(field.MusaitSaatler);
+                        if (saatler != null)
+                        {
+                            var guncelSaatler = new List<string>();
+                            foreach (var s in saatler)
+                            {
+                                // Remove any slot starting with 01 to 11
+                                string startPart = s.Split('-')[0];
+                                int startHour;
+                                if (int.TryParse(startPart.Split(':')[0], out startHour))
+                                {
+                                    if (startHour >= 1 && startHour < 12)
+                                    {
+                                        continue; // Remove it!
+                                    }
+                                }
+                                guncelSaatler.Add(s);
+                            }
+
+                            string serialized = Jss.Serialize(guncelSaatler);
+                            using (var cmdUpdate = new SQLiteCommand("UPDATE fields SET MusaitSaatler = @MusaitSaatler WHERE Id = @Id;", conn))
+                            {
+                                cmdUpdate.Parameters.AddWithValue("@MusaitSaatler", serialized);
+                                cmdUpdate.Parameters.AddWithValue("@Id", field.Id);
+                                cmdUpdate.ExecuteNonQuery();
+                            }
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    // Ignore gracefully
+                }
+
+                // Seed reservations for the next 2 weeks for all fields (boşluklar bırakarak)
+                try
+                {
+                    var fieldList = new List<(string Id, string Ad, double FiyatSaat, string MusaitSaatler)>();
+                    using (var cmd = new SQLiteCommand("SELECT Id, Ad, FiyatSaat, MusaitSaatler FROM fields;", conn))
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            fieldList.Add((
+                                reader["Id"].ToString(),
+                                reader["Ad"].ToString(),
+                                Convert.ToDouble(reader["FiyatSaat"]),
+                                reader["MusaitSaatler"].ToString()
+                            ));
+                        }
+                    }
+
+                    var userList = new List<string> { "u_demo", "u_engin" };
+                    using (var cmd = new SQLiteCommand("SELECT Id FROM users WHERE Id NOT IN ('u_demo', 'u_engin');", conn))
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            userList.Add(reader["Id"].ToString());
+                        }
+                    }
+
+                    var rand = new Random();
+                    var today = DateTime.Today;
+
+                    foreach (var f in fieldList)
+                    {
+                        var saatler = Jss.Deserialize<List<string>>(f.MusaitSaatler);
+                        if (saatler == null || saatler.Count == 0) continue;
+
+                        for (int dayOffset = 0; dayOffset <= 14; dayOffset++)
+                        {
+                            var targetDate = today.AddDays(dayOffset);
+                            // Only book 1 to 2 slots per day to leave gaps (boşluklar bırakarak)
+                            int slotsToBook = rand.Next(1, 3); // 1 or 2
+                            var shuffledSaatler = new List<string>(saatler);
+                            
+                            // Simple shuffle
+                            for (int i = shuffledSaatler.Count - 1; i > 0; i--)
+                            {
+                                int j = rand.Next(i + 1);
+                                var temp = shuffledSaatler[i];
+                                shuffledSaatler[i] = shuffledSaatler[j];
+                                shuffledSaatler[j] = temp;
+                            }
+
+                            int bookedCount = 0;
+                            foreach (var slot in shuffledSaatler)
+                            {
+                                if (bookedCount >= slotsToBook) break;
+
+                                // Check if already booked
+                                bool alreadyBooked = false;
+                                using (var cmdCheck = new SQLiteCommand("SELECT COUNT(*) FROM reservations WHERE SahaId = @SahaId AND Date(Tarih) = Date(@Tarih) AND Saat = @Saat;", conn))
+                                {
+                                    cmdCheck.Parameters.AddWithValue("@SahaId", f.Id);
+                                    cmdCheck.Parameters.AddWithValue("@Tarih", targetDate.ToString("o"));
+                                    cmdCheck.Parameters.AddWithValue("@Saat", slot);
+                                    alreadyBooked = Convert.ToInt32(cmdCheck.ExecuteScalar()) > 0;
+                                }
+
+                                if (!alreadyBooked)
+                                {
+                                    string resId = "r_auto_" + f.Id + "_" + targetDate.ToString("yyyyMMdd") + "_" + slot.Replace(":", "").Replace("-", "_");
+                                    string randomUserId = userList[rand.Next(userList.Count)];
+
+                                    using (var cmdInsert = new SQLiteCommand(@"INSERT INTO reservations 
+                                        (Id, SahaId, SahaAdi, KullaniciId, MisafirAd, MisafirTelefon, Tarih, Saat, ToplamFiyat, OlusturmaTarihi, KisiSayisi) 
+                                        VALUES (@Id, @SahaId, @SahaAdi, @KullaniciId, @MisafirAd, @MisafirTelefon, @Tarih, @Saat, @ToplamFiyat, @OlusturmaTarihi, @KisiSayisi);", conn))
+                                    {
+                                        cmdInsert.Parameters.AddWithValue("@Id", resId);
+                                        cmdInsert.Parameters.AddWithValue("@SahaId", f.Id);
+                                        cmdInsert.Parameters.AddWithValue("@SahaAdi", f.Ad);
+                                        cmdInsert.Parameters.AddWithValue("@KullaniciId", randomUserId);
+                                        cmdInsert.Parameters.AddWithValue("@MisafirAd", DBNull.Value);
+                                        cmdInsert.Parameters.AddWithValue("@MisafirTelefon", DBNull.Value);
+                                        cmdInsert.Parameters.AddWithValue("@Tarih", targetDate.ToString("o"));
+                                        cmdInsert.Parameters.AddWithValue("@Saat", slot);
+                                        cmdInsert.Parameters.AddWithValue("@ToplamFiyat", f.FiyatSaat);
+                                        cmdInsert.Parameters.AddWithValue("@OlusturmaTarihi", DateTime.Now.ToString("o"));
+                                        cmdInsert.Parameters.AddWithValue("@KisiSayisi", 14);
+                                        cmdInsert.ExecuteNonQuery();
+                                    }
+                                    bookedCount++;
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    // Ignore gracefully
                 }
             }
         }
@@ -886,9 +1033,7 @@ namespace SahalarBurada.Services
             var tumGunler = new List<string> { "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi", "Pazar" };
             var tumSaatler = new List<string>
             {
-                "00:00-01:00", "01:00-02:00", "02:00-03:00", "03:00-04:00",
-                "04:00-05:00", "05:00-06:00", "06:00-07:00", "07:00-08:00",
-                "08:00-09:00", "09:00-10:00", "10:00-11:00", "11:00-12:00",
+                "00:00-01:00",
                 "12:00-13:00", "13:00-14:00", "14:00-15:00", "15:00-16:00",
                 "16:00-17:00", "17:00-18:00", "18:00-19:00", "19:00-20:00",
                 "20:00-21:00", "21:00-22:00", "22:00-23:00", "23:00-00:00"
