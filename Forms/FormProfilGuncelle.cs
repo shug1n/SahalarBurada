@@ -69,14 +69,22 @@ namespace SahalarBurada.Forms
                 BackColor = UIHelper.CKart
             };
 
+            pnlKart.HandleCreated += (s, e) => { UIHelper.SetRoundedCorners(pnlKart, 12); };
+            pnlKart.Resize += (s, e) => { UIHelper.SetRoundedCorners(pnlKart, 12); };
+
             pnlKart.Paint += (s, e) =>
             {
                 var g = e.Graphics;
                 g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-                using (var pen = new Pen(UIHelper.CBolme, 1))
-                    g.DrawRectangle(pen, 1, 1, pnlKart.Width - 3, pnlKart.Height - 3);
+                using (var path = UIHelper.GetRoundedRectanglePath(new Rectangle(0, 0, pnlKart.Width - 1, pnlKart.Height - 1), 12))
+                {
+                    using (var pen = new Pen(UIHelper.CBolme, 1.5f))
+                    {
+                        g.DrawPath(pen, path);
+                    }
+                }
                 using (var br = new SolidBrush(UIHelper.CVurgu))
-                    g.FillRectangle(br, 0, 0, 4, pnlKart.Height);
+                    g.FillRectangle(br, 0, 0, 6, pnlKart.Height);
             };
 
             // 3. Populate Card Controls
@@ -218,6 +226,15 @@ namespace SahalarBurada.Forms
 
             if (changePassword)
             {
+                // Check if new password is equal to the old one
+                string currentHash = _isOrganizer ? Oturum.AktifOrganizator.SifreHash : Oturum.AktifKullanici.SifreHash;
+                if (SifreHelper.Dogrula(newPassword, currentHash))
+                {
+                    lblHata.Text = "Yeni şifreniz eski şifreniz ile aynı olamaz.";
+                    lblHata.Visible = true;
+                    return;
+                }
+
                 if (newPassword != newPasswordConfirm)
                 {
                     lblHata.Text = "Şifreler uyuşmuyor.";

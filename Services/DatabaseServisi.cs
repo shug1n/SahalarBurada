@@ -9,7 +9,30 @@ namespace SahalarBurada.Services
 {
     public static class DatabaseServisi
     {
-        private const string ConnectionString = "Data Source=SahalarBuradaDatabase.db;Version=3;Busy Timeout=5000;";
+        private static string GetConnectionString()
+        {
+            string dbName = "SahalarBuradaDatabase.db";
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            
+            // Check if we are running in development under bin\Debug or bin\Release and root DB exists
+            string parentDir = System.IO.Path.GetDirectoryName(baseDir.TrimEnd(System.IO.Path.DirectorySeparatorChar));
+            if (parentDir != null)
+            {
+                string projectRootDir = System.IO.Path.GetDirectoryName(parentDir);
+                if (projectRootDir != null)
+                {
+                    string rootDbPath = System.IO.Path.Combine(projectRootDir, dbName);
+                    if (System.IO.File.Exists(rootDbPath))
+                    {
+                        return $"Data Source={rootDbPath};Version=3;Busy Timeout=5000;";
+                    }
+                }
+            }
+            
+            return $"Data Source={dbName};Version=3;Busy Timeout=5000;";
+        }
+
+        private static readonly string ConnectionString = GetConnectionString();
         private static readonly JavaScriptSerializer Jss = new JavaScriptSerializer();
 
         public static void InitializeDatabase()
@@ -527,6 +550,12 @@ namespace SahalarBurada.Services
                 {
                     // Ignore gracefully
                 }
+
+                try
+                {
+                    FixUserNames(conn);
+                }
+                catch (Exception) { }
             }
         }
 
@@ -940,6 +969,69 @@ namespace SahalarBurada.Services
             }
         }
 
+        private static void FixUserNames(SQLiteConnection conn)
+        {
+            try
+            {
+                var users = new List<(string Id, string Ad)>();
+                using (var cmd = new SQLiteCommand("SELECT Id, Ad FROM users;", conn))
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        users.Add((reader["Id"].ToString(), reader["Ad"].ToString()));
+                    }
+                }
+
+                if (users.Count == 0) return;
+
+                string[] firstNames = { "Ahmet", "Mehmet", "Hasan", "Hüseyin", "Ali", "Mustafa", "Murat", "Serkan", "Volkan", "Burak", "Emre", "Kaan", "Can", "Hakan", "Gökhan", "Süleyman", "Osman", "Ömer", "Fatih", "Yusuf", "Selim", "Cem", "Deniz", "Ege", "Alper", "Yiğit", "Mert", "Oğuz", "Talat", "Zafer" };
+                string[] secondNames = { "Ali", "Can", "Efe", "Burak", "Kaan", "Cem", "Deniz", "Mert", "Yiğit", "Umut" };
+
+                using (var transaction = conn.BeginTransaction())
+                {
+                    for (int i = 0; i < users.Count; i++)
+                    {
+                        var user = users[i];
+                        if (user.Id == "u_demo") continue;
+
+                        string baseName = user.Ad.Split(' ')[0];
+                        if (string.IsNullOrEmpty(baseName))
+                        {
+                            baseName = firstNames[i % firstNames.Length];
+                        }
+
+                        baseName = System.Text.RegularExpressions.Regex.Replace(baseName, @"[\d]", "").Trim();
+
+                        string newAd;
+                        if ((i + 1) % 10 == 0) // 10% get a double name
+                        {
+                            newAd = baseName + " " + secondNames[(i / firstNames.Length) % secondNames.Length];
+                        }
+                        else // 90% get a single name
+                        {
+                            newAd = baseName;
+                        }
+
+                        if (user.Ad != newAd)
+                        {
+                            using (var cmdUpdate = new SQLiteCommand("UPDATE users SET Ad = @Ad WHERE Id = @Id;", conn))
+                            {
+                                cmdUpdate.Parameters.AddWithValue("@Ad", newAd);
+                                cmdUpdate.Parameters.AddWithValue("@Id", user.Id);
+                                cmdUpdate.ExecuteNonQuery();
+                            }
+                        }
+                    }
+                    transaction.Commit();
+                }
+            }
+            catch (Exception)
+            {
+                // Ignore gracefully
+            }
+        }
+
         private static void SeedData(SQLiteConnection conn)
         {
             string[] firstNames = { "Ahmet", "Mehmet", "Hasan", "Hüseyin", "Ali", "Mustafa", "Murat", "Serkan", "Volkan", "Burak", "Emre", "Kaan", "Can", "Hakan", "Gökhan", "Süleyman", "Osman", "Ömer", "Fatih", "Yusuf", "Selim", "Cem", "Deniz", "Ege", "Alper", "Yiğit", "Mert", "Oğuz", "Talat", "Zafer" };
@@ -961,9 +1053,18 @@ namespace SahalarBurada.Services
                 cmd.ExecuteNonQuery();
             }
 
+            string[] secondNames = { "Ali", "Can", "Efe", "Burak", "Kaan", "Cem", "Deniz", "Mert", "Yiğit", "Umut" };
             for (int i = 2; i <= 150; i++)
             {
-                string ad = firstNames[i % firstNames.Length] + " " + (i / firstNames.Length + 1);
+                string ad;
+                if (i % 10 == 0) // 10% double name
+                {
+                    ad = firstNames[i % firstNames.Length] + " " + secondNames[(i / firstNames.Length) % secondNames.Length];
+                }
+                else // 90% single name
+                {
+                    ad = firstNames[i % firstNames.Length];
+                }
                 string soyad = lastNames[i % lastNames.Length];
                 string eposta = "user" + i + "@mail.com";
                 string telefon = "054" + (1000000 + i).ToString();

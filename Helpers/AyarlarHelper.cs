@@ -20,7 +20,11 @@ namespace SahalarBurada.Helpers
 
     public static class AyarlarHelper
     {
-        private static readonly string DosyaYolu = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ayarlar.json");
+        private static readonly string DosyaYolu = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+            "SahalarBurada",
+            "ayarlar.json"
+        );
         private static readonly JavaScriptSerializer Jss = new JavaScriptSerializer();
 
         public static AyarlarModeli Yukle()
@@ -41,6 +45,11 @@ namespace SahalarBurada.Helpers
         {
             try
             {
+                string dizin = Path.GetDirectoryName(DosyaYolu);
+                if (!string.IsNullOrEmpty(dizin) && !Directory.Exists(dizin))
+                {
+                    Directory.CreateDirectory(dizin);
+                }
                 string json = Jss.Serialize(model);
                 File.WriteAllText(DosyaYolu, json);
             }

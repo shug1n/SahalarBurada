@@ -66,15 +66,23 @@ namespace SahalarBurada.Helpers
 
             if (addCardBackground)
             {
+                card.HandleCreated += (s, e) => { SetRoundedCorners(card, 12); };
+                card.Resize += (s, e) => { SetRoundedCorners(card, 12); };
+                
                 card.Paint += (s, e) =>
                 {
                     var g = e.Graphics;
                     g.SmoothingMode = SmoothingMode.AntiAlias;
-                    using (var pen = new Pen(CBolme, 1))
-                        g.DrawRectangle(pen, 1, 1, cardW - 3, cardH - 3);
-                    // Sol vurgu çizgisi
+                    using (var path = GetRoundedRectanglePath(new Rectangle(0, 0, card.Width - 1, card.Height - 1), 12))
+                    {
+                        using (var pen = new Pen(CBolme, 1.5f))
+                        {
+                            g.DrawPath(pen, path);
+                        }
+                    }
+                    // Sol vurgu çizgisi (Region tarafından otomatik oval köşelenir)
                     using (var br = new SolidBrush(CVurgu))
-                        g.FillRectangle(br, 0, 0, 4, cardH);
+                        g.FillRectangle(br, 0, 0, 6, cardH);
                 };
             }
 
@@ -220,13 +228,23 @@ namespace SahalarBurada.Helpers
         public static Panel KartPanel(int x, int y, int w, int h)
         {
             var p = new Panel { Location = new Point(x, y), Size = new Size(w, h), BackColor = CKart };
+            p.HandleCreated += (s, e) => { SetRoundedCorners(p, 12); };
+            p.Resize += (s, e) => { SetRoundedCorners(p, 12); };
             p.Paint += (s, e) =>
             {
-                e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-                using (var pen = new Pen(CBolme, 1))
-                    e.Graphics.DrawRectangle(pen, 1, 1, p.Width - 3, p.Height - 3);
+                var g = e.Graphics;
+                g.SmoothingMode = SmoothingMode.AntiAlias;
+                using (var path = GetRoundedRectanglePath(new Rectangle(0, 0, p.Width - 1, p.Height - 1), 12))
+                {
+                    using (var pen = new Pen(CBolme, 1.5f))
+                    {
+                        g.DrawPath(pen, path);
+                    }
+                }
                 using (var br = new SolidBrush(CVurgu))
-                    e.Graphics.FillRectangle(br, 0, 0, 4, p.Height);
+                {
+                    g.FillRectangle(br, 0, 0, 6, p.Height);
+                }
             };
             return p;
         }
@@ -261,6 +279,38 @@ namespace SahalarBurada.Helpers
             dgv.DefaultCellStyle.SelectionForeColor = CMetin;
         }
 
+        // ─── Rounded Corners & Paths ─────────────────────────────────
+        public static GraphicsPath GetRoundedRectanglePath(Rectangle rect, int radius)
+        {
+            var path = new GraphicsPath();
+            int r = radius * 2;
+            if (r > rect.Width) r = rect.Width;
+            if (r > rect.Height) r = rect.Height;
+
+            path.StartFigure();
+            path.AddArc(rect.X, rect.Y, r, r, 180, 90);
+            path.AddArc(rect.Right - r, rect.Y, r, r, 270, 90);
+            path.AddArc(rect.Right - r, rect.Bottom - r, r, r, 0, 90);
+            path.AddArc(rect.X, rect.Bottom - r, r, r, 90, 90);
+            path.CloseFigure();
+            return path;
+        }
+
+        public static void SetRoundedCorners(Control control, int radius)
+        {
+            if (control.Width <= 0 || control.Height <= 0) return;
+            var path = new GraphicsPath();
+            int r = radius * 2;
+            if (r > control.Width) r = control.Width;
+            if (r > control.Height) r = control.Height;
+            path.StartFigure();
+            path.AddArc(0, 0, r, r, 180, 90);
+            path.AddArc(control.Width - r, 0, r, r, 270, 90);
+            path.AddArc(control.Width - r, control.Height - r, r, r, 0, 90);
+            path.AddArc(0, control.Height - r, r, r, 90, 90);
+            path.CloseFigure();
+            control.Region = new Region(path);
+        }
 
         // ─── Placeholder (İpucu Metni) ───────────────────────────────
         [System.Runtime.InteropServices.DllImport("user32.dll", CharSet = System.Runtime.InteropServices.CharSet.Auto)]
